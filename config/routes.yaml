@@ -1,0 +1,18 @@
+controllers:
+     resource:
+         path: ../src/Controller/
+         namespace: App\Controller
+     type: attribute
+
+film_controllers:
+  resource:
+    path: ../src/Film\Controller/
+    namespace: App\Film\Controller
+  type: attribute
+
+comment_controllers:
+  resource:
+    path: ../src/Comment\Controller/
+    namespace: App\Comment\Controller
+  type: attribute
+

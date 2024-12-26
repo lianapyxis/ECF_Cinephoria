@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <h2>{{ is_create ? 'Ajouter un film' : 'ID ' ~ film.id }}</h2>
+
+    <div class="form-film">
+        {{ form_start(form) }}
+
+        <div>
+            {{ form_row(form.title) }}
+
+            {{ form_row(form.year) }}
+
+            {{ form_row(form.genre) }}
+
+            {{ form_row(form.description) }}
+
+            <a href="{{ path('films_list') }}" class="btn btn-primary">Retour</a>
+        </div>
+        <div>
+            {% if film.imgPath %}
+                <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film" width="364px" height="437px"/>
+            {% endif %}
+
+            {{ form_row(form.imgPath) }}
+            <div class="film-form-actions">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('films_delete', {'id': film.id}) }}" class="btn btn-primary">Supprimer</a>
+                {% endif %}
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

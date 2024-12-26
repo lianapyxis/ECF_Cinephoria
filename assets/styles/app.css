@@ -1,0 +1,27 @@
+.hidden{
+    display: none;
+}
+.form-film form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.form-film form > div{
+    width: 40%;
+}
+.form-film form > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.img-film{
+    max-height: 437px;
+    max-width: 364px;
+    width: 364px;
+    height: auto;
+}
+.film-form-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

@@ -1,3 +1,12 @@
+body{
+    background-color: #100316;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    background: url("../images/background-img.png");
+}
+header{
+    padding-top: 70px;
+}
 .hidden{
     display: none;
 }
@@ -24,4 +33,174 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.nav-link{
+    text-transform: uppercase;
+    color: #fff;
+    margin-left: 82px;
+}
+.nav-link:hover{
+    color: #EC4186;
+}
+.connexion-btn{
+    color: #EC4186;
+    border: 3px solid #EC4186;
+    border-radius: 18px;
+    padding: 8px 15px;
+    min-width: 160px;
+    text-align: center;
+    font-weight: 600;
+}
+.connexion-btn:hover{
+    color: #fff;
+    border: 3px solid #fff;
+}
+nav.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: transparent !important;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+.navbar-expand-lg #navbarNav{
+    justify-content: end;
+}
+.navbar .dropdown{
+    display: none;
+}
+table, table tr, table td, table th{
+    background-color: transparent !important;
+    color: #fff !important;
+}
+table th, table td{
+    border: 2px solid #EC4186;
+}
+table{
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-style: hidden;
+    box-shadow: 0 0 0 2px #EC4186;
+}
+.h1{
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 60px;
+    margin-top: 60px;
+}
+.films-container-home{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+.film-container-home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px;
+    text-align: center;
+    position: relative;
+}
+.film-hover-home{
+    opacity: 0;
+    position:absolute;
+    top: 0;
+    right:0;
+    bottom:0;
+    color: #EC4186;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    text-decoration: none;
+    background: #2C0B24;
+    border-radius: 10px;
+    box-shadow: 0 0 12px #fff;
+    transition: opacity 0.3s ease-out;
+}
+.film-hover-home:hover{
+    opacity: 0.8;
+    transition: opacity 0.3s ease-out;
+}
+.film-title-home{
+    text-decoration: none;
+    color: #fff;
+    margin-top: 20px;
+    font-size: 22px;
+}
+.film-date-home{
+    font-size: 14px;
+    margin-top: 10px;
+}
+.img-film-home{
+    max-width: 250px;
+    max-height: 300px;
+    width: 250px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+@media (max-width: 991px) {
+    .navbar .dropdown{
+        display: block;
+    }
+    nav.navbar > div:first-child{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        align-items: center;
+    }
+    nav.navbar{
+        max-width: 720px;
+        margin: 0 auto;
+    }
+    nav.navbar ul{
+        width: 35%;
+        float: right;
+    }
+    .dropdown-toggle::after{
+        content: none;
+    }
+    .dropdown-menu[data-bs-popper]{
+        right: 0 !important;
+        left: auto;
+        background: #651b41;
+        min-width: 200px;
+        padding: 20px;
+    }
+
+    .dropdown-menu[data-bs-popper] li a:hover{
+        background: none;
+    }
+    .dropdown-menu[data-bs-popper] li:first-child a,
+    .dropdown-menu[data-bs-popper] li:nth-child(2) a,
+    .dropdown-menu[data-bs-popper] li:nth-child(3) a{
+        color: #fff;
+        padding: 0;
+        margin-bottom: 15px;
+    }
+    .dropdown-menu[data-bs-popper] li:first-child a:hover,
+    .dropdown-menu[data-bs-popper] li:nth-child(2) a:hover,
+    .dropdown-menu[data-bs-popper] li:nth-child(3) a:hover{
+        color: #EC4186;
+    }
+    .connexion-btn {
+        padding: 8px 10px;
+    }
+    .navbar button.dropdown-toggle{
+        background: #651b41;
+        border: none;
+    }
+    .navbar button.dropdown-toggle:hover{
+        background: #49142f;
+    }
+    .navbar button.dropdown-toggle span{
+        color: #fff;
+    }
 }

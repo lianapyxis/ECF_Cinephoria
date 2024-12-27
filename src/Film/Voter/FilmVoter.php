@@ -54,9 +54,9 @@ class FilmVoter extends Voter
     }
     private function canShow(Film $film, ?User $user): bool
     {
-        if($film->getStatus() === "DRAFT" && $film->getUser() !== $user) {
+/*        if($film->getStatus() === "DRAFT" && $film->getUser() !== $user) {
             return false;
-        }
+        }*/
 
         // the Post object could have, for example, a method `isPrivate()`
         return true;

@@ -35,4 +35,11 @@ return [
         'version' => '5.3.3',
         'type' => 'css',
     ],
+    'jquery/dist/jquery.min' => [
+        'path' => 'vendor/jquery/jquery.index.js',
+        'entrypoint' => true,
+    ],
+    'jquery' => [
+        'version' => '3.7.1',
+    ],
 ];

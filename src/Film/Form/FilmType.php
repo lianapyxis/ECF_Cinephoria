@@ -23,7 +23,7 @@ class FilmType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'Titre',
             ])
-            ->add('year', TextareaType::class,[
+            ->add('year', TextType::class,[
                 'label' => 'Année'
             ])
             ->add('genre', EntityType::class, [

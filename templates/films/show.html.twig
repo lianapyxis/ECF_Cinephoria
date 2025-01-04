@@ -9,8 +9,9 @@
         <div class="card-header">
             <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-rounded" width="364px" height="437px"/>
             <h2>{{ film.title }}</h2>
-            <h5>{{ film.genre.name }}</h5>
-
+            {% for filmGenre in film.genres %}
+                <h5>{{ filmGenre.name }}</h5>
+            {% endfor %}
 {#            {% if is_granted('ROLE_ADMIN') and film.status == film_draft %}
                 <a href="{{ path('admin_films_validate', {'id': film.id}) }}">Valider</a>
             {% endif %}#}

@@ -6,7 +6,7 @@ use App\Film\Repository\FilmNoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FilmNoteRepository::class)]
-class FilmNote
+class  FilmNote
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

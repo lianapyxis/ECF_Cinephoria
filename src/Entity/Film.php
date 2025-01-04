@@ -46,14 +46,36 @@ class Film
     #[ORM\OneToMany(targetEntity: FilmNote::class, mappedBy: 'film', orphanRemoval: true)]
     private Collection $notes;
 
-    #[ORM\ManyToOne(targetEntity: FilmGenre::class)]
-    private FilmGenre $genre;
+    /**
+     * @var Collection<int, FilmGenre>
+     */
+    #[ORM\ManyToMany(targetEntity: FilmGenre::class, mappedBy: 'film')]
+    private Collection $genres;
+
+    /**
+     * @var Collection<int, City>
+     */
+    #[ORM\ManyToMany(targetEntity: City::class, mappedBy: 'film')]
+    private Collection $cities;
+
+    #[ORM\ManyToOne(inversedBy: 'id_film')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Rating $rating;
+
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'id_film')]
+    private Collection $seances;
 
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->cities = new ArrayCollection();
+        $this->seances = new ArrayCollection();
+        $this->genres = new ArrayCollection();
     }
 
     public function __toString(){
@@ -109,18 +131,6 @@ class Film
     public function setImgPath(string $imgPath): static
     {
         $this->imgPath = $imgPath;
-
-        return $this;
-    }
-
-    public function getGenre(): ?FilmGenre
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(?FilmGenre $genre): static
-    {
-        $this->genre = $genre;
 
         return $this;
     }
@@ -209,16 +219,102 @@ class Film
         return $this;
     }
 
-/*    public function removeGenre(?FilmGenre $genre): static
+
+    /**
+     * @return Collection<int, City>
+     */
+    public function getCities(): Collection
+    {
+        return $this->cities;
+    }
+
+    public function addCity(City $city): static
+    {
+        if (!$this->cities->contains($city)) {
+            $this->cities->add($city);
+            $city->addFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCity(City $city): static
+    {
+        if ($this->cities->removeElement($city)) {
+            $city->removeFilm($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FilmGenre>
+     */
+    public function getGenres(): Collection
+    {
+        return $this->genres;
+    }
+
+    public function addGenre(FilmGenre $genre): static
+    {
+        if (!$this->genres->contains($genre)) {
+            $this->genres->add($genre);
+            $genre->addFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGenre(FilmGenre $genre): static
     {
         if ($this->genres->removeElement($genre)) {
+            $genre->removeFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function getRating(): ?Rating
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?Rating $rating): static
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): static
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
+            $seance->setIdFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): static
+    {
+        if ($this->seances->removeElement($seance)) {
             // set the owning side to null (unless already changed)
-            if ($genre->getGenre() === $this) {
-                $genre->setGenre(null);
+            if ($seance->getIdFilm() === $this) {
+                $seance->setIdFilm(null);
             }
         }
 
         return $this;
-    }*/
+    }
+
 
 }

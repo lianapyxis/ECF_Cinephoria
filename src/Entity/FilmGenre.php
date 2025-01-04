@@ -21,12 +21,16 @@ class FilmGenre
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $date_add = null;
 
-    #[ORM\OneToMany(targetEntity: Film::class, mappedBy: 'genre')]
-    private Collection $films;
+
+    /**
+     * @var Collection<int, Film>
+     */
+    #[ORM\ManyToMany(targetEntity: Film::class, inversedBy: 'genres')]
+    private Collection $film;
 
     public function __construct()
     {
-        $this->films = new ArrayCollection();
+        $this->film = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,15 +67,21 @@ class FilmGenre
      */
     public function getFilm(): Collection
     {
-        return $this->films;
+        return $this->film;
     }
 
     public function addFilm(Film $film): static
     {
-        if (!$this->films->contains($film)) {
-            $this->films->add($film);
-            $film->setGenre($this);
+        if (!$this->film->contains($film)) {
+            $this->film->add($film);
         }
+
+        return $this;
+    }
+
+    public function removeFilm(Film $film): static
+    {
+        $this->film->removeElement($film);
 
         return $this;
     }

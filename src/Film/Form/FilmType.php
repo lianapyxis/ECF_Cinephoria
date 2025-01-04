@@ -5,6 +5,7 @@ namespace App\Film\Form;
 
 use App\Entity\Film;
 use App\Entity\FilmGenre;
+use App\Entity\Rating;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,10 +27,10 @@ class FilmType extends AbstractType
             ->add('year', TextType::class,[
                 'label' => 'Année'
             ])
-            ->add('genre', EntityType::class, [
+            ->add('genres', EntityType::class, [
                 'class' => FilmGenre::class,
                 'choice_label' => 'name',
-                'multiple' => false,
+                'multiple' => true,
                 'expanded' => false,
             ])
             ->add('description', TextareaType::class)
@@ -61,6 +62,12 @@ class FilmType extends AbstractType
                     ],
                 ]
             )
+            ->add('rating', EntityType::class, [
+                'class' => Rating::class,
+                'choice_label' => 'title',
+                'multiple' => false,
+                'expanded' => false,
+            ])
         ;
     }
 

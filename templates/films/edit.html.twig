@@ -15,7 +15,7 @@
 
             {{ form_row(form.year) }}
 
-            {{ form_row(form.genre) }}
+            {{ form_row(form.genres) }}
 
             {{ form_row(form.description) }}
 
@@ -27,6 +27,9 @@
             {% endif %}
 
             {{ form_row(form.imgPath) }}
+
+            {{ form_row(form.rating) }}
+
             <div class="film-form-actions">
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('films_delete', {'id': film.id}) }}" class="btn btn-primary">Supprimer</a>

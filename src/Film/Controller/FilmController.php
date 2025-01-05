@@ -20,6 +20,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
 
 /*use PhpParser\Node\Stmt\Expression;*/
 
@@ -91,28 +92,32 @@ class FilmController extends AbstractController
         $form->add('submit', SubmitType::class);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()){
             /** @var Film $film */
             $film = $form->getData();
 
             $imgFile = $form->get('imgPath')->getData();
 
-            $originalFilename = pathinfo($imgFile->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$imgFile->guessExtension();
-            $ImgDirectory = $this->getParameter('kernel.project_dir').'/public/uploads';
+            if($imgFile instanceof File){
 
-            // Move the file to the directory where brochures are stored
-            try {
-                $imgFile->move($ImgDirectory, $newFilename);
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
+                $originalFilename = pathinfo($imgFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imgFile->guessExtension();
+                $ImgDirectory = $this->getParameter('kernel.project_dir').'/public/uploads';
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $imgFile->move($ImgDirectory, $newFilename);
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $film->setImgPath($newFilename);
             }
-
-            // updates the 'brochureFilename' property to store the PDF file name
-            // instead of its contents
-            $film->setImgPath($newFilename);
 
             $film->setDateAdd(new \DateTimeImmutable());
             $em->persist($film);

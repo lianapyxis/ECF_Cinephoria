@@ -49,7 +49,7 @@ class Film
     /**
      * @var Collection<int, FilmGenre>
      */
-    #[ORM\ManyToMany(targetEntity: FilmGenre::class, mappedBy: 'film')]
+    #[ORM\ManyToMany(targetEntity: FilmGenre::class, mappedBy: 'film', cascade: ['persist', 'remove'])]
     private Collection $genres;
 
     /**

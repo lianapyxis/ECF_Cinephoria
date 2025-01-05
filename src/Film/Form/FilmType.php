@@ -15,42 +15,57 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Asset\Packages;
 
 class FilmType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
+        if (null !== $options['data']->getImgPath()) {
+            $isEmpty = false;
+        } else {
+            $isEmpty = true;
+        }
+
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre',
+                'label' => 'Titre :',
             ])
             ->add('year', TextType::class,[
-                'label' => 'Année'
+                'label' => 'Année :'
             ])
             ->add('genres', EntityType::class, [
                 'class' => FilmGenre::class,
+                'mapped' => 'true',
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => false,
+                'label' => ' ',
+                'by_reference' => false,
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'label' => 'Description :',
+                'attr' => array('cols' => '5', 'rows' => '10'),
+            ])
             ->add('imgPath', FileType::class,
                 [
-                    'label' => 'Image',
+                    'label' => ' ',
 
                     // unmapped means that this field is not associated to any entity property
-                    'mapped' => true,
+                    'mapped' => false,
 
                     // make it optional so you don't have to re-upload the PDF file
                     // every time you edit the Product details
-                    'required' => true,
+                    'required' => $isEmpty,
                     'data_class' => null,
 
                     // unmapped fields can't define their validation using attributes
                     // in the associated entity, so you can use the PHP constraint classes
                     'constraints' => [
                         new File([
-                            'maxSize' => '8192k',
+                            'maxSize' => '528192k',
                             'mimeTypes' => [
                                 'image/avif',
                                 'image/jpeg',
@@ -67,14 +82,18 @@ class FilmType extends AbstractType
                 'choice_label' => 'title',
                 'multiple' => false,
                 'expanded' => false,
+                'label' => 'Rating :',
             ])
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Film::class,
+            'empty_data' => Film::class,
         ]);
     }
+
 }

@@ -22,7 +22,7 @@
                         <span>{{ genre.name }}</span>
                     {% endfor %}
                 </div>
-
+                {{ ux_icon('tabler:chevron-down', {class: 'chevron-down-icon'}) }}
             </div>
             <div class='film-select-genres'>
                 {{ form_row(form.genres) }}
@@ -36,6 +36,8 @@
             <label for="film_imgPath" class="film_imgPath">Image :</label>
             {% if film.imgPath %}
                 <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film" width="364px" height="437px"/>
+            {% else %}
+                <div class="img-film empty-img"></div>
             {% endif %}
 
             <div class="form-file-type">
@@ -47,8 +49,12 @@
             {{ form_row(form.rating) }}
 
             <div class="film-form-actions">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('films_delete', {'id': film.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                {% if not is_create %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('films_delete', {'id': film.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                    {% endif %}
+                {% else %}
+                    <div class="btn-delete-film"></div>
                 {% endif %}
 
                 {{ form_end(form) }}

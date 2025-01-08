@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Film\Voter;
+namespace App\Seance\Voter;
 
-use App\Film\Constant\FilmStatus;
-use App\Entity\Film;
+use App\Entity\Seance;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class FilmVoter extends Voter
+class SeanceVoter extends Voter
 {
     const SHOW = 'show';
 
     const EDIT = 'edit';
     const CREATE = 'create';
-
-    const PUBLISHED = 'published';
 
     public function __construct(private readonly Security $security)
     {
@@ -25,7 +22,7 @@ class FilmVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::SHOW, self::EDIT, self::PUBLISHED])) {
+        if (!in_array($attribute, [self::SHOW, self::EDIT])) {
             return false;
         }
 
@@ -37,34 +34,28 @@ class FilmVoter extends Voter
         $user = $token->getUser();
 
 
-
         if($this->security->isGranted('ROLE_ADMIN') OR $this->security->isGranted('ROLE_WORKER')) {
             return true;
         }
 
         // you know $subject is a Post object, thanks to `supports()`
-        /** @var Film $film */
-        $film = $subject;
+        /** @var Seance $seance */
+        $seance = $subject;
 
         return match($attribute) {
-            self::SHOW => $this->canShow($film, $user),
-            self::EDIT => $this->canEdit($film, $user),
-            self::CREATE => $this->canCreate($film, $user),
-            self::PUBLISHED => $this->isPublished($film, $user),
+            self::SHOW => $this->canShow($seance, $user),
+            self::EDIT => $this->canEdit($seance, $user),
+            self::CREATE => $this->canCreate($seance, $user),
             default => throw new \LogicException('This code should not be reached!')
         };
     }
-    private function canShow(Film $film, ?User $user): bool
+    private function canShow(Seance $seance, ?User $user): bool
     {
-/*        if($film->getStatus() === "DRAFT" && $film->getUser() !== $user) {
-            return false;
-        }*/
-
         // the Post object could have, for example, a method `isPrivate()`
         return true;
 
     }
-    private function canEdit(?Film $film, ?User $user): bool
+    private function canEdit(?Seance $seance, ?User $user): bool
     {
 
         if (!$user instanceof User) {
@@ -72,14 +63,15 @@ class FilmVoter extends Voter
             return false;
         }
 
-        if (!$film) {
+        if (!$seance) {
             return true;
         }
         // this assumes that the Post object has a `getOwner()` method
-        return $film->getUser() === $user && FilmStatus::DRAFT === $film->getStatus();
+/*        return $seance->getUser() === $user;*/
+        return true;
     }
 
-    private function canCreate(?Film $film,?User $user): bool
+    private function canCreate(?Seance $seance,?User $user): bool
     {
 
         if (!$user instanceof User) {
@@ -87,15 +79,11 @@ class FilmVoter extends Voter
             return false;
         }
 
-/*        if (!$film) {
-            return true;
-        }*/
+        /*        if (!$seance) {
+                    return true;
+                }*/
         // this assumes that the Post object has a `getOwner()` method
         return true;
     }
 
-    private function isPublished(Film $film, User $user)
-    {
-        return FilmStatus::PUBLISHED === $film->getStatus();
-    }
 }

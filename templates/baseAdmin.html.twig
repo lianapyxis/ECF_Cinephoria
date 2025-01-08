@@ -8,10 +8,13 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+{#        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.0/css/dataTables.dataTables.min.css">#}
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     {% endblock %}
 
     {% block javascripts %}
         {% block importmap %}{{ importmap('app') }}{% endblock %}
+{#        <script src="https://cdn.datatables.net/2.2.0/js/dataTables.min.js"></script>#}
     {% endblock %}
 </head>
 <body>
@@ -69,16 +72,17 @@
 </header>
 <div class="container">
 
+    <h1 class="h1-espace">ESPACE ADMINISTRATEUR</h1>
     <div class="admin-menu">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Films</a>
+                <a class="nav-link active" href="{{ path('films_list') }}">Films</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Séances</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Salles</a>
+                <a class="nav-link" href="{{ path('rooms_list') }}">Salles</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Équipe</a>
@@ -89,11 +93,14 @@
         </ul>
     </div>
 
-
     {% block body %}{% endblock %}
 </div>
 
 <turbo-frame id="main-modal" class="modal" tabindex="-1" aria-hidden="true"></turbo-frame>
+<script>
+    $('.admin-menu .nav .nav-link.active').removeClass('active').removeAttr('aria-current');
+    $('a[href="' + location.pathname + '"]').closest('.admin-menu .nav .nav-link').addClass('active').attr('aria-current', 'page');
+</script>
 
 </body>
 </html>

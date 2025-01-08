@@ -22,3 +22,15 @@ user_controllers:
     namespace: App\User\Controller
   type: attribute
 
+seance_controllers:
+  resource:
+    path: ../src/Seance\Controller/
+    namespace: App\Seance\Controller
+  type: attribute
+
+room_controllers:
+  resource:
+    path: ../src/Room\Controller/
+    namespace: App\Room\Controller
+  type: attribute
+

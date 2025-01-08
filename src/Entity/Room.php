@@ -28,6 +28,9 @@ class Room
     #[ORM\Column]
     private ?int $number_seats = null;
 
+    #[ORM\Column]
+    private ?int $number_rows = null;
+
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $date_add = null;
 
@@ -101,6 +104,18 @@ class Room
     public function setNumberSeats(int $number_seats): static
     {
         $this->number_seats = $number_seats;
+
+        return $this;
+    }
+
+    public function getNumberRows(): ?int
+    {
+        return $this->number_rows;
+    }
+
+    public function setNumberRows(int $number_rows): static
+    {
+        $this->number_rows = $number_rows;
 
         return $this;
     }

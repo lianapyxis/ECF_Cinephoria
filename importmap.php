@@ -16,14 +16,26 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-    '@hotwired/stimulus' => [
-        'version' => '3.2.2',
-    ],
     '@symfony/stimulus-bundle' => [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
+    'jquery/dist/jquery.min' => [
+        'path' => 'vendor/jquery/jquery.index.js',
+        'entrypoint' => true,
+    ],
+    'datatables.js' => [
+        'path' => 'vendor/datatables.net/datatables.net.index.js',
+        'entrypoint' => true,
+    ],
+    'datatables-buttons.js' => [
+        'path' => 'vendor/datatables-buttons/datatables-buttons.index.js',
+        'entrypoint' => true,
+    ],
+    '@hotwired/stimulus' => [
+        'version' => '3.2.2',
+    ],
     '@hotwired/turbo' => [
-        'version' => '7.3.0',
+        'version' => '8.0.12',
     ],
     'bootstrap' => [
         'version' => '5.3.3',
@@ -35,11 +47,16 @@ return [
         'version' => '5.3.3',
         'type' => 'css',
     ],
-    'jquery/dist/jquery.min' => [
-        'path' => 'vendor/jquery/jquery.index.js',
-        'entrypoint' => true,
-    ],
     'jquery' => [
         'version' => '3.7.1',
+    ],
+    'datatables' => [
+        'version' => '1.10.18',
+    ],
+    'datatables-buttons' => [
+        'version' => '1.0.3',
+    ],
+    'datatables.net' => [
+        'version' => '2.2.0',
     ],
 ];

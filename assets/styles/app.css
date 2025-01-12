@@ -183,11 +183,22 @@ nav[aria-label=pagination] button{
     font-size: 18px;
     font-family: "Montserrat", sans-serif;
 }
+.roomSpecialPlaces{
+    display: none;
+}
 .form-film .film-input-genre span,
 .custom-tags span{
     background: #EC4186;
     border-radius: 6px;
     padding: 8px 5px;
+}
+.custom-tags{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.film-form-actions .form-group{
+    display: none;
 }
 .custom-tags span{
     margin-right: 5px;
@@ -198,12 +209,18 @@ nav[aria-label=pagination] button{
 .form-film form label[for=film_description]{
     margin-top: 30px;
 }
-.form-film form .form-control{
+.form-film form .form-control,
+form #seance_time_start,
+form #seance_time_end{
     background: #7F224F;
     border: none;
     margin-bottom: 30px !important;
     color: #fff;
     font-weight: 600;
+}
+form #seance_time_start,
+form #seance_time_end{
+    border-radius: 6px;
 }
 .form-film form .form-control:focus,
 .form-film .form-group select:focus{
@@ -231,12 +248,18 @@ nav[aria-label=pagination] button{
 }
 .form-film .form-group:has(label[for=room_typeSeats]),
 .form-film .form-group:has(label[for=room_id_city]),
-.form-film .form-group:has(label[for=room_format]){
+.form-film .form-group:has(label[for=room_format]),
+.form-film .form-group:has(label[for=city_select]),
+.form-film .form-group:has(label[for=seance_id_room]),
+.form-film .form-group:has(label[for=seance_id_film]) {
     min-width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin-bottom: 30px;
+    width: 100%;
+}
+.form-custom-column-seance{
     width: 100%;
 }
 .room-input-special-place{

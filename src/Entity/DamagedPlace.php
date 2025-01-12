@@ -5,10 +5,8 @@ namespace App\Entity;
 use App\Repository\DamagedPlaceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: DamagedPlaceRepository::class)]
-#[Broadcast]
 class DamagedPlace
 {
     #[ORM\Id]

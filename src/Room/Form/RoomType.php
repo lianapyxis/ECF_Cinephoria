@@ -3,12 +3,11 @@
 namespace App\Room\Form;
 
 use App\Entity\Room;
-use App\Entity\Film;
 use App\Entity\Format;
 use App\Entity\City;
+use App\Entity\SpecialPlace;
 use App\Entity\TypeSeats;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +17,8 @@ use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\SpecialPlace\Form\SpecialPlaceType;
 
 class RoomType extends AbstractType
 {
@@ -36,11 +37,11 @@ class RoomType extends AbstractType
                 'label' => 'Cinéma :',
             ])
             ->add('format', EntityType::class, [
-                'label' => 'Format :',
                 'class' => Format::class,
                 'choice_label' => 'title',
                 'multiple' => false,
                 'expanded' => false,
+                'label' => 'Format :',
             ])
             ->add('number_seats', NumberType::class, [
                 'label' => 'Nombre de sièges :',
@@ -54,11 +55,13 @@ class RoomType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label' => 'Format des lignes :',
-                'by_reference' => false,
             ])
-            ->add('specialPlaces', HiddenType::class, [
-                'label' => ' ',
-                'mapped' => false,
+            ->add('specialPlaces', CollectionType::class, [
+                'entry_type' => SpecialPlaceType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
             ])
         ;
 

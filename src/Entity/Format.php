@@ -22,7 +22,7 @@ class Format
     /**
      * @var Collection<int, Room>
      */
-    #[ORM\OneToMany(targetEntity: Room::class, mappedBy: 'format')]
+    #[ORM\OneToMany(targetEntity: Room::class, mappedBy: 'format', cascade: ['persist'])]
     private Collection $room;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]

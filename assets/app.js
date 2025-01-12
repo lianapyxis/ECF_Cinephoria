@@ -126,43 +126,64 @@ $(window).on('turbo:load', function(){
         }]
     });
 
+    let table3 = new DataTable('#adminSeances', {
+        language: {
+            paginate: {
+                first: '&#8606;',
+                last: '&#8608;',
+                previous: '&#8592;',
+                next: '&#8594;'
+            },
+            search: "",
+            searchPlaceholder: 'RECHERCHER PAR TITRE...',
+        },
+        "searching": true,
+        responsive: true,
+        pageLength: 10,
+        "dom": 'frtip',
+        "info": false,
+        columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+        }]
+    });
+
+
     function changeTag(tag){
         if(tag.length > 0) {
             $(".custom-tags").append('<span>'+tag+'</span>')
-            let currentValue = $("input#room_specialPlaces").val()
-            if(currentValue.length>0){
-                $("input#room_specialPlaces").val(currentValue + ',' + tag)
-            } else {
-                $("input#room_specialPlaces").val(tag)
+            if($(".roomSpecialPlaces > :last-child input").length > 0){
+                let val = $(".roomSpecialPlaces > :last-child input").attr('id').match(/\d+/)
+                let newval = parseInt(val, 10) + 1
+                $(".roomSpecialPlaces").append('<div class="form-group"><label for="room_specialPlaces_'+newval+'_place" class="required"> </label><input type="text" id="room_specialPlaces_'+newval+'_place" name="room[specialPlaces]['+newval+'][place]" required="required" value="'+tag+'" class="form-control mb-3"></div>')
+            } else{
+                $(".roomSpecialPlaces").append('<div class="form-group"><label for="room_specialPlaces_0_place" class="required"> </label><input type="text" id="room_specialPlaces_0_place" name="room[specialPlaces][0][place]" required="required" value="'+tag+'" class="form-control mb-3"></div>')
             }
-            $("input#input-tag-custom").val('')
+
         }
     }
 
     $("input#input-tag-custom").on("keypress", function(e){
         if(e.which == 44) {
-            let seats = $(this).val().split(',')
+                let seats = $(this).val().split(',')
+                changeTag(seats[seats.length -1])
+                $(this).val("")
+            }
 
-            changeTag(seats[seats.length -1])
-        }
     })
 
     $("input#input-tag-custom").on("keyup", function(e){
         if(e.which == 8) {
-            let currentValue = $("input#input-tag-custom").val()
-            if(currentValue.length == 0) {
-                let value = $("input#room_specialPlaces").val().split(',')
-                    value = value.slice(0, -1)
-                if(value.length >= 1) {
-                    $("input#room_specialPlaces").val(value)
-                } else {
-                    $("input#room_specialPlaces").val('')
-                }
-
+            if($(this).val().length == 0) {
+                $(".roomSpecialPlaces .form-group input").each(function(){
+                    if($(this).val() == $(".custom-tags > :last-child").text()){
+                        $(this).parent().remove();
+                    }
+                })
                 $(".custom-tags > :last-child").remove()
             }
-
         }
     })
+
 /*    $("input#room_specialPlaces").on('change', function)*/
 })

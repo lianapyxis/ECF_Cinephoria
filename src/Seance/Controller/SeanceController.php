@@ -6,6 +6,7 @@ use App\Entity\Seance;
 use App\Seance\Form\SeanceType;
 use App\Seance\Repository\SeanceRepository;
 use App\Entity\Film;
+use App\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -61,7 +62,7 @@ class SeanceController extends AbstractController
 
     #[Route('/show/{id}', name: 'show')]
     #[IsGranted('show', 'seance')]
-    public function show(RouterInterface $router, Seance $seance = null, Film $film = null)
+    public function show(RouterInterface $router, Seance $seance = null, Film $film = null): Response
     {
 
 /*        $form = $this->createForm(CommentType::class, $comment, [
@@ -79,10 +80,12 @@ class SeanceController extends AbstractController
     #[Route('/create', name: 'create')]
     #[IsGranted(new Expression('is_granted("ROLE_ADMIN") or is_granted("ROLE_WORKER")'))]
     #[IsGranted('edit', 'seance')]
-    public function edit(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, ?Seance $seance = null): Response
+    public function edit(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, ?Seance $seance = null, City $city = null): Response
     {
         $isCreate = !$seance;
         $seance = $seance ?? new Seance();
+
+        $cities = $em->getRepository(City::class)->findAll();
 
         $form= $this->createForm(SeanceType::class, $seance);
         $form->add('submit', SubmitType::class);
@@ -107,7 +110,8 @@ class SeanceController extends AbstractController
         return $this->render('seances/edit.html.twig', [
             'form' => $form,
             'is_create'=>$isCreate,
-            'seance' => $seance
+            'seance' => $seance,
+            'cities' => $cities,
         ]);
     }
 

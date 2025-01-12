@@ -22,7 +22,7 @@ class TypeSeats
     /**
      * @var Collection<int, Room>
      */
-    #[ORM\OneToMany(targetEntity: Room::class, mappedBy: 'typeSeats')]
+    #[ORM\OneToMany(targetEntity: Room::class, mappedBy: 'typeSeats',cascade: ['persist', 'remove'])]
     private Collection $room;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]

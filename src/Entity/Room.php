@@ -7,10 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
-#[Broadcast]
 class Room
 {
     #[ORM\Id]
@@ -51,8 +49,8 @@ class Room
     /**
      * @var Collection<int, SpecialPlace>
      */
-    #[ORM\OneToMany(targetEntity: SpecialPlace::class, mappedBy: 'id_room')]
-    private Collection $specialPlaces;
+    #[ORM\OneToMany(targetEntity: SpecialPlace::class, mappedBy: 'id_room', cascade: ['persist', 'remove'])]
+    public Collection $specialPlaces;
 
     /**
      * @var Collection<int, DamagedPlace>

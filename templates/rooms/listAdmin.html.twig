@@ -23,8 +23,9 @@
             <tr>
                 <td>{{ room.id }}</td>
                 <td>{{ room.title }}</td>
-                <td>{{ room.getIdCity }}</td>
+                <td>{{ room.getIdCity.title }}</td>
                 <td>{{ room.getNumberSeats }}</td>
+                <td>{{ room.getFormat.title }}</td>
                 <td>
                 {% if is_granted('edit', room) %}
                     <a href="{{ path('rooms_edit', {'id': room.id}) }}" class="btn btn-primary">Modifier</a>

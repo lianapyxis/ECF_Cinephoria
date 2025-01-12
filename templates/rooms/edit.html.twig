@@ -33,13 +33,17 @@
                     <div class="custom-tags">
                         {% if room.specialPlaces %}
                             {% for specialPlace in room.specialPlaces %}
-                                <span>{{ specialPlace.title }}</span>
+                                <span>{{ specialPlace.place }}</span>
                             {% endfor %}
                         {% endif %}
                     </div>
                     <input type="text" class="form-control input-tag-custom" id="input-tag-custom">
                 </div>
-                {{ form_row(form.specialPlaces) }}
+                <div class="roomSpecialPlaces">
+                    {% for specialPlace in form.specialPlaces %}
+                        {{ form_row(specialPlace.place) }}
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="film-form-actions">

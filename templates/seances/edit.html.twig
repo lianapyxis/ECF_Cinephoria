@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+
+        <h2 class="form-film-h2">{{ is_create ? 'Ajouter une salle' : 'ID ' ~ room.id }}</h2>
+
+    <div class="form-film">
+        {{ form_start(form) }}
+
+        <div>
+            <div class="form-group">
+                <label for="date_select">Date :</label>
+                <input type="date" class="form-control input-date-custom" id="input-date-custom">
+            </div>
+
+            {{ form_row(form.time_start) }}
+
+            {{ form_row(form.time_end) }}
+
+            <div class="form-group">
+                <label for="city_select">Cinéma :</label>
+                <select id="city_select" name="film[rating]">
+                    {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {{ form_row(form.id_room) }}
+
+            <a href="{{ path('rooms_list') }}" class="btn btn-primary">Retour</a>
+        </div>
+        <div class="form-custom-column-container">
+            <div class="form-custom-column-seance">
+                {{ form_row(form.id_film) }}
+                {{ form_row(form.price_ttc) }}
+            </div>
+
+            <div class="film-form-actions">
+                {% if not is_create %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('rooms_delete', {'id': room.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                    {% endif %}
+                {% else %}
+                    <div class="btn-delete-film"></div>
+                {% endif %}
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

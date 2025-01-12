@@ -3,6 +3,7 @@
 namespace App\Room\Controller;
 
 use App\Entity\Room;
+use App\Entity\SpecialPlace;
 use App\Room\Form\RoomType;
 use App\Room\Repository\RoomRepository;
 use App\Entity\City;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /*use PhpParser\Node\Stmt\Expression;*/
 
@@ -72,7 +73,7 @@ class RoomController extends AbstractController
     #[Route('/create', name: 'create')]
     #[IsGranted(new Expression('is_granted("ROLE_ADMIN") or is_granted("ROLE_WORKER")'))]
     #[IsGranted('edit', 'room')]
-    public function edit(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, ?Room $room = null): Response
+    public function edit(Request $request, EntityManagerInterface $em, ?Room $room = null): Response
     {
         $isCreate = !$room;
         $room = $room ?? new Room();
@@ -80,20 +81,67 @@ class RoomController extends AbstractController
         $form= $this->createForm(RoomType::class, $room);
         $form->add('submit', SubmitType::class);
 
+        if(!$isCreate){
+            $originalPlaces = new ArrayCollection();
+            foreach ($room->getSpecialPlaces() as $place) {
+                $originalPlaces->add($place);
+            }
+
+        }
+
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            /** @var Room $room */
-            $room = $form->getData();
+        if($form->isSubmitted()){
 
-            $room->setDateAdd(new \DateTimeImmutable());
-            $em->persist($room);
-            $em->flush();
+            if($form->isValid()){
 
-            $this->addFlash('success', $isCreate ? 'La salle a été créée' : 'La salle a été modifiée');
+                /** @var Room $room */
+                $room = $form->getData();
+                /** @var SpecialPlace $place */
+                $specialPlaces = $form->get("specialPlaces")->getData();
 
-            return $this->redirectToRoute('rooms_list');
+                if(isset($originalPlaces)){
+                    // remove the relationship between the tag and the Task
+                    foreach ($originalPlaces as $place) {
+                        if (false === $room->getSpecialPlaces()->contains($place)) {
+
+                            // if it was a many-to-one relationship, remove the relationship like this
+                            $place->setIdRoom(null);
+
+                            $em->persist($place);
+                            // if you wanted to delete the Tag entirely, you can also do that
+                            $em->remove($place);
+                        }
+                    }
+                    foreach ($specialPlaces as $place) {
+                        if (false === $originalPlaces->contains($place)) {
+                            $place->setIdRoom($room);
+                            $place->setDateAdd(new \DateTimeImmutable());
+                            $em->persist($place);
+                        }
+                    }
+                } else{
+                    foreach ($specialPlaces as $place) {
+                        $place->setIdRoom($room);
+                        $place->setDateAdd(new \DateTimeImmutable());
+                        $em->persist($place);
+                    }
+                }
+
+
+
+
+
+                $room->setDateAdd(new \DateTimeImmutable());
+                $em->persist($room);
+                $em->flush();
+
+                $this->addFlash('success', $isCreate ? 'La salle a été créée' : 'La salle a été modifiée');
+
+                return $this->redirectToRoute('rooms_list');
+            }
         }
+
 
         return $this->render('rooms/edit.html.twig', [
             'form' => $form,

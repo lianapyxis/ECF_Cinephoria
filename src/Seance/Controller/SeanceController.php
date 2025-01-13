@@ -96,7 +96,24 @@ class SeanceController extends AbstractController
             /** @var Seance $seance */
             $seance = $form->getData();
 
-            $imgFile = $form->get('imgPath')->getData();
+            $date = $_POST['date_select'];
+
+            $timeStart = $form->get('time_start')->getData();
+
+            $timeEnd = $form->get('time_end')->getData();
+
+            if ($timeStart < $timeEnd) {
+                $timeStart = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $date.' '.date_format($form->get('time_start')->getData(), 'H:i:s'));
+                $timeEnd = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s',$date.' '.date_format($form->get('time_end')->getData(), 'H:i:s'));
+                $seance->setTimeStart($timeStart);
+                $seance->setTimeEnd($timeEnd);
+            } else {
+                $dateEnd = date('Y-m-d', strtotime($date . ' +1 day'));
+                $timeStart = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $date.' '.date_format($form->get('time_start')->getData(), 'H:i:s'));
+                $timeEnd = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $dateEnd.' '.date_format($form->get('time_end')->getData(), 'H:i:s'));
+                $seance->setTimeStart($timeStart);
+                $seance->setTimeEnd($timeEnd);
+            }
 
             $seance->setDateAdd(new \DateTimeImmutable());
             $em->persist($seance);

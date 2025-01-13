@@ -25,8 +25,8 @@
                 <td>{{ seance.id }}</td>
                 <td>{{ seance.getIdFilm.title }}</td>
                 <td>{{ seance.getIdRoom.title }}</td>
-                <td>{{ seance.getTimeStart }}</td>
-                <td>{{ seance.getTimeEnd }}</td>
+                <td>{{ seance.getTimeStart|date('d.m.Y') }}</td>
+                <td>{{ seance.getTimeStart|date('H:i') }} - {{ seance.getTimeEnd|date('H:i') }}</td>
                 <td>{{ seance.getIdRoom.getFormat.title }}</td>
                 <td>
                     {% if is_granted('edit', seance) %}

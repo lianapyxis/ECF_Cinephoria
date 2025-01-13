@@ -17,7 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+
 
 class SeanceType extends AbstractType
 {
@@ -25,6 +27,8 @@ class SeanceType extends AbstractType
     {
 
         dump($options);
+
+
 
         $builder
 /*            ->add('date', TextType::class, [
@@ -69,7 +73,7 @@ class SeanceType extends AbstractType
                 'label' => 'Film :',
                 'by_reference' => false,
             ])
-            ->add('price_ttc', TextType::class, [
+            ->add('price_ttc', NumberType::class, [
                 'label' => 'Tarif TTC :',
                 'mapped' => 'true'
             ])

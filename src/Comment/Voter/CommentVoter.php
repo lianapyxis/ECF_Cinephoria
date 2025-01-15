@@ -2,6 +2,7 @@
 
 namespace App\Comment\Voter;
 
+use App\Comment\Constant\CommentStatus;
 use App\Entity\Comment;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -13,6 +14,8 @@ class CommentVoter extends Voter
     const SHOW = 'show';
     const CREATE = 'create';
     const DELETE = 'delete';
+
+    const PUBLISHED = 'published';
 
     public function __construct(private readonly Security $security)
     {
@@ -50,6 +53,8 @@ class CommentVoter extends Voter
         return match($attribute) {
             self::CREATE => true,
             self::DELETE => $this->canDelete($comment, $token->getUser()),
+            self::SHOW => $this->canShow($comment, $token->getUser()),
+            self::PUBLISHED => $this->isPublished($comment),
             default => throw new \LogicException('This code should not be reached!')
         };
     }
@@ -69,5 +74,20 @@ class CommentVoter extends Voter
         }
         // this assumes that the Post object has a `getOwner()` method
         return $comment->getUser() === $user;
+    }
+
+    private function canShow(Comment $comment, UserInterface $user): bool
+    {
+        if($comment->getStatus() === "DRAFT" && $comment->getUser() !== $user) {
+            return false;
+        }
+
+        // the Post object could have, for example, a method `isPrivate()`
+        return true;
+
+    }
+    private function isPublished(Comment $comment)
+    {
+        return CommentStatus::PUBLISHED === $comment->getStatus();
     }
 }

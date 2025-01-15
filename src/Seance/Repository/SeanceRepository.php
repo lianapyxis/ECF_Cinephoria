@@ -18,19 +18,22 @@ class SeanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Seance::class);
     }
 
-    public function findByUser(User $user): mixed
+    public function getCity(Seance $seance): mixed
     {
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            return $this->findAll();
-        }
+        $room = $seance->getIdRoom();
+        $city = $room->getIdCity();
+        $cityTitle = $city->getTitle();
+        return $cityTitle;
 
-        return $this->createQueryBuilder('a')
+/*        return $this->createQueryBuilder('a')*/
             /*            ->where('a.status = :published')*/
             /*            ->orWhere('a.user = :user')*/
-            ->where('a.user = :user')
-            ->setParameter('user', $user)
+/*            ->select('title')
+            ->from('city', 'c')
+            ->where('a.id = :id')
+            ->setParameter('id',$id)
             ->getQuery()
-            ->getResult();
+            ->getResult();*/
     }
 
     //    /**

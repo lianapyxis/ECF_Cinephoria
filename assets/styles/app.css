@@ -211,7 +211,8 @@ nav[aria-label=pagination] button{
 }
 .form-film form .form-control,
 form #seance_time_start,
-form #seance_time_end{
+form #seance_time_end,
+form #user_password_second{
     background: #7F224F;
     border: none;
     margin-bottom: 30px !important;
@@ -236,7 +237,10 @@ form #seance_time_end{
     background-color: #D9D9D9;
     border-radius: 10px;
 }
-.form-film form input.form-control{
+.form-film form input.form-control,
+form #current_password,
+form #user_password_first,
+form #user_password_second{
     height: 45px;
 }
 .form-film .form-group:has(label[for=film_rating]){
@@ -251,7 +255,10 @@ form #seance_time_end{
 .form-film .form-group:has(label[for=room_format]),
 .form-film .form-group:has(label[for=city_select]),
 .form-film .form-group:has(label[for=seance_id_room]),
-.form-film .form-group:has(label[for=seance_id_film]) {
+.form-film .form-group:has(label[for=seance_id_film]),
+.form-film .form-group:has(label[for=current_password]),
+.form-film .form-group:has(label[for=user_password_first]),
+.form-film .form-group:has(label[for=user_password_second]){
     min-width: 300px;
     display: flex;
     flex-direction: column;
@@ -260,6 +267,9 @@ form #seance_time_end{
     width: 100%;
 }
 .form-custom-column-seance{
+    width: 100%;
+}
+.form-custom-column-container .form-custom-column{
     width: 100%;
 }
 .room-input-special-place{
@@ -288,7 +298,10 @@ form .form-custom-column-container{
     justify-content: flex-start;
     margin-bottom: 30px;
 }
-.form-film .form-group select{
+.form-film .form-group select,
+form #current_password,
+form #user_password_first,
+form #user_password_second{
     background: #7F224F;
     height: 45px;
     border-radius: 6px;

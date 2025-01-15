@@ -185,5 +185,40 @@ $(window).on('turbo:load', function(){
         }
     })
 
-/*    $("input#room_specialPlaces").on('change', function)*/
+    let cityTitle = $("select#city_select").find("option:selected").text()
+
+    $('select#seance_id_room option').each(function() {
+        if ($(this).attr('data-city') == cityTitle) {
+            $(this).show();
+        } else {
+            $(this).hide();
+            $(this).removeClass('room-option')
+        }
+    })
+
+    $("select#city_select").on("change", function(e){
+        let cityTitle = $(this).find("option:selected").text();
+        $("select#seance_id_room option:selected").removeAttr("selected")
+        $('select#seance_id_room option').each(function() {
+            if ($(this).attr('data-city') == cityTitle) {
+                $(this).show();
+                $(this).addClass('room-option')
+            } else {
+                $(this).hide();
+                $(this).removeClass('room-option')
+            }
+        })
+        $("select#seance_id_room option.room-option").first().attr('selected', 'selected')
+    })
+
+    $("#form-user").submit(function(e) {
+       if ($("#form-user input#user_password_first").val() !== $("#form-user input#user_password_second").val()) {
+           $(".match-error").remove()
+           $('.form-custom-column').append('<div class="match-error">Les champs du nouveau mot de passe doivent correspondre.</div>')
+           e.preventDefault();
+       } else{
+           $(".match-error").remove()
+       }
+    })
+
 })

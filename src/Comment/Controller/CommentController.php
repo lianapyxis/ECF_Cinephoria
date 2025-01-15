@@ -8,7 +8,10 @@ use App\Comment\Form\CommentType;
 use App\Entity\Film;
 use App\Entity\Comment;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Comment\Repository\CommentRepository;
+use App\Film\Repository\FilmRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +23,30 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/comment', name: 'comments_')]
 class CommentController extends AbstractController
 {
+    #[IsGranted('ROLE_WORKER')]
+    #[Route('/', name: 'list')]
+    public function list(Security $security,CommentRepository $commentRepository, FilmRepository $filmRepository): Response
+    {
+
+        if ($security->isGranted('ROLE_WORKER')) {
+            $comments = $commentRepository->findAll();
+
+            return $this->render('comment/listStaff.html.twig', [
+                'comments' => $comments,
+                'user' => $security->getUser(),
+            ]);
+        }  else {
+            $films = $filmRepository->findAll();
+
+            return $this->render('films/listHomePage.html.twig', [
+                'films' => $films,
+            ]);
+        }
+    }
     #[Route('/create/{film}', name: 'create')]
     #[IsGranted('ROLE_USER')]
     #[IsGranted('create', 'comment')]
-    #[IsGranted('published', 'film')]
+    #[IsGranted('published', 'comment')]
     public function edit(RouterInterface $router, Request $request, EntityManagerInterface $em, Film $film, ?Comment $comment = null): Response
     {
 
@@ -70,6 +93,16 @@ class CommentController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('films_show', ['id' => $filmId]);
+    }
+
+    #[Route('/publish/{id}', name: 'publish')]
+    public function publish(Security $security, EntityManagerInterface $em, Comment $comment){
+        if ($security->isGranted('ROLE_WORKER')) {
+            $comment->setStatus(CommentStatus::PUBLISHED);
+
+            return $this->redirectToRoute('comments_list');
+        }
+
     }
 
 }

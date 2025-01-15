@@ -6,7 +6,7 @@
 
 {% block body %}
 
-        <h2 class="form-film-h2">{{ is_create ? 'Ajouter une séance' : 'ID ' ~ room.id }}</h2>
+        <h2 class="form-film-h2">{{ is_create ? 'Ajouter une séance' : 'ID ' ~ seance.id }}</h2>
 
     <div class="form-film">
         {{ form_start(form) }}
@@ -14,7 +14,12 @@
         <div>
             <div class="form-group">
                 <label for="date_select">Date :</label>
-                <input type="date" class="form-control input-date-custom" id="input-date-custom" name="date_select">
+                {% if is_create %}
+                    <input type="date" class="form-control input-date-custom" id="input-date-custom" name="date_select">
+                {% else %}
+                    <input type="date" class="form-control input-date-custom" id="input-date-custom" name="date_select" value="{{ seance.getTimeStart|date('Y-m-d') }}">
+                {% endif %}
+
             </div>
 
             {{ form_row(form.time_start) }}
@@ -23,11 +28,22 @@
 
             <div class="form-group">
                 <label for="city_select">Cinéma :</label>
-                <select id="city_select" name="film[rating]">
+                {% if is_create %}
+                <select id="city_select" name="city_select">
                     {% for city in cities %}
                         <option value="{{ city.id }}">{{ city.title }}</option>
                     {% endfor %}
                 </select>
+                {% else %}
+                <select id="city_select" name="city_select">
+                    <option value="{{ seance.getIdRoom.getIdCity.id }}" selected>{{ seance.getIdRoom.getIdCity.title }}</option>
+                    {% for city in cities %}
+                        {% if city.id is not same as(seance.getIdRoom.getIdCity.id) %}
+                            <option value="{{ city.id }}">{{ city.title }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                {% endif %}
             </div>
 
             {{ form_row(form.id_room) }}
@@ -43,7 +59,7 @@
             <div class="film-form-actions">
                 {% if not is_create %}
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('rooms_delete', {'id': room.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                        <a href="{{ path('seances_delete', {'id': seance.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
                     {% endif %}
                 {% else %}
                     <div class="btn-delete-film"></div>

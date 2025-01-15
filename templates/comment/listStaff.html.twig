@@ -1,0 +1,36 @@
+{% extends 'baseStaff.html.twig' %}
+
+{% block body %}
+
+
+    <table class="table" id="adminFilms">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOM PRÉNOM D’AUTEUR</th>
+            <th>FILM (ANNÉE)</th>
+            <th>DATE</th>
+            <th>STATUT</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.getUser.lastname }} {{ comment.getUser.firstname }}</td>
+                <td>{{ comment.getFilm.title }} ({{ comment.getFilm.year }})</td>
+                <td>{{ comment.getdateAdd|date('d.m.Y') }}</td>
+                <td>{{ comment.getStatus }}</td>
+                <td>
+                    <a href="{{ path('comments_publish', {'id': comment.id}) }}" class="btn btn-primary">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">Aucun avis trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

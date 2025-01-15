@@ -43,7 +43,7 @@ class Room
     /**
      * @var Collection<int, Seance>
      */
-    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'id_room')]
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'id_room', cascade: ['persist', 'remove'])]
     private Collection $seances;
 
     /**

@@ -77,7 +77,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setPassword(string $password): self
     {
-        $this->password = $password;
+        if (!is_null($password)) {
+            $this->password = $password;
+        }
         return $this;
     }
     public function eraseCredentials(): void

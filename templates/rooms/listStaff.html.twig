@@ -1,7 +1,6 @@
-{% extends 'baseAdmin.html.twig' %}
+{% extends 'baseStaff.html.twig' %}
 
 {% block body %}
-
     <div class="btn-create">
         {% if is_granted('create') %}
             <a href="{{ path('rooms_create') }}" class="btn btn-primary">Créer une salle</a>
@@ -24,8 +23,9 @@
             <tr>
                 <td>{{ room.id }}</td>
                 <td>{{ room.title }}</td>
-                <td>{{ room.getIdCity }}</td>
+                <td>{{ room.getIdCity.title }}</td>
                 <td>{{ room.getNumberSeats }}</td>
+                <td>{{ room.getFormat.title }}</td>
                 <td>
                     {% if is_granted('edit', room) %}
                         <a href="{{ path('rooms_edit', {'id': room.id}) }}" class="btn btn-primary">Modifier</a>
@@ -34,7 +34,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">Aucune salle trouvée</td>
+                <td colspan="12">Aucune salle trouvée</td>
             </tr>
         {% endfor %}
         </tbody>

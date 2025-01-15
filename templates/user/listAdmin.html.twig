@@ -1,0 +1,40 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <div class="btn-create">
+        {% if is_granted('create') %}
+            <a href="{{ path('users_create') }}" class="btn btn-primary">Créer un compte</a>
+        {% endif %}
+    </div>
+
+    <table class="table" id="adminSeances">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NOM</th>
+            <th>PRÉNOM</th>
+            <th>EMAIL</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.firstname }}</td>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if is_granted('edit', user) %}
+                        <a href="{{ path('users_edit', {'id': user.id}) }}" class="btn btn-primary">Modifier</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">Aucun employé trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

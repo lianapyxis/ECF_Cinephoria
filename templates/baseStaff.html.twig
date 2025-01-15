@@ -74,16 +74,16 @@
     <div class="staff-menu">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Films</a>
+                <a class="nav-link active" href="{{ path('films_list') }}">Films</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Séances</a>
+                <a class="nav-link" href="{{ path('seances_list') }}">Séances</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Salles</a>
+                <a class="nav-link" href="{{ path('rooms_list') }}">Salles</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Avis</a>
+                <a class="nav-link" href="{{ path('comments_list') }}">Avis</a>
             </li>
         </ul>
     </div>
@@ -93,8 +93,8 @@
 
 <turbo-frame id="main-modal" class="modal" tabindex="-1" aria-hidden="true"></turbo-frame>
 <script>
-    $('.admin-menu .nav .nav-link.active').removeClass('active').removeAttr('aria-current');
-    $('a[href="' + location.pathname + '"]').closest('.admin-menu .nav .nav-link').addClass('active').attr('aria-current', 'page');
+    $('.staff-menu .nav .nav-link.active').removeClass('active').removeAttr('aria-current');
+    $('a[href="' + location.pathname + '"]').closest('.staff-menu .nav .nav-link').addClass('active').attr('aria-current', 'page');
 </script>
 </body>
 </html>

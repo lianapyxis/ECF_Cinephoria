@@ -128,10 +128,6 @@ class RoomController extends AbstractController
                     }
                 }
 
-
-
-
-
                 $room->setDateAdd(new \DateTimeImmutable());
                 $em->persist($room);
                 $em->flush();

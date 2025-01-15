@@ -3,11 +3,14 @@
 
 namespace App\User\Controller;
 
+use App\Film\Repository\FilmRepository;
+use App\User\Repository\UserRepository;
 use App\User\Form\UserType;
 use App\Entity\Film;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,39 +24,122 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/user', name: 'users_')]
 class UserController extends AbstractController
 {
+
+    #[Route('/', name: 'list')]
+    public function list(Security $security,UserRepository $userRepository, FilmRepository $filmRepository): Response
+    {
+
+        if ($security->isGranted('ROLE_ADMIN')) {
+
+            $users = $userRepository->findStaff();
+
+            return $this->render('user/listAdmin.html.twig', [
+                'users' => $users,
+            ]);
+        } else  {
+            $films = $filmRepository->findAll();
+
+            return $this->render('films/listHomePage.html.twig', [
+                'films' => $films
+            ]);
+        }
+    }
+    #[Route('/edit/{id}', name: 'edit')]
     #[Route('/create/{user}', name: 'create')]
     #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('create', 'user')]
-    public function edit(RouterInterface $router, Request $request, EntityManagerInterface $em, ?User $user = null): Response
+    public function edit(RouterInterface $router, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ?User $user = null): Response
     {
-
-        $user= new User();
+        $isCreate = !$user;
+        $user = $user ?? new User();
         $role = ["ROLE_WORKER"];
         $user->setRoles($role);
+
         $form = $this->createForm(UserType::class, $user, [
             'action' => $router->generate('users_create'),
             'attr' => ['data-turbo-frame' => '_top']
         ]);
-
+        $form->remove('password');
         $form->handleRequest($request);
+
+
         if($form->isSubmitted() && $form->isValid()){
             /** @var User $user */
-            $user = $form->getData();
-            $user->setDateAdd(new \DateTimeImmutable());
-            $user->setUser($this->getUser());
+            $id = $_POST['current_id'];
 
-            $em->persist($user);
-            $em->flush();
+            if($_POST['current_id'] == '') {
+                $user = $form->getData();
+                $plaintextPassword = $_POST['user_password_first'];
 
-            $this->addFlash('success', 'L\'utilisateur a été créé' );
+                // hash the password (based on the security.yaml config for the $user class)
+                $hashedPassword = $passwordHasher->hashPassword(
+                    $user,
+                    $plaintextPassword
+                );
+                $user->setPassword($hashedPassword);
 
-/*            return $this->redirectToRoute('users_show', ['id' => $user->getId()]);*/
-            return $this->redirectToRoute('users_show', ['id' => $user->getId()]);
+                $user->setDateAdd(new \DateTimeImmutable());
+
+                $em->persist($user);
+                $em->flush();
+
+                $this->addFlash('success', 'L\'utilisateur a été créé' );
+            } else {
+                $originalUser = $em->find('App\Entity\User',$_POST['current_id']);
+                $originalPassword = $originalUser->getPassword();
+
+                $user = $form->getData();
+                $oldpassword = $_POST['current_password'];
+                $plaintextPassword = $_POST['user_password_first'];
+
+                if($oldpassword !== '' AND $plaintextPassword !== ''){
+
+                    if ($passwordHasher->isPasswordValid($originalUser, $oldpassword)) {
+                        $hashedPassword = $passwordHasher->hashPassword(
+                            $user,
+                            $plaintextPassword
+                        );
+
+                        $originalUser->setFirstname($form->get('firstname')->getData());
+                        $originalUser->setLastname($form->get('lastname')->getData());
+                        $originalUser->setEmail($form->get('email')->getData());
+                        $originalUser->setUsername($form->get('username')->getData());
+
+                        $originalUser->setPassword($hashedPassword);
+
+                        $originalUser->setDateAdd(new \DateTimeImmutable());
+
+                        $em->persist($originalUser);
+                        $em->flush();
+
+                        $this->addFlash('success', 'L\'utilisateur a été modifié' );
+                    }
+/*                    else {
+                        $this->addFlash('fail', 'L\'utilisateur n\'a pas été créé car l\'ancien mot de passe était pas renseigné correctement.' );
+                    }*/
+                } else {
+
+                    $originalUser = $em->find('App\Entity\User',$id);
+
+                    $originalUser->setFirstname($form->get('firstname')->getData());
+                    $originalUser->setLastname($form->get('lastname')->getData());
+                    $originalUser->setEmail($form->get('email')->getData());
+                    $originalUser->setUsername($form->get('username')->getData());
+
+                    $em->persist($originalUser);
+                    $em->flush();
+                    $this->addFlash('success', 'L\'utilisateur a été modifié' );
+                }
+            }
+
+            return $this->redirectToRoute('users_list');
 
         }
 
         return $this->render('user/edit.html.twig', [
             'form' => $form,
+            'is_create' => $isCreate,
+            'user' => $user,
         ]);
     }
 
@@ -84,10 +170,6 @@ class UserController extends AbstractController
             $user->setPassword($hashedPassword);
 
             $user->setDateAdd(new \DateTimeImmutable());
-/*            $user->setFirstname($this->getUser()->getFirstname());
-            $user->setLastname($this->getUser());
-            $user->setUsername($this->getUser());
-            $user->setEmail($this->getUser());*/
 
             $em->persist($user);
             $em->flush();

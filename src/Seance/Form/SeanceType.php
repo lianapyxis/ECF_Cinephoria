@@ -19,6 +19,7 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
 
 
 class SeanceType extends AbstractType
@@ -26,35 +27,18 @@ class SeanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
-        dump($options);
-
-
-
         $builder
-/*            ->add('date', TextType::class, [
-                'label' => 'Date :',
-                'mapped' => 'false',
-                'by_reference' => false
-            ])*/
+
             ->add('time_start', TimeType::class,[
                 'label' => 'Heure de début :',
                 'widget' => 'choice',
-                'input'  => 'datetime_immutable'
+                'input'  => 'datetime'
             ])
             ->add('time_end', TimeType::class,[
                 'label' => 'Heure de fin :',
                 'widget' => 'choice',
-                'input'  => 'datetime_immutable'
+                'input'  => 'datetime'
             ])
-/*            ->add('city', EntityType::class, [
-                'class' => City::class,
-                'choice_label' => 'title',
-                'multiple' => false,
-                'expanded' => false,
-                'label' => 'Cinéma :',
-                'mapped' => 'false',
-                'data' =>City::class
-            ])*/
             ->add('id_room', EntityType::class, [
                 'class' => Room::class,
                 'mapped' => 'true',
@@ -62,7 +46,11 @@ class SeanceType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label' => 'Salle :',
-                'by_reference' => false,
+                'choice_attr'  => ChoiceList::attr($this, function (?Room $room): array {
+                    $city = $room->getIdCity();
+                    $cityTitle = $city->getTitle();
+                    return ['data-city' => $cityTitle, 'class' => 'room-option'];
+                }),
             ])
             ->add('id_film', EntityType::class, [
                 'class' => Film::class,
@@ -71,7 +59,6 @@ class SeanceType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label' => 'Film :',
-                'by_reference' => false,
             ])
             ->add('price_ttc', NumberType::class, [
                 'label' => 'Tarif TTC :',

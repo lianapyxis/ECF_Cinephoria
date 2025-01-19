@@ -46,7 +46,7 @@ class CommentController extends AbstractController
     #[Route('/create/{film}', name: 'create')]
     #[IsGranted('ROLE_USER')]
     #[IsGranted('create', 'comment')]
-    #[IsGranted('published', 'comment')]
+/*    #[IsGranted('published', 'comment')]*/
     public function edit(RouterInterface $router, Request $request, EntityManagerInterface $em, Film $film, ?Comment $comment = null): Response
     {
 
@@ -65,7 +65,7 @@ class CommentController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             /** @var Comment $comment */
             $comment = $form->getData();
-            $comment->setStatus(CommentStatus::DRAFT);
+            $comment->setStatus(CommentStatus::DRAFT->value);
             $comment->setDateAdd(new \DateTimeImmutable());
             $comment->setUser($this->getUser());
 
@@ -92,13 +92,15 @@ class CommentController extends AbstractController
         $em->remove($comment);
         $em->flush();
 
-        return $this->redirectToRoute('films_show', ['id' => $filmId]);
+        return $this->redirectToRoute('comments_list');
     }
 
     #[Route('/publish/{id}', name: 'publish')]
     public function publish(Security $security, EntityManagerInterface $em, Comment $comment){
         if ($security->isGranted('ROLE_WORKER')) {
-            $comment->setStatus(CommentStatus::PUBLISHED);
+            $comment->setStatus(CommentStatus::PUBLISHED->value);
+            $em->persist($comment);
+            $em->flush();
 
             return $this->redirectToRoute('comments_list');
         }

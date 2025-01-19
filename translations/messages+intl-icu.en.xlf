@@ -5,12 +5,12 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="mpDzPkP" resname="film.draft.label">
-        <source>film.draft.label</source>
+      <trans-unit id="mpDzPkP" resname="comment.draft.label">
+        <source>comment.draft.label</source>
         <target>Draft</target>
       </trans-unit>
-      <trans-unit id="NnlmPdI" resname="film.published.label">
-        <source>film.published.label</source>
+      <trans-unit id="NnlmPdI" resname="comment.published.label">
+        <source>comment.published.label</source>
         <target>Published</target>
       </trans-unit>
     </body>

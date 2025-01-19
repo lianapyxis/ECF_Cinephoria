@@ -475,7 +475,7 @@ table.table{
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 1320px;
-    margin: 0 auto;
+    justify-content: flex-start;
 }
 .film-container-home{
     display: flex;
@@ -518,10 +518,10 @@ table.table{
     margin-top: 10px;
 }
 .img-film-home{
-    max-width: 250px;
-    max-height: 300px;
-    width: 250px;
-    height: 300px;
+    max-width: 220px;
+    max-height: 280px;
+    width: 220px;
+    height: 280px;
     object-fit: cover;
     border-radius: 10px;
 }
@@ -645,6 +645,183 @@ form input.form-control:-internal-autofill-selected{
 }
 .register-container form .show-password{
     bottom: 0;
+}
+.modal-comment-details{
+    position: fixed;
+    top: 682px;
+    margin: 0 auto;
+    height: 550px;
+    max-width: 1320px;
+    width: 100%;
+    background-color: rgba(44, 11, 36, 85%);
+    border-radius: 6px;
+    padding: 30px 100px;
+/*    display: flex;*/
+    flex-direction: column;
+    justify-content: space-between;
+    display: none;
+}
+.modal-comment-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.modal-comment-info-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.modal-comment-info-column:first-child{
+    margin-right: 40%;
+}
+.modal-comment-info-column > div{
+    margin-bottom: 20px;
+}
+.modal-comment-text{
+    border: 3px solid #EC4186;
+    border-radius: 5px;
+    min-height: 230px;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+.modal-comment-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+}
+.button-close{
+    float: right;
+    background-color: #1C061C;
+    border-radius: 6px;
+    border: 2px solid #EC4186;
+    color: #EC4186;
+    padding: 5px 15px;
+    font-weight: 600;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+}
+.button-close:hover{
+    color: #FFF;
+    border: 2px solid #FFF;
+    transition: all 0.3s ease-out;
+}
+.card{
+    background-color: transparent;
+    color: #fff !important;
+    border: none;
+}
+.film-title-front{
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.img-film-front{
+    max-height: 250px;
+    max-width: 250px;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 30px;
+}
+.film-info-front-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 50px;
+}
+.film-info-front > div{
+    margin-bottom: 10px;
+}
+.film-info-front span{
+    font-weight: 600;
+}
+.film-description-front > div{
+    max-width: 500px;
+    margin-top: 10px;
+}
+table#frontSeances{
+    max-width: 75%;
+    margin-bottom: 50px;
+}
+.comment-front{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 75%;
+    margin-bottom: 15px;
+}
+.card-header{
+    padding: 0;
+}
+.comment-title-front{
+    margin-bottom: 30px;
+}
+.comment-front-content{
+    border: 1px solid rgba(236,65,134,50%);
+    border-radius: 5px;
+    max-width: 75%;
+    line-height: normal;
+}
+.btn-add-comment{
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    border: 3px solid #EC4186;
+    border-radius: 5px;
+    margin-top: 40px;
+    display: block;
+    width: 75%;
+}
+form #comment{
+    width: 75%;
+}
+button#comment_submit{
+    float: right;
+}
+textarea#comment_comment{
+    background-color: transparent;
+    border: 3px solid #EC4186;
+    border-radius: 5px;
+    color: #fff;
+}
+textarea#comment_comment:focus{
+    box-shadow: none !important;
+}
+.show-seance-details{
+    max-width: 180px;
+    padding: 5px 15px !important;
+    height: auto !important;
+    line-height: 1.2;
+}
+.home-page-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.home-page-body .form-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.home-page-body .form-group label[for=city_select] {
+    margin-bottom: 10px;
+}
+.home-page-body .form-group select#city_select{
+    border: 2px solid #EC4186;
+    background-color: transparent;
+    color: #EC4186;
+    border-radius: 5px;
+    padding: 5px;
+}
+.home-page-body .form-group select#city_select:focus{
+    border: 2px solid #EC4186;
+}
+.home-page-body .form-group select#city_select option{
+    background: #1C061C !important;
+    font-weight: 500;
+    border: 2px solid #EC4186 !important;
 }
 @media (max-width: 991px) {
     .navbar .dropdown{

@@ -23,7 +23,10 @@
                 <td>{{ comment.getdateAdd|date('d.m.Y') }}</td>
                 <td>{{ comment.getStatus }}</td>
                 <td>
-                    <a href="{{ path('comments_publish', {'id': comment.id}) }}" class="btn btn-primary">Modifier</a>
+                    <input type="hidden" value="{{ comment.getUser.lastname }}">
+                    <input type="hidden" value="{{ comment.getUser.firstname }}">
+                    <input type="hidden" value="{{ comment.comment }}">
+                    <div class="btn btn-primary show-comment-details">Voir</div>
                 </td>
             </tr>
         {% else %}
@@ -33,4 +36,26 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="modal-comment-details">
+        <div>
+            <div class="button-close">X</div>
+        </div>
+        <div class="modal-comment-info">
+            <div class="modal-comment-info-column">
+                <div>NOM : <span class="comment-info-lastname"></span></div>
+                <div>PRÉNOM : <span class="comment-info-firstname"></span></div>
+                <div>COMMENTAIRE :</div>
+            </div>
+            <div class="modal-comment-info-column">
+                <div>DATE : <span class="comment-info-date"></span></div>
+                <div>FILM : <span class="comment-info-film"></span></div>
+                <div>STATUT : <span class="comment-info-status"></span></div>
+            </div>
+        </div>
+        <div class="modal-comment-text">Test Test</div>
+        <div class="modal-comment-actions">
+            <a href="#" class="btn btn-primary comment-action-delete">Supprimer</a>
+            <a href="#" class="btn btn-primary comment-action-publish">Valider</a>
+        </div>
+    </div>
 {% endblock %}

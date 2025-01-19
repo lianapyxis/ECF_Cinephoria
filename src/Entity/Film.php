@@ -215,7 +215,6 @@ class Film
                 $note->setFilm(null);
             }
         }
-
         return $this;
     }
 

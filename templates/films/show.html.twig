@@ -7,61 +7,121 @@
 {% block body %}
     <film class="card">
         <div class="card-header">
-            <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-rounded" width="364px" height="437px"/>
-            <h2>{{ film.title }}</h2>
-            {% for filmGenre in film.genres %}
-                <h5>{{ filmGenre.name }}</h5>
-            {% endfor %}
-{#            {% if is_granted('ROLE_ADMIN') and film.status == film_draft %}
-                <a href="{{ path('admin_films_validate', {'id': film.id}) }}">Valider</a>
-            {% endif %}#}
-        </div>
 
-        <div class="card-body">
-            {{ film.description }}
-        </div>
-
-{#        <div class="card-footer text-muted">
-            {% if film.publishedAt %}
-                <p>film publié le {{ film.publishedAt }}</p>
-            {% else %}
-                <p>{{ film.status | trans }}</p>
-            {% endif %}
-        </div>#}
-        <div class="card-footer text-muted">
-            <p>Film publié le {{ film.dateAdd|date('d/m/Y H/i') }}</p>
-        </div>
-    </film>
-{#    {% if film_published == film.status and app.user%}#}
-    <a href="{{ path('comments_create', {'film': film.id}) }}" data-turbo-frame="comment">
-        Ajouter un commentaire
-    </a>
-    <turbo-frame id="comment"></turbo-frame>
-{#    {% endif %}#}
-
-    <div class="mt-3">
-
-        {% for comment in film.comments %}
-
-            <div class="card mt-3">
-                <div class="card-body">
-                    <p>{{ comment.comment }}</p>
+            <h2 class="film-title-front">{{ film.title }} ({{ film.year }})</h2>
+            <div class="film-note"></div>
+            <div class="film-info-front-container">
+                <div class="film-img">
+                    <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film-front" width="250px" height="250px"/>
                 </div>
-                <div class="card-footer">
-                    Publié par {{ comment.user.username }} à {{ comment.publishedAt|date('d/m/Y H/i') }}
-                    {% if is_granted('delete', comment) %}
-                        <a href="{{ path('comments_delete', {'id': comment.id}) }}">Supprimer</a>
-                    {% endif %}
+                <div class="film-info-front">
+                    <div><span>GENRE :</span>
+                        {% if film.genres|length > 1 %}
+                            {% for genre in film.genres|slice(0, (film.genres|length - 1)) %}
+                                {{ genre.name }},
+                            {% endfor %}
+                            {% for genre in film.genres|slice((film.genres|length - 1), (film.genres|length)) %}
+                                {{ genre.name }}
+                            {% endfor %}
+                        {% else %}
+                            {% for genre in film.genres %}
+                                {{ genre.name }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <span>FORMATS :</span>
+                        {% if formats|length > 1 %}
+                            {% for format in formats|slice(0, (formats|length - 1)) %}
+                                {{ format }},
+                            {% endfor %}
+                            {% for format in formats|slice((formats|length - 1), (formats|length)) %}
+                                {{ format }}
+                            {% endfor %}
+                        {% else %}
+                            {% for format in formats %}
+                                {{ format }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="film-description-front">
+                        <span>DESCRIPTION :</span>
+                        <div>{{ film.description }}</div>
+                    </div>
                 </div>
             </div>
 
+            <h4 class="mb-4">SÉANCES :</h4>
+            <table class="table" id="frontSeances">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Format</th>
+                    <th>Places restants</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for seance in seances %}
+                    <tr>
+                        <td>{{ seance.getTimeStart|date('d.m.Y') }}</td>
+                        <td>{{ seance.getTimeStart|date('H:i') }}-{{ seance.getTimeEnd|date('H:i') }}</td>
+                        <td>{{ seance.getIdRoom.getFormat.title }}</td>
+                        <td>{{ seance.restingPlaces }}</td>
+                        <td>{{ seance.getPriceTtc }}€</td>
+                        <td>
+                            <div class="btn btn-primary show-seance-details">SÉLÉCTIONNER LES SIÈGES</div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12">Aucune séance trouvée</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </film>
+
+    <h5 class="comment-title-front">COMMENTAIRES :</h5>
+
+
+
+    <div class="mt-3 mb-5">
+
+        {% for comment in film.comments %}
+
+            {% if comment.getStatus == 'PUBLISHED' %}
+                <div class="card mt-3">
+                    <div class="card-header comment-front">
+                        <div>
+                            {{ comment.user.username }}
+                        </div>
+                        <div>
+                            {{ comment.getdateAdd|date('d/m/Y H/i') }}
+                        </div>
+                    </div>
+                    <div class="card-body comment-front-content">
+                        <p>{{ comment.comment }}</p>
+                    </div>
+                </div>
+            {% endif %}
         {% else %}
             <div class="card">
-                <div class="card-body">
+                <div>
                     <p>Aucun commentaire</p>
                 </div>
             </div>
         {% endfor %}
 
     </div>
+    {% if app.user%}
+        <a href="{{ path('comments_create', {'film': film.id}) }}" data-turbo-frame="comment" class="btn-add-comment mt-3">
+            Ajouter un commentaire...
+        </a>
+    {% endif %}
+    <turbo-frame id="comment"></turbo-frame>
 {% endblock %}

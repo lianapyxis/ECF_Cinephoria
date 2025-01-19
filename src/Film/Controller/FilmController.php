@@ -7,6 +7,7 @@ use App\Film\Repository\FilmRepository;
 use App\Comment\Form\CommentType;
 use App\Entity\Film;
 use App\Entity\Comment;
+use App\City\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -29,7 +30,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class FilmController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function list(Security $security,FilmRepository $filmRepository): Response
+    public function list(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository): Response
     {
 
          if ($security->isGranted('ROLE_ADMIN')) {
@@ -48,14 +49,48 @@ class FilmController extends AbstractController
         } elseif ($security->isGranted('ROLE_USER')) {
              $films = $filmRepository->findAll();
 
+             foreach ($films as $film) {
+                 $cities = [];
+                 $seances = $film->getSeances();
+                 if(isset($seances)) {
+                     foreach ($seances as $seance) {
+                         $room = $seance->getIdRoom();
+                         $city = $room->getIdCity();
+                         $cityTitle = $city->getTitle();
+                         if(!in_array($cityTitle, $cities)) {
+                             $cities[] = $cityTitle;
+                         }
+                     }
+                 }
+                 $film->citiesTitles = implode(",",$cities);
+             }
+
              return $this->render('films/listHomePage.html.twig', [
                  'films' => $films,
+                 'cities' => $cityRepository->findAll()
              ]);
          } else {
              $films = $filmRepository->findAll();
 
+             foreach ($films as $film) {
+                 $cities = [];
+                 $seances = $film->getSeances();
+                 if(isset($seances)) {
+                     foreach ($seances as $seance) {
+                         $room = $seance->getIdRoom();
+                         $city = $room->getIdCity();
+                         $cityTitle = $city->getTitle();
+                         if(!in_array($cityTitle, $cities)) {
+                             $cities[] = $cityTitle;
+                         }
+                     }
+                 }
+                 $film->citiesTitles = implode(",",$cities);
+             }
+
              return $this->render('films/listHomePage.html.twig', [
                  'films' => $films,
+                 'cities' => $cityRepository->findAll()
              ]);
         }
     }
@@ -70,10 +105,25 @@ class FilmController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment, [
             'action' => $router->generate('comments_create', ['film' => $film->getId()])
         ]);
+        $seances = $film->getSeances();
+        $formats = [];
+        foreach ($seances as $seance) {
+            $room = $seance->getIdRoom();
+            $allSeats = $room->getNumberSeats();
+            $numberReservations = count($seance->getReservations());
+            $seance->restingPlaces = $allSeats - $numberReservations;
+            $format = $room->getFormat();
+            $formatTitle = $format->getTitle();
+            if(!in_array($formatTitle, $formats)){
+                $formats[] = $formatTitle;
+            }
+        }
 
         return $this->render('films/show.html.twig', [
             'film' => $film,
             'form' => $form,
+            'seances' => $seances,
+            'formats' => $formats,
 /*            'film_draft' => FilmStatus::DRAFT,
             'film_published' => FilmStatus::PUBLISHED,*/
         ]);

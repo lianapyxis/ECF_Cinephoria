@@ -221,4 +221,54 @@ $(window).on('turbo:load', function(){
        }
     })
 
+    $(".show-comment-details").click(function(){
+        let lastname = $(this).prev().prev().prev().val()
+        let firstname = $(this).prev().prev().val()
+        let comment = $(this).prev().val()
+        let date = $(this).parent().prev().prev().text()
+        let film = $(this).parent().prev().prev().prev().text()
+        let status = $(this).parent().prev().text()
+        let id = $(this).parent().prev().prev().prev().prev().prev().text()
+
+        $(".modal-comment-details").css("display", "flex")
+        $(".comment-info-lastname").text(lastname)
+        $(".comment-info-firstname").text(firstname)
+        $(".modal-comment-text").text(comment)
+        $(".comment-info-date").text(date)
+        $(".comment-info-film").text(film)
+
+        if(status = "DRAFT") {
+            $(".comment-info-status").text("EN ATTENTE DE VALIDATION")
+        } else {
+            $(".comment-info-status").text("PUBLIÉ")
+        }
+
+        let hrefValidate = "/comment/publish/" + id
+        $(".comment-action-publish").attr("href", hrefValidate)
+
+        let hrefDelete = "/comment/delete/" + id
+        $(".comment-action-delete").attr("href", hrefDelete)
+    })
+    $(".modal-comment-details .button-close").click(function(){
+        $(".modal-comment-details").css("display", "none")
+    })
+
+    $(".btn-add-comment").click(function(){
+        $(this).css("display", "none")
+    })
+
+    $(".filter-city select#city_select").on("change", function(){
+        let city = $(this).find("option:selected").val()
+        $(".film-container-home").each(function(){
+            if(city == "all") {
+                $(this).css("display", "flex")
+            } else if($(this).find("input").val().indexOf(city) < 0){
+                $(this).css("display", "none")
+            } else {
+                $(this).css("display", "flex")
+            }
+        })
+
+    })
+
 })

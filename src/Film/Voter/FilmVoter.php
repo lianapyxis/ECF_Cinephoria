@@ -16,7 +16,6 @@ class FilmVoter extends Voter
     const EDIT = 'edit';
     const CREATE = 'create';
 
-    const PUBLISHED = 'published';
 
     public function __construct(private readonly Security $security)
     {
@@ -25,7 +24,7 @@ class FilmVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!in_array($attribute, [self::SHOW, self::EDIT, self::PUBLISHED])) {
+        if (!in_array($attribute, [self::SHOW, self::EDIT])) {
             return false;
         }
 
@@ -50,7 +49,7 @@ class FilmVoter extends Voter
             self::SHOW => $this->canShow($film, $user),
             self::EDIT => $this->canEdit($film, $user),
             self::CREATE => $this->canCreate($film, $user),
-            self::PUBLISHED => $this->isPublished($film, $user),
+/*            self::PUBLISHED => $this->isPublished($film, $user),*/
             default => throw new \LogicException('This code should not be reached!')
         };
     }
@@ -94,8 +93,8 @@ class FilmVoter extends Voter
         return true;
     }
 
-    private function isPublished(Film $film, User $user)
+/*    private function isPublished(Film $film, User $user)
     {
         return FilmStatus::PUBLISHED === $film->getStatus();
-    }
+    }*/
 }

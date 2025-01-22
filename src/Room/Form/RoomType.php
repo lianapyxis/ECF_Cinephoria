@@ -28,6 +28,7 @@ class RoomType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Titre :',
+                'mapped' => true,
             ])
             ->add('id_city', EntityType::class, [
                 'class' => City::class,
@@ -35,6 +36,7 @@ class RoomType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label' => 'Cinéma :',
+                'mapped' => true,
             ])
             ->add('format', EntityType::class, [
                 'class' => Format::class,
@@ -42,12 +44,15 @@ class RoomType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label' => 'Format :',
+                'mapped' => true,
             ])
             ->add('number_seats', NumberType::class, [
                 'label' => 'Nombre de sièges :',
+                'mapped' => true,
             ])
             ->add('number_rows', NumberType::class, [
                 'label' => 'Nombre des lignes :',
+                'mapped' => true,
             ])
             ->add('typeSeats', EntityType::class, [
                 'class' => TypeSeats::class,
@@ -55,6 +60,7 @@ class RoomType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label' => 'Format des lignes :',
+                'mapped' => true,
             ])
             ->add('specialPlaces', CollectionType::class, [
                 'entry_type' => SpecialPlaceType::class,

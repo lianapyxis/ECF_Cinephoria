@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use AllowDynamicProperties;
 use App\Repository\SeanceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SeanceRepository::class)]
+#[AllowDynamicProperties] #[ORM\Entity(repositoryClass: SeanceRepository::class)]
 class Seance
 {
     #[ORM\Id]

@@ -11,14 +11,19 @@
         {{ form_start(form) }}
 
         <div>
+            {{ form_label(form.title) }}
             {{ form_row(form.title) }}
 
+            {{ form_label(form.id_city) }}
             {{ form_row(form.id_city) }}
 
+            {{ form_label(form.format) }}
             {{ form_row(form.format) }}
 
+            {{ form_label(form.number_seats) }}
             {{ form_row(form.number_seats) }}
 
+            {{ form_label(form.number_rows) }}
             {{ form_row(form.number_rows) }}
 
 
@@ -26,6 +31,7 @@
         </div>
         <div class="form-custom-column-container">
             <div class="form-custom-column">
+                {{ form_label(form.typeSeats) }}
                 {{ form_row(form.typeSeats) }}
 
                 <label for="room-input-special-place">Les numéros des sièges mobilité réduite : (divisez par “,” afin de mettre un autre numéro)</label>

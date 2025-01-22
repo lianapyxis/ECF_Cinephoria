@@ -268,7 +268,55 @@ $(window).on('turbo:load', function(){
                 $(this).css("display", "flex")
             }
         })
+    })
 
+    $(".seance-action-select").click(function(){
+        let selectedPlaces = []
+
+        $(".modal-places .checkbox-wrapper input").each(function(){
+            if ($(this).prop('checked')==true){
+                selectedPlaces.push($(this).val().toUpperCase())
+            }
+        })
+        if(selectedPlaces.length <= 0){
+            $(".modal-seance-places > div:first-child").append('<div class="alert-info">Veuillez sélectionner des sièges afin de procéder avec la réservation.</div>')
+        } else {
+            let priceTTC = $(".selected-seance-price").val()
+            let costTTC = priceTTC * selectedPlaces.length
+
+            $(".modal-seance-details").css("display", "none")
+            $(".modal-reservation-details").css("display", "flex")
+
+            $(".reservation-selected-places").text(selectedPlaces.toString())
+            $(".reservation-price").text(priceTTC +"€/ SIÈGE")
+            $(".reservation-total-cost").text(costTTC + "€")
+        }
+
+    })
+    $(".reservation-action-return").click(function(){
+        $(".modal-seance-details").css("display", "flex")
+        $(".modal-reservation-details").css("display", "none")
+    })
+
+    $(".reservation-action-confirm").click(function(){
+        let idSeance = $(".seance-id").val()
+        let idUser = $(".user-id").val()
+        let totalCost = $(".reservation-total-cost").text().replace(/[^0-9]/g, '')
+        let places = $(".reservation-selected-places").text().split(",")
+
+        $.ajax({
+            type: "POST",
+            url: "/seances/book",
+            data: {
+                idSeance: idSeance,
+                idUser: idUser,
+                totalCost: totalCost,
+                places : places
+            },
+            success: function(responseData){
+                console.log(responseData)
+            }
+        })
     })
 
 })

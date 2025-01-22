@@ -2,10 +2,14 @@
 
 namespace App\Seance\Controller;
 
+use App\Entity\Reservation;
+use App\Entity\ReservationDetails;
 use App\Entity\Seance;
 use App\Seance\Form\SeanceType;
 use App\Seance\Repository\SeanceRepository;
+use App\Comment\Form\CommentType;
 use App\Entity\Film;
+use App\Entity\Comment;
 use App\Entity\City;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,19 +65,175 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'show')]
-    #[IsGranted('show', 'seance')]
-    public function show(RouterInterface $router, Seance $seance = null, Film $film = null): Response
+    public function show(Security $security, RouterInterface $router, Seance $selectedSeance = null, Film $film = null): Response
     {
+        if ($security->isGranted('ROLE_USER')) {
 
-/*        $form = $this->createForm(CommentType::class, $comment, [
-            'action' => $router->generate('comments_create', ['film' => $film->getId()])
-        ]);*/
+            $comment = new Comment();
+            $comment->setFilm($film);
+            $form = $this->createForm(CommentType::class, $comment, [
+                'action' => $router->generate('comments_create', ['film' => $film->getId()])
+            ]);
+            $seances = $film->getSeances();
+            $formats = [];
+            foreach ($seances as $seance) {
+                $room = $seance->getIdRoom();
+                $allSeats = $room->getNumberSeats();
+                $numberReservations = count($seance->getReservations());
+                $seance->restingPlaces = $allSeats - $numberReservations;
+                $format = $room->getFormat();
+                $formatTitle = $format->getTitle();
+                if (!in_array($formatTitle, $formats)) {
+                    $formats[] = $formatTitle;
+                }
+            }
 
-        return $this->render('seances/show.html.twig', [
-            'seance' => $seance,
-            'film' => $film,
-/*            'form' => $form,*/
-        ]);
+            $selectedRoom = $selectedSeance->getIdRoom();
+            $allSeatsSelected = $selectedRoom->getNumberSeats();
+            $numberReservationsSelected = count($selectedSeance->getReservations());
+            $selectedSeance->restingPlaces = $allSeatsSelected - $numberReservationsSelected;
+            $formatSelected = $selectedRoom->getFormat();
+            $formatTitleSelected = $formatSelected->getTitle();
+            $formatsSelected = [];
+            if (!in_array($formatTitleSelected, $formatsSelected)) {
+                $formatsSelected[] = $formatTitleSelected;
+            }
+
+            $numberPlacesPerRow = (int)$allSeatsSelected / $selectedRoom->getNumberRows();
+            if ($allSeatsSelected % $selectedRoom->getNumberRows() !== 0) {
+                $numberPlacesLeftAfterDivision = $allSeatsSelected % $selectedRoom->getNumberRows();
+            }
+
+            $namedPlaces = [];
+            $typeSeats = $selectedRoom->getTypeSeats();
+
+            if ($typeSeats->getId() == 1) {
+                $str = 'a';
+                for ($i = 0; $i <= $selectedRoom->getNumberRows(); $i++) {
+                    for ($j = 1; $j <= $numberPlacesPerRow; $j++) {
+                        $namedPlaces[$i][] = $str . $j;
+                    }
+                    $str = chr(ord($str) + 1);
+                }
+            } else {
+                $number = 1;
+                for ($i = 0; $i <= $selectedRoom->getNumberRows(); $i++) {
+                    for ($j = 1; $j <= $numberPlacesPerRow; $j++) {
+                        $namedPlaces[$i][] = $number . $j;
+                    }
+                    $number++;
+                }
+            }
+
+            $checkedPlaces = [];
+
+            $reservations = $selectedSeance->getReservations();
+
+            if (!empty($reservations[0])) {
+
+                $reservedPlaces = [];
+
+                foreach ($reservations as $reservation) {
+                    $reservationDetails = $reservation->getReservationDetails();
+                    foreach ($reservationDetails as $reservationDetail) {
+                        $reservedPlaces[] = strtolower($reservationDetail->getPlace());
+                    }
+
+                }
+
+                foreach ($namedPlaces as $key => $row) {
+                    foreach ($row as $key2 => $place) {
+                        $checkedPlaces[$key][$key2]['name'] = $place;
+                        if (in_array(strtolower($place), $reservedPlaces)) {
+                            $checkedPlaces[$key][$key2]['reserved'] = 1;
+                        } else {
+                            $checkedPlaces[$key][$key2]['reserved'] = 0;
+                        }
+                    }
+                }
+
+            } else {
+                foreach ($namedPlaces as $key => $row) {
+                    foreach ($row as $key2 => $place) {
+                        $checkedPlaces[$key][$key2]['name'] = $place;
+                        $checkedPlaces[$key][$key2]['reserved'] = 0;
+                    }
+                }
+            }
+
+            $allPlaces = [];
+            $specialPlaces = $selectedRoom->getSpecialPlaces();
+            $specialPlacesArray = [];
+            foreach ($specialPlaces as $specialPlace) {
+                $specialPlacesArray[] = strtolower($specialPlace->getPlace());
+            }
+
+            if (!empty($specialPlaces[0])) {
+                foreach ($checkedPlaces as $key => $row) {
+                    foreach ($row as $key2 => $place) {
+                        $allPlaces[$key][$key2]['name'] = $place['name'];
+                        $allPlaces[$key][$key2]['reserved'] = $place['reserved'];
+                        if (in_array($place['name'], $specialPlacesArray)) {
+                            $allPlaces[$key][$key2]['special'] = 1;
+                        } else {
+                            $allPlaces[$key][$key2]['special'] = 0;
+                        }
+
+                    }
+                }
+            }
+
+            $selectedSeance->allPlaces = $allPlaces;
+            $user = $this->getUser();
+
+            return $this->render('seances/show.html.twig', [
+                'film' => $film,
+                'form' => $form,
+                'seances' => $seances,
+                'formats' => $formats,
+                'selectedSeance' => $selectedSeance,
+                'formatsSelected' => $formatsSelected,
+                'user' => $user,
+            ]);
+        } else {
+            return $this->redirectToRoute('app_login');
+        }
+    }
+    #[Route('/book', name: 'book', methods: ['POST'])]
+    public function bookAjax(Request $request, EntityManagerInterface $em, ?Reservation $reservation = null, Seance $selectedSeance = null): Response
+    {
+        $idSeance = $request->get('idSeance');
+        $idUser = $request->get('idUser');
+        $totalCost = $request->get('totalCost');
+        $places = $request->get('places');
+
+        $reservation = new Reservation();
+
+        if(!empty($idSeance) AND !empty($idUser) AND !empty($places) AND !empty($totalCost)){
+
+            $selectedSeance = $em->find('App\Entity\Seance',$idSeance);
+            $user = $this->getUser();
+
+            $reservation->setIdSeance($selectedSeance);
+            $reservation->setIdUser($user);
+            $reservation->setCostTotal($totalCost);
+            $reservation->setStatus(0);
+            $reservation->setDateAdd(new \DateTimeImmutable());
+
+            foreach ($places as $place) {
+                $reservationDetails = new ReservationDetails();
+                $reservationDetails->setPlace($place);
+                $reservationDetails->setDateAdd(new \DateTimeImmutable());
+                $reservation->addReservationDetail($reservationDetails);
+            }
+            $selectedSeance->addReservation($reservation);
+
+            $em->persist($reservation);
+            $em->flush();
+            return new Response("Réservation réussie");
+        }
+
+        return new Response("Réservation échouée, essayez de nouveau");
     }
 
     #[Route('/edit/{id}', name: 'edit')]

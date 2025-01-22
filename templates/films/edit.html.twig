@@ -11,8 +11,10 @@
         {{ form_start(form) }}
 
         <div>
+            {{ form_label(form.title) }}
             {{ form_row(form.title) }}
 
+            {{ form_label(form.year) }}
             {{ form_row(form.year) }}
 
             <label for="film-input-genre" class="film_imgPath">Genre(s) :</label>
@@ -25,9 +27,11 @@
                 {{ ux_icon('tabler:chevron-down', {class: 'chevron-down-icon'}) }}
             </div>
             <div class='film-select-genres'>
+                {{ form_label(form.genres) }}
                 {{ form_row(form.genres) }}
             </div>
 
+            {{ form_label(form.description) }}
             {{ form_row(form.description) }}
 
             <a href="{{ path('films_list') }}" class="btn btn-primary">Retour</a>
@@ -45,7 +49,7 @@
                 <div class="input-file-type"><span>Télécharger</span></div>
             </div>
 
-
+            {{ form_label(form.rating) }}
             {{ form_row(form.rating) }}
 
             <div class="film-form-actions">

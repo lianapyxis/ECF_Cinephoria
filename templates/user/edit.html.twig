@@ -11,19 +11,25 @@
         {{ form_start(form) }}
 
         <div>
+            {{ form_label(form.id) }}
             {{ form_row(form.id) }}
+
             {% if not is_create %}
                 <input type="hidden" name="current_id" id="current_id" value="{{ user.id }}">
             {% else %}
                 <input type="hidden" name="current_id" id="current_id" value="">
             {% endif %}
+            {{ form_label(form.firstname) }}
             {{ form_row(form.firstname) }}
 
+            {{ form_label(form.lastname) }}
             {{ form_row(form.lastname) }}
 
 
+            {{ form_label(form.username) }}
             {{ form_row(form.username) }}
 
+            {{ form_label(form.email) }}
             {{ form_row(form.email) }}
 
             <a href="{{ path('users_list') }}" class="btn btn-primary">Retour</a>
@@ -36,7 +42,6 @@
                     <input type="password" name="current_password" id="current_password">
                 </div>
                 {% endif %}
-{#                {{ form_row(form.password) }}#}
                 <div class="form-group">
                     <label for="user_password_first">Nouveau mot de passe :</label>
                     <input type="password" id="user_password_first" name="user_password_first" {{ is_create ? 'required' }}>

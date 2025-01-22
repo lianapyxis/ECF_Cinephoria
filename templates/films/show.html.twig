@@ -72,7 +72,7 @@
                         <td>{{ seance.restingPlaces }}</td>
                         <td>{{ seance.getPriceTtc }}€</td>
                         <td>
-                            <div class="btn btn-primary show-seance-details">SÉLÉCTIONNER LES SIÈGES</div>
+                            <a href="{{ path('seances_show', {'id': seance.id}) }}" class="btn btn-primary show-seance-details">SÉLÉCTIONNER LES SIÈGES</a>
                         </td>
                     </tr>
                 {% else %}
@@ -123,5 +123,53 @@
             Ajouter un commentaire...
         </a>
     {% endif %}
-    <turbo-frame id="comment"></turbo-frame>
+    <turbo-frame id="seance"></turbo-frame>
+{#    <div class="modal-seance-details">
+        <div>
+            <div class="button-seance-close">X</div>
+        </div>
+        <div class="modal-seance-info">
+            <div class="modal-seance-info-column">
+                <div>DATE : <span class="seance-info-date"></span></div>
+                <div>FILM : <span class="seance-info-hour"></span></div>
+                <div>STATUT : <span class="seance-info-format"></span></div>
+            </div>
+        </div>
+        <div class="modal-seance-places">
+            <div>SÉLÉCTIONNEZ DES SIÈGES :</div>
+            <div class="modal-place-types">
+                <div class="place-type-reserved"><span></span>SIÈGE RÉSERVÉ</div>
+                <div class="place-type-available"><span></span>SIÈGE DISPONIBLE</div>
+                <div class="place-type-handicapped"><span></span>SIÈGE MOBILITÉ RÉDUITE DISPONIBLE</div>
+                <div class="place-type-handicapped-reserved"><span></span>SIÈGE MOBILITÉ RÉDUITE RÉSERVÉ</div>
+            </div>
+            <div class="screen-modal"><span></span></div>
+            <div class="modal-places">
+                {% for row in seances[0].allPlaces %}
+                    <div class="room-row">
+                        {% for place in row %}
+                            {% if place.reserved == 1 %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                    <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="{{ place.reserved }}" data-special="{{ place.special }}" disabled>
+                                    <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
+                            {% else %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                    <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="{{ place.reserved }}" data-special="{{ place.special }}">
+                                    <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="modal-seance-actions">
+            <a href="#" class="btn btn-primary seance-action-select">PROCÉDER À LA RÉSERVATION</a>
+        </div>
+    </div>#}
 {% endblock %}

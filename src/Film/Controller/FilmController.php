@@ -124,8 +124,6 @@ class FilmController extends AbstractController
             'form' => $form,
             'seances' => $seances,
             'formats' => $formats,
-/*            'film_draft' => FilmStatus::DRAFT,
-            'film_published' => FilmStatus::PUBLISHED,*/
         ]);
     }
 

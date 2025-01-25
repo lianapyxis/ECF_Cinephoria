@@ -15,7 +15,6 @@
         {% endblock %}
     </head>
     <body>
-
     <header class="mb-3">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div>
@@ -34,6 +33,11 @@
                         <li>
                             <a class="dropdown-item" href="#">Contactez-nous</a>
                         </li>
+                        {% if app.user and app.user.getRoles[0] == 'ROLE_USER' %}
+                            <li>
+                                <a class="dropdown-item" href="{{ path('users_myaccount', {'id': app.user.id}) }}" >Mon compte</a>
+                            </li>
+                        {% endif %}
                         <li>
                             {% if not app.user %}
                                 <a class="dropdown-item connexion-btn" href="{{ path('app_login') }}">Se connecter</a>
@@ -55,6 +59,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contactez-nous</a>
                     </li>
+                    {% if app.user and app.user.getRoles[0] == 'ROLE_USER' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('users_myaccount', {'id': app.user.id}) }}" >Mon compte</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
                         {% if not app.user %}
                             <a class="nav-link connexion-btn" href="{{ path('app_login') }}">Se connecter</a>

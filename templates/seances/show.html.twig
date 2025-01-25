@@ -161,10 +161,17 @@
                 {% for row in selectedSeance.allPlaces %}
                     <div class="room-row">
                         {% for place in row %}
-                            {% if place.reserved == 1 %}
+                            {% if place.reserved == 1 and place.toedit == 0 %}
                                 <div class="checkbox-wrapper">
                                     <label>
                                         <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="{{ place.reserved }}" data-special="{{ place.special }}" disabled>
+                                        <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
+                            {% elseif place.toedit == 1 %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                        <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="0" data-special="{{ place.special }}" checked>
                                         <span class="custom-checkbox"></span>
                                     </label>
                                 </div>
@@ -181,6 +188,9 @@
                 {% endfor %}
             </div>
         </div>
+        {% if isEdit %}
+            <input type="hidden" value="{{ reservationId }}" id="reservationId">
+        {% endif %}
         <div class="modal-seance-actions">
             <div class="btn btn-primary seance-action-select">PROCÉDER À LA RÉSERVATION</div>
         </div>

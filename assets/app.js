@@ -303,20 +303,37 @@ $(window).on('turbo:load', function(){
         let idUser = $(".user-id").val()
         let totalCost = $(".reservation-total-cost").text().replace(/[^0-9]/g, '')
         let places = $(".reservation-selected-places").text().split(",")
+        let reservationId = $("#reservationId").val()
 
-        $.ajax({
-            type: "POST",
-            url: "/seances/book",
-            data: {
-                idSeance: idSeance,
-                idUser: idUser,
-                totalCost: totalCost,
-                places : places
-            },
-            success: function(responseData){
-                console.log(responseData)
-            }
-        })
+        if(reservationId.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "/seances/editBook",
+                data: {
+                    totalCost: totalCost,
+                    places : places,
+                    reservationId : reservationId,
+                },
+                success: function(responseData){
+                    console.log(responseData)
+                }
+            })
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/seances/book",
+                data: {
+                    idSeance: idSeance,
+                    idUser: idUser,
+                    totalCost: totalCost,
+                    places : places
+                },
+                success: function(responseData){
+                    console.log(responseData)
+                }
+            })
+        }
+
     })
 
 })

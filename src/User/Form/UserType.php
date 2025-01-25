@@ -93,10 +93,6 @@ class UserType extends AbstractType
         }
 
     }
-    public function getOriginalPassword($id = null){
-
-
-    }
 
     public function configureOptions(OptionsResolver $resolver): void
     {

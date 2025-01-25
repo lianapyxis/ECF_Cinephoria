@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends app.user.getRoles[0] == 'ROLE_ADMIN' ? 'baseAdmin.html.twig' : 'baseStaff.html.twig' %}
 
 {% form_theme form with[
     'form/template.html.twig'

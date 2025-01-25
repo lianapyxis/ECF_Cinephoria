@@ -15,17 +15,20 @@ header{
     font-weight: bold;
 }
 .admin-menu .nav .nav-link.active,
-.staff-menu .nav .nav-link.active{
+.staff-menu .nav .nav-link.active,
+.my-account-menu .nav .nav-link.active{
     color: #EC4186;
     font-weight: bold;
     background: #fff;
 }
 .admin-menu .nav .nav-item:first-child .nav-link.active,
-.staff-menu .nav .nav-item:first-child .nav-link.active{
+.staff-menu .nav .nav-item:first-child .nav-link.active,
+.my-account-menu .nav .nav-item:first-child .nav-link.active{
     border-radius: 12px 0 0 12px;
 }
 .admin-menu .nav .nav-item:last-child .nav-link.active,
-.staff-menu .nav .nav-item:last-child .nav-link.active{
+.staff-menu .nav .nav-item:last-child .nav-link.active,
+.my-account-menu .nav .nav-item:last-child .nav-link.active{
     border-radius: 0 12px 12px 0;
 }
 .admin-menu,
@@ -39,8 +42,31 @@ header{
     align-items: center;
     margin-bottom: 50px;
 }
+.my-account-menu{
+    width: 100%;
+    max-width: 600px;
+    border: 3px solid #EC4186;
+    border-radius: 15px;
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.container:has(.my-account-menu){
+    margin-bottom: 50px;
+    padding-left: 0;
+}
 .admin-menu .nav,
 .staff-menu .nav{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+}
+.my-account-menu .nav{
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -57,8 +83,13 @@ header{
     width: 25%;
     height: 100%;
 }
+.my-account-menu .nav-item{
+    width: 50%;
+    height: 100%;
+}
 .admin-menu .nav-item:not(:first-child),
-.staff-menu .nav-item:not(:first-child){
+.staff-menu .nav-item:not(:first-child),
+.my-account-menu .nav-item:not(:first-child){
     border-left: 3px solid #EC4186;
 }
 .admin-menu .nav-link,
@@ -68,6 +99,13 @@ header{
     height: 100%;
     align-content: center;
     font-size: 24px;
+    font-weight: 600;
+}
+.my-account-menu .nav-link{
+    color: #fff;
+    height: 100%;
+    align-content: center;
+    font-size: 22px;
     font-weight: 600;
 }
 .nav-link.disabled, .nav-link:disabled{
@@ -1044,6 +1082,47 @@ textarea#comment_comment:focus{
     font-weight: 500;
     border: 2px solid #EC4186 !important;
 }
+.reservation-container{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 600px;
+}
+.reservation-info-container{
+    border: 2px solid #EC4186;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 450px;
+    border-radius: 5px;
+    margin-right: 50px;
+}
+.reservation-info-container > div{
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.reservation-info-container > div:last-child{
+    margin-bottom: 0;
+}
+.reservation-actions{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.reservation-actions a.btn.btn-primary{
+    padding: 5px 20px;
+}
+.reservation-actions-0{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.reservation-actions-0 a{
+    margin-bottom: 20px;
+}
 @media (max-width: 991px) {
     .navbar .dropdown{
         display: block;
@@ -1081,14 +1160,16 @@ textarea#comment_comment:focus{
     }
     .dropdown-menu[data-bs-popper] li:first-child a,
     .dropdown-menu[data-bs-popper] li:nth-child(2) a,
-    .dropdown-menu[data-bs-popper] li:nth-child(3) a{
+    .dropdown-menu[data-bs-popper] li:nth-child(3) a,
+    .dropdown-menu[data-bs-popper] li:nth-child(4):not(.connexion-btn) a{
         color: #fff;
         padding: 0;
         margin-bottom: 15px;
     }
     .dropdown-menu[data-bs-popper] li:first-child a:hover,
     .dropdown-menu[data-bs-popper] li:nth-child(2) a:hover,
-    .dropdown-menu[data-bs-popper] li:nth-child(3) a:hover{
+    .dropdown-menu[data-bs-popper] li:nth-child(3) a:hover,
+    .dropdown-menu[data-bs-popper] li:nth-child(4):not(.connexion-btn) a:hover{
         color: #EC4186;
     }
     .connexion-btn {

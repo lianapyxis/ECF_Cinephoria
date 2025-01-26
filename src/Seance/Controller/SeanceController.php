@@ -330,8 +330,6 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/editreservation/{id}/reservation/{reservationId}', name: 'editreservation')]
-/*    #[ParamConverter('Seance', options: ['mapping' => ['id' => 'id']])]
-    #[ParamConverter('Reservation', options: ['mapping' => ['reservationId' => 'id']])]*/
     public function editReservation(Request $request, Security $security, EntityManagerInterface $em, RouterInterface $router, Seance $selectedSeance = null, Film $film = null, Reservation $reservation): Response
     {
         if ($security->isGranted('ROLE_USER')) {

@@ -3,6 +3,7 @@
 
 namespace App\User\Controller;
 
+use App\Entity\FilmNote;
 use App\Entity\Reservation;
 use App\Film\Repository\FilmRepository;
 use App\User\Repository\UserRepository;
@@ -251,12 +252,14 @@ class UserController extends AbstractController
                 } else {
                     $reservations[$key]->passed = 0;
                 }
+                $reservations[$key]->note = null;
 
                 foreach($notes as $note){
                     if($note->getFilm()->getId() == $film->getId()){
                         $reservations[$key]->note = $note;
                     }
                 }
+
 
                 $room = $seance->getIdRoom();
                 $format = $room->getFormat()->getTitle();
@@ -318,18 +321,26 @@ class UserController extends AbstractController
     }
 
     #[Route('/cancelreservation/{id}', name: 'cancelreservation')]
-    public function cancelReservations(RouterInterface $router, Request $request, EntityManagerInterface $em, Reservation $reservation = null, ?User $user = null ): Response
+    public function cancelReservations(RouterInterface $router, Request $request,Security $security, EntityManagerInterface $em, Reservation $reservation = null, ?User $user = null ): Response
     {
-        if($this->getUser()->getId() == $user->getId()){
+        if ($security->isGranted('ROLE_USER')) {
             if($reservation->getStatus() !== 3 OR $reservation->getStatus() !== 1) {
                 $reservation->setStatus(3);
 
                 $em->persist($reservation);
                 $em->flush();
                 return $this->redirectToRoute('users_reservations', ['id' => $this->getUser()->getId()]);
+
+            } else {
+                echo "Erreur lors de la cancellation : la séance n'est plus d'actualité";
+                return $this->redirectToRoute('users_reservations', ['id' => $this->getUser()->getId()]);
             }
+        } else {
+            return $this->redirectToRoute('app_login');
         }
     }
+
+
 
     #[Route('/register/{user}', name: 'register')]
     public function create(RouterInterface $router, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ?User $user = null): Response
@@ -372,6 +383,30 @@ class UserController extends AbstractController
         return $this->render('user/register.html.twig', [
             'form' => $form,
         ]);
+    }
+    #[Route('/addNote', name: 'addNote', methods: ['POST'])]
+    public function addNote(RouterInterface $router, Request $request, EntityManagerInterface $em, User $user = null, FilmNote $filmnote = null): Response {
+        $idFilm = $request->get("filmId");
+        $grade = $request->get("grade");
+        $gradeId = $request->get("gradeId");
+        $user = $this->getUser();
+
+        if(empty($gradeId)) {
+            $filmnote = new FilmNote();
+            $filmnote->setUser($user);
+            $film = $em->find('App\Entity\Film', (int)$idFilm);
+            $filmnote->setFilm($film);
+            $filmnote->setNote($grade);
+            $em->persist($filmnote);
+            $em->flush();
+        } else {
+            $filmnote = $em->find('App\Entity\FilmNote', (int)$gradeId);
+            $filmnote->setNote($grade);
+            $em->persist($filmnote);
+            $em->flush();
+        }
+
+        return new Response("Évaluation réussie");
     }
 
     #[Route('/delete/{id}', name: 'delete')]

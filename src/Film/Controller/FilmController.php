@@ -118,12 +118,25 @@ class FilmController extends AbstractController
                 $formats[] = $formatTitle;
             }
         }
+        $filmNotes = $film->getNotes();
+        $notesQty = count($filmNotes);
+        $notesSum = 0;
+
+        if($notesQty > 0) {
+            foreach ($filmNotes as $note) {
+                $notesSum += $note->getNote();
+            }
+            $averageNote = number_format(($notesSum / $notesQty),2);
+        } else {
+            $averageNote = 0;
+        }
 
         return $this->render('films/show.html.twig', [
             'film' => $film,
             'form' => $form,
             'seances' => $seances,
             'formats' => $formats,
+            'averageNote' => (float)$averageNote,
         ]);
     }
 

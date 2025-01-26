@@ -238,4 +238,48 @@
             <div class="btn btn-primary reservation-action-confirm">CONFIRMER LA RÉSERVATION</div>
         </div>
     </div>
+    <div class="modal-reservation-confirmation">
+        <div>
+            <div></div>
+            <div class="reservation-title">CONFIRMATION DE RÉSERVATION :</div>
+            <a href="{{ path('films_show', {'id': selectedSeance.getIdFilm.id}) }}"><div class="button-seance-close">X</div></a>
+        </div>
+        <div class="reservation-message">
+            <p>Votre réservation a été bien confirmée !</p>
+            <p>Ci-dessous les informations sur votre réservation :</p>
+        </div>
+        <div class="modal-reservation-info">
+            <div class="modal-reservation-info-column">
+                <div><span class="title-detail-reservation">FILM :</span> <span style="text-transform: uppercase">{{ selectedSeance.getIdFilm.title }}</span></div>
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-date">{{ selectedSeance.getTimeStart|date('d.m.Y') }}</span></div>
+                <div><span class="title-detail-reservation">HEURE :</span> <span class="seance-info-hour">{{ selectedSeance.getTimeStart|date('H:i') }}</span></div>
+                <div><span class="title-detail-reservation">FORMAT :</span> <span class="seance-info-format">
+                            {% if formatsSelected|length > 1 %}
+                                {% for format in formatsSelected|slice(0, (formatsSelected|length - 1)) %}
+                                    {{ format }},
+                                {% endfor %}
+                                {% for format in formatsSelected|slice((formatsSelected|length - 1), (formatsSelected|length)) %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% else %}
+                                {% for format in formatsSelected %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% endif %}
+                            </span>
+                </div>
+                <div><span class="title-detail-reservation">SIÈGES SÉLÉCTIONNÉS :</span> <span class="reservation-selected-places-confirmation"></span></div>
+                <div><span class="title-detail-reservation">PRIX TTC :</span> <span class="reservation-price-confirmation"></span></div>
+                <div><span class="title-detail-reservation">COUT TOTAL TTC :</span> <span class="reservation-total-cost-confirmation"></span></div>
+            </div>
+            <div class="modal-reservation-info-column">
+                <div class="important-info-title">INFORMATIONS IMPORTANTES :</div>
+                <div class="important-info-text">Les informations sur votre réservation seront envoyées sur votre adresse email. La réservation sera <span>annulée 10 minutes avant le début</span> de la séance si les sièges réservés ne sont pas achetés sur place.</div>
+            </div>
+        </div>
+        <div class="modal-reservation-actions">
+            <a class="btn btn-primary" href="{{ path('users_reservations', {'id': app.user.id}) }}">VISUALISER MES RÉSERVATIONS</a>
+            <a class="btn btn-primary" href="{{ path('films_list') }}">RÉSERVER DES SIÈGES SUR UNE AUTRE SÉANCE</a>
+        </div>
+    </div>
 {% endblock %}

@@ -148,6 +148,28 @@ $(window).on('turbo:load', function(){
         }]
     });
 
+    let table4 = new DataTable('#frontSeances', {
+        language: {
+            paginate: {
+                first: '&#8606;',
+                last: '&#8608;',
+                previous: '&#8592;',
+                next: '&#8594;'
+            },
+            search: "",
+            searchPlaceholder: 'RECHERCHER PAR TITRE...',
+        },
+        "searching": true,
+        responsive: true,
+        pageLength: 10,
+        "dom": 'frtip',
+        "info": false,
+        columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+        }]
+    })
+
 
     function changeTag(tag){
         if(tag.length > 0) {
@@ -288,8 +310,11 @@ $(window).on('turbo:load', function(){
             $(".modal-reservation-details").css("display", "flex")
 
             $(".reservation-selected-places").text(selectedPlaces.toString())
+            $(".reservation-selected-places-confirmation").text(selectedPlaces.toString())
             $(".reservation-price").text(priceTTC +"€/ SIÈGE")
             $(".reservation-total-cost").text(costTTC + "€")
+            $(".reservation-price-confirmation").text(priceTTC +"€/ SIÈGE")
+            $(".reservation-total-cost-confirmation").text(costTTC + "€")
         }
 
     })
@@ -316,6 +341,8 @@ $(window).on('turbo:load', function(){
                 },
                 success: function(responseData){
                     console.log(responseData)
+                    $(".modal-reservation-confirmation").css("display", "flex")
+                    $(".modal-reservation-details").css("display", "none")
                 }
             })
         } else {
@@ -330,10 +357,204 @@ $(window).on('turbo:load', function(){
                 },
                 success: function(responseData){
                     console.log(responseData)
+                    $(".modal-reservation-confirmation").css("display", "flex")
+                    $(".modal-reservation-details").css("display", "none")
                 }
             })
         }
 
     })
+
+    $(".cancel-reservation").click(function(){
+        $(".modal-cancellation-confirmation").css("display", "flex")
+    })
+
+    $(".cancel-cancellation").click(function(){
+        $(".modal-cancellation-confirmation").css("display", "none")
+    })
+
+
+    let gradeNoted = $("input#grade").val()
+    if(typeof gradeNoted != 'undefined') {
+        if (gradeNoted.length > 0) {
+            $(".note-stars-container svg").each(function(){
+                if($(this).attr("data-grade") == gradeNoted) {
+                    $(this).prev().css('color', '#FFA704')
+                    $(this).prev().prev().css('color', '#FFA704')
+                    $(this).prev().prev().prev().css('color', '#FFA704')
+                    $(this).prev().prev().prev().prev().css('color', '#FFA704')
+                    $(this).css('color', '#FFA704')
+                    $(this).next().css('color', '#D9D9D9')
+                    $(this).next().next().css('color', '#D9D9D9')
+                    $(this).next().next().next().css('color', '#D9D9D9')
+                    $(this).next().next().next().next().css('color', '#D9D9D9')
+                }
+            })
+        }
+    }
+
+
+    $(".note-stars-container svg").click(function(){
+
+        let grade = $(this).attr("data-grade")
+        let filmId = $("input#filmId").val()
+        let gradeId = $("input#gradeId").val()
+
+        if(gradeId.length > 0){
+            $.ajax({
+                type: "POST",
+                url: "/user/addNote",
+                data: {
+                    grade: grade,
+                    filmId: filmId,
+                    gradeId : gradeId,
+                },
+                success: function(responseData){
+                    console.log(responseData)
+                }
+            })
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "/user/addNote",
+                data: {
+                    grade: grade,
+                    filmId: filmId,
+                },
+                success: function(responseData){
+                    console.log(responseData)
+                }
+            })
+        }
+
+        $(this).prev().css('color', '#FFA704')
+        $(this).prev().prev().css('color', '#FFA704')
+        $(this).prev().prev().prev().css('color', '#FFA704')
+        $(this).prev().prev().prev().prev().css('color', '#FFA704')
+        $(this).css('color', '#FFA704')
+        $(this).next().css('color', '#D9D9D9')
+        $(this).next().next().css('color', '#D9D9D9')
+        $(this).next().next().next().css('color', '#D9D9D9')
+        $(this).next().next().next().next().css('color', '#D9D9D9')
+
+    })
+
+    let gradeFilm = $("input#averageNote").val()
+    if (gradeFilm > 0) {
+        let intValue = Math.floor(gradeFilm)
+        let rest = gradeFilm - intValue
+        $(".film-note").append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "1"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+        $(".film-note").append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "2"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+        $(".film-note").append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "3"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+        $(".film-note").append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "4"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+        $(".film-note").append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "5"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+        if(rest > 0){
+            $(".film-note svg").each(function(){
+                if($(this).attr("data-grade") == intValue) {
+                    $(this).prev().css('color', '#FFA704')
+                    $(this).prev().prev().css('color', '#FFA704')
+                    $(this).prev().prev().prev().css('color', '#FFA704')
+                    $(this).prev().prev().prev().prev().css('color', '#FFA704')
+                    $(this).css('color', '#FFA704')
+                    $(this).next().css('color', '#D9D9D9')
+                    $(this).next().next().css('color', '#D9D9D9')
+                    $(this).next().next().next().css('color', '#D9D9D9')
+                    $(this).next().next().next().next().css('color', '#D9D9D9')
+
+                    $(this).next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="currentColor" d="M12 1a1 1 0 0 1 .823.443l.067.116l2.852 5.781l6.38.925c.741.108 1.08.94.703 1.526l-.07.095l-.078.086l-4.624 4.499l1.09 6.355a1 1 0 0 1-1.249 1.135l-.101-.035l-.101-.046l-5.693-3l-5.706 3q-.158.082-.32.106l-.106.01a1.003 1.003 0 0 1-1.038-1.06l.013-.11l1.09-6.355l-4.623-4.5a1 1 0 0 1 .328-1.647l.113-.036l.114-.023l6.379-.925l2.853-5.78A.97.97 0 0 1 12 1m0 3.274V16.75a1 1 0 0 1 .239.029l.115.036l.112.05l4.363 2.299l-.836-4.873a1 1 0 0 1 .136-.696l.07-.099l.082-.09l3.546-3.453l-4.891-.708a1 1 0 0 1-.62-.344l-.073-.097l-.06-.106z"></path></svg>
+                    `)
+                    $(this).next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                    $(this).next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                    $(this).next().next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                }
+            })
+
+        } else {
+                $(".film-note svg").each(function(){
+                    if($(this).attr("data-grade") == intValue) {
+
+                        $(this).prev().css('color', '#FFA704')
+                        $(this).prev().prev().css('color', '#FFA704')
+                        $(this).prev().prev().prev().css('color', '#FFA704')
+                        $(this).prev().prev().prev().prev().css('color', '#FFA704')
+                        $(this).css('color', '#FFA704')
+                        $(this).next().css('color', '#FFA704')
+                        $(this).next().next().css('color', '#FFA704')
+                        $(this).next().next().next().css('color', '#FFA704')
+                        $(this).next().next().next().next().css('color', '#FFA704')
+
+                        $(this).next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                    }
+                })
+        }
+    }
 
 })

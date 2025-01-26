@@ -7,9 +7,21 @@
 {% block body %}
     <film class="card">
         <div class="card-header">
-
             <h2 class="film-title-front">{{ film.title }} ({{ film.year }})</h2>
-            <div class="film-note"></div>
+            <div class="rating-note-container">
+                <div class="film-rating-front">{{ film.rating.getTitle }}</div>
+                <div class="film-note">
+                    {% if averageNote is same as 0.0 %}
+                        {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                        {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                        {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                        {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                        {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                    {% else %}
+                        <input type="hidden" value="{{ averageNote }}" id="averageNote">
+                    {% endif %}
+                </div>
+            </div>
             <div class="film-info-front-container">
                 <div class="film-img">
                     <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film-front" width="250px" height="250px"/>

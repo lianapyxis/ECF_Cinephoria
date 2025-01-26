@@ -58,7 +58,28 @@
                         <div>ANNULÉE</div>
                         <a href="{{ path('films_show', {'id': reservation.film.getId}) }}" class="btn btn-primary">Faire une autre réservation</a>
                     {% elseif reservation.passed == 1 and reservation.status == 1 %}
-                        <a href="#" class="btn btn-primary">Noter le film</a>
+                        {% if null is not same as reservation.note %}
+                            <div class="note-stars-container">
+                                <input type="hidden" value="{{ reservation.film.id }}" id="filmId">
+                                <input type="hidden" value="{{ reservation.note.id }}" id="gradeId">
+                                <input type="hidden" value="{{ reservation.note.note }}" id="grade">
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 1}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 2}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 3}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 4}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 5}) }}
+                            </div>
+                        {% else %}
+                            <a href="#" class="btn btn-primary add-note">Noter le film</a>
+                            <div class="note-stars-container">
+                                <input type="hidden" value="{{ reservation.film.id }}" id="filmId">
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 1}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 2}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 3}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 4}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 5}) }}
+                            </div>
+                        {% endif %}
                     {% elseif reservation.passed == 1 and reservation.status == 1 and null is not same as(reservation.note) %}
                         <div>{{ reservation.note.getNote }}</div>
                     {% elseif reservation.status == 3 %}

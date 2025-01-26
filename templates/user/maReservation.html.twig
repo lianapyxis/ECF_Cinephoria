@@ -45,9 +45,16 @@
         <div class="reservation-actions">
             <div class="reservation-actions-0">
                 <a href="{{ path('seances_editreservation', {'id': reservation.getIdSeance.id, 'reservationId' : reservation.id}) }}" class="btn btn-primary">MODIFIER<br>LA RÉSERVATION</a>
-                <a href="{{ path('users_cancelreservation', {'id': reservation.id}) }}" class="btn btn-primary">ANNULER<br>LA RÉSERVATION</a>
+                <div class="btn btn-primary cancel-reservation">ANNULER<br>LA RÉSERVATION</div>
             </div>
             <a href="{{ path('users_reservations', {'id': app.user.id}) }}" class="btn btn-primary">VOIR TOUTES MES RÉSERVATIONS</a>
+        </div>
+    </div>
+    <div class="modal-cancellation-confirmation">
+        <div><strong>Vous êtes sûr(e)<br>que vous vous voulez annuler cette réservation?</strong></div>
+        <div class="cancellation-actions">
+            <div class="btn btn-primary cancel-cancellation">NON</div>
+            <a href="{{ path('users_cancelreservation', {'id': reservation.id}) }}" class="btn btn-primary">OUI</a>
         </div>
     </div>
 

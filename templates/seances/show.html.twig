@@ -129,9 +129,9 @@
         </div>
         <div class="modal-seance-info">
             <div class="modal-seance-info-column">
-                <div>DATE : <span class="seance-info-date">{{ selectedSeance.getTimeStart|date('d.m.Y') }}</span></div>
-                <div>HEURE : <span class="seance-info-hour">{{ selectedSeance.getTimeStart|date('H:i') }}</span></div>
-                <div>FORMAT : <span class="seance-info-format">
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-date">{{ selectedSeance.getTimeStart|date('d.m.Y') }}</span></div>
+                <div><span class="title-detail-reservation">HEURE :</span> <span class="seance-info-hour">{{ selectedSeance.getTimeStart|date('H:i') }}</span></div>
+                <div><span class="title-detail-reservation">FORMAT :</span> <span class="seance-info-format">
                             {% if formatsSelected|length > 1 %}
                                 {% for format in formatsSelected|slice(0, (formatsSelected|length - 1)) %}
                                     {{ format }},

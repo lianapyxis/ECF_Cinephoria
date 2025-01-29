@@ -28,7 +28,7 @@
                             <a class="dropdown-item" href="{{ path('films_list') }}">Films</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#">Réserver</a>
+                            <a class="dropdown-item" href="{{ path('films_reservationlist') }}">Réserver</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#">Contactez-nous</a>
@@ -54,7 +54,7 @@
                         <a class="nav-link active" href="{{ path('films_list') }}">Films</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Réserver</a>
+                        <a class="nav-link" href="{{ path('films_reservationlist') }}">Réserver</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contactez-nous</a>
@@ -78,9 +78,31 @@
     </header>
         <div class="container">
             {% block body %}{% endblock %}
+
+            <footer>
+                <div>Cinéma séléctionné : Cinéphoria <span class="selected-city"></span></div>
+                <div>
+                    Téléphone : +33 123456789
+                </div>
+                <div class="timetable">
+                    <div>Horaires : </div>
+                    <div>
+                        <div>Lun : 09h00 - 01h00</div>
+                        <div>Mar : 09h00 - 01h00</div>
+                        <div>Mer : 09h00 - 01h00</div>
+                        <div>Jeu : 09h00 - 01h00</div>
+                    </div>
+                    <div>
+                        <div>Ven : 09h00 - 02h00</div>
+                        <div>Sam : 09h00 - 02h00</div>
+                        <div>Dim : 09h00 - 02h00</div>
+                    </div>
+                </div>
+            </footer>
         </div>
 
     <turbo-frame id="main-modal" class="modal" tabindex="-1" aria-hidden="true"></turbo-frame>
+
 
     </body>
 </html>

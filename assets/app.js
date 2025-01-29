@@ -10,8 +10,8 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 
-
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+/*
+console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');*/
 
 import jquery from './vendor/jquery/jquery.index.js';
 
@@ -20,6 +20,20 @@ import DataTable from './vendor/datatables.net/datatables.net.index.js'
 const $ = jquery;
 window.$ = window.jQuery = $;
 $(window).on('turbo:load', function(){
+
+    let setCity = localStorage.getItem("cinephoria_city");
+
+    if(setCity == null) {
+        localStorage.setItem("cinephoria_city", "all");
+        $(".selected-city").text("Toutes les villes")
+    } else {
+        if(setCity == "all") {
+            $(".selected-city").text("Toutes les villes")
+        } else {
+            $(".selected-city").text(setCity)
+        }
+    }
+
     $(".login-container .show-password").on('click', function(){
         if($(this).text() == "Afficher") {
             $(this).text('Masquer')
@@ -148,28 +162,31 @@ $(window).on('turbo:load', function(){
         }]
     });
 
-    let table4 = new DataTable('#frontSeances', {
-        language: {
-            paginate: {
-                first: '&#8606;',
-                last: '&#8608;',
-                previous: '&#8592;',
-                next: '&#8594;'
+    if(typeof $("#frontSeances") !== 'undefined') {
+        var table4 = new DataTable('#frontSeances', {
+            language: {
+                paginate: {
+                    first: '&#8606;',
+                    last: '&#8608;',
+                    previous: '&#8592;',
+                    next: '&#8594;'
+                },
+                search: "",
+                searchPlaceholder: 'RECHERCHER PAR TITRE...',
             },
-            search: "",
-            searchPlaceholder: 'RECHERCHER PAR TITRE...',
-        },
-        "searching": true,
-        responsive: true,
-        pageLength: 10,
-        "dom": 'frtip',
-        "info": false,
-        columnDefs: [{
-            "defaultContent": "-",
-            "targets": "_all"
-        }]
-    })
-
+            "searching": false,
+            responsive: true,
+            pageLength: 10,
+            "dom": 'frtip',
+            "info": false,
+            columnDefs: [{
+                "defaultContent": "-",
+                "targets": "_all"
+            }]
+        })
+    } else {
+        var table4 = undefined;
+    }
 
     function changeTag(tag){
         if(tag.length > 0) {
@@ -279,15 +296,105 @@ $(window).on('turbo:load', function(){
         $(this).css("display", "none")
     })
 
+    $(".filter-city select#city_select option").each(function(){
+        let selectedCity = localStorage.getItem("cinephoria_city");
+        if ($(this).val() == selectedCity && selectedCity !== '' && typeof selectedCity !== 'undefined') {
+            $(this).attr("selected", true)
+        } else {
+            $(this).attr("selected", false)
+        }
+        $(".film-container-home").each(function(){
+            if(selectedCity == "all") {
+                $(this).removeClass("hidden-filter-city")
+            } else if($(this).find("input").val().indexOf(selectedCity) < 0){
+                $(this).addClass("hidden-filter-city")
+            } else {
+                $(this).removeClass("hidden-filter-city")
+            }
+        })
+    })
+
+    $(".filter-city-seances select#city_select_seances option").each(function(){
+        let selectedCity = localStorage.getItem("cinephoria_city");
+        if ($(this).val() == selectedCity && selectedCity !== '' && typeof selectedCity !== 'undefined') {
+            $(this).attr("selected", true)
+        } else {
+            $(this).attr("selected", false)
+        }
+        table4.$(".city-seance").each(function(){
+            if(selectedCity == "all") {
+                $(this).parent().parent().removeClass("hidden-filter-city")
+            } else if($(this).val().indexOf(selectedCity) < 0){
+                $(this).parent().parent().addClass("hidden-filter-city")
+            } else {
+                $(this).parent().parent().removeClass("hidden-filter-city")
+            }
+        })
+    })
+
     $(".filter-city select#city_select").on("change", function(){
         let city = $(this).find("option:selected").val()
+        localStorage.setItem("cinephoria_city", city);
         $(".film-container-home").each(function(){
             if(city == "all") {
-                $(this).css("display", "flex")
-            } else if($(this).find("input").val().indexOf(city) < 0){
-                $(this).css("display", "none")
+                $(this).removeClass("hidden-filter-city")
+            } else if($(this).find("input#citiesList").val().indexOf(city) < 0){
+                $(this).addClass("hidden-filter-city")
             } else {
-                $(this).css("display", "flex")
+                $(this).removeClass("hidden-filter-city")
+            }
+        })
+    })
+
+    $(".filter-city #date-seance").on("change", function(){
+        let date = $(this).val()
+        let dateArr = $(this).val().split('-')
+        let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+        $(".film-container-home").each(function(){
+            if (date == '') {
+                $(this).removeClass("hidden-filter-date")
+            } else if ($(this).find("input#seancesList").val().indexOf(newDate) < 0){
+                $(this).addClass("hidden-filter-date")
+            } else {
+                $(this).removeClass("hidden-filter-date")
+            }
+        })
+    })
+
+    $(".filter-city-seances select#city_select_seances").on("change", function(){
+        let city = $(this).find("option:selected").val()
+        localStorage.setItem("cinephoria_city", city);
+        table4.$(".city-seance").each(function(){
+            if(city == "all") {
+                $(this).parent().parent().removeClass("hidden-filter-city")
+            } else if($(this).val().indexOf(city) < 0){
+                    $(this).parent().parent().addClass("hidden-filter-city")
+            } else {
+                $(this).parent().parent().removeClass("hidden-filter-city")
+            }
+        })
+    })
+
+    $(".form-group-date-seance #date-seance").on("change", function(){
+        let date = $(this).val()
+        let dateArr = $(this).val().split('-')
+        let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+        table4.$(".date-table-seance").each(function(){
+            if ($(this).text() == newDate || date == ''){
+                $(this).parent().removeClass("hidden-filter-date")
+            } else {
+                $(this).parent().addClass("hidden-filter-date")
+            }
+        })
+    })
+
+    $(".form-group-places-seance #places-seance").on("input", function(){
+        let places = parseInt($(this).val(), 10);
+        table4.$(".restingPlaces").each(function(){
+            if (parseInt($(this).text(), 10) < places){
+                $(this).parent().addClass("hidden-filter-places")
+            } else {
+                $(this).parent().removeClass("hidden-filter-places")
             }
         })
     })

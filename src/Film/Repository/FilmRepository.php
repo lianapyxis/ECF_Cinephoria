@@ -7,6 +7,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Model\Paginator;
 
 /**
  * @extends ServiceEntityRepository<Film>
@@ -18,6 +19,11 @@ class FilmRepository extends ServiceEntityRepository
         parent::__construct($registry, Film::class);
     }
 
+    public function findAllWithPagination(int $page): Paginator
+    {
+        $query = $this->createQueryBuilder('t')->orderBy('t.date_add', 'DESC');
+        return new Paginator($query, $page);
+    }
     public function findByUser(User $user): mixed
     {
         if ($this->security->isGranted('ROLE_ADMIN')) {

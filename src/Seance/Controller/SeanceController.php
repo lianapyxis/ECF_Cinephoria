@@ -65,11 +65,12 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'show')]
-    public function show(Security $security, RouterInterface $router, Seance $selectedSeance = null, Film $film = null): Response
+    public function show(Security $security, RouterInterface $router,EntityManagerInterface $em, Seance $selectedSeance = null, Film $film = null): Response
     {
         if ($security->isGranted('ROLE_USER')) {
 
             $comment = new Comment();
+            $film = $em->find('App\Entity\Film',$selectedSeance->getIdFilm()->getId());
             $comment->setFilm($film);
             $form = $this->createForm(CommentType::class, $comment, [
                 'action' => $router->generate('comments_create', ['film' => $film->getId()])

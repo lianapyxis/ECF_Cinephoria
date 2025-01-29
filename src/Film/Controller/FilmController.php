@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class FilmController extends AbstractController
 {
     #[Route('/', name: 'list')]
-    public function list(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository): Response
+    public function list(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository, Request $request): Response
     {
 
          if ($security->isGranted('ROLE_ADMIN')) {
@@ -47,57 +47,139 @@ class FilmController extends AbstractController
                  'user' => $security->getUser(),
              ]);
         } elseif ($security->isGranted('ROLE_USER')) {
-             $films = $filmRepository->findAll();
 
+             $page = $request->query->get('page',1);
+             $query = $filmRepository->findAllWithPagination($page);
+             $films = $query->getData();
+
+             $filteredFilms = [];
              foreach ($films as $film) {
                  $cities = [];
                  $seances = $film->getSeances();
-                 if(isset($seances)) {
-                     foreach ($seances as $seance) {
-                         $room = $seance->getIdRoom();
-                         $city = $room->getIdCity();
-                         $cityTitle = $city->getTitle();
-                         if(!in_array($cityTitle, $cities)) {
-                             $cities[] = $cityTitle;
+                 $dateAdd = $film->getDateAdd()->format('d-m-Y');
+                 $yesterday = date("d-m-Y", strtotime("-1 days"));
+                 $daybeforeyesterday = date("d-m-Y", strtotime("-2 days"));
+                 $wednesday = date('d-m-Y', strtotime('Wednesday'));
+                 $lastWednesday = date('d-m-Y', strtotime('last Wednesday'));
+                 if($wednesday == $yesterday OR $wednesday == $daybeforeyesterday){
+                     $dateCheck = $wednesday;
+                 } else {
+                     $dateCheck = $lastWednesday;
+                 }
+                 if ($dateAdd == $dateCheck) {
+                     if(isset($seances)) {
+                         foreach ($seances as $seance) {
+                             $room = $seance->getIdRoom();
+                             $city = $room->getIdCity();
+                             $cityTitle = $city->getTitle();
+                             if(!in_array($cityTitle, $cities)) {
+                                 $cities[] = $cityTitle;
+                             }
                          }
                      }
+                     $film->citiesTitles = implode(",",$cities);
+                     $filteredFilms[] = $film;
                  }
-                 $film->citiesTitles = implode(",",$cities);
+
              }
 
              return $this->render('films/listHomePage.html.twig', [
-                 'films' => $films,
-                 'cities' => $cityRepository->findAll()
+                 'films' => $filteredFilms,
+                 'cities' => $cityRepository->findAll(),
+                 'totalPages' => $query->getTotalPages(),
+                 'currentPage' => $query->getCurrentPage()
+
              ]);
          } else {
-             $films = $filmRepository->findAll();
+             $page = $request->query->get('page',1);
+             $query = $filmRepository->findAllWithPagination($page);
+             $films = $query->getData();
 
+             $filteredFilms = [];
              foreach ($films as $film) {
                  $cities = [];
                  $seances = $film->getSeances();
-                 if(isset($seances)) {
-                     foreach ($seances as $seance) {
-                         $room = $seance->getIdRoom();
-                         $city = $room->getIdCity();
-                         $cityTitle = $city->getTitle();
-                         if(!in_array($cityTitle, $cities)) {
-                             $cities[] = $cityTitle;
+                 $dateAdd = $film->getDateAdd()->format('d-m-Y');
+                 $yesterday = date("d-m-Y", strtotime("-1 days"));
+                 $daybeforeyesterday = date("d-m-Y", strtotime("-2 days"));
+                 $wednesday = date('d-m-Y', strtotime('Wednesday'));
+                 $lastWednesday = date('d-m-Y', strtotime('last Wednesday'));
+                 if($wednesday == $yesterday OR $wednesday == $daybeforeyesterday){
+                     $dateCheck = $wednesday;
+                 } else {
+                     $dateCheck = $lastWednesday;
+                 }
+                 if ($dateAdd == $dateCheck) {
+                     if(isset($seances)) {
+                         foreach ($seances as $seance) {
+                             $room = $seance->getIdRoom();
+                             $city = $room->getIdCity();
+                             $cityTitle = $city->getTitle();
+                             if(!in_array($cityTitle, $cities)) {
+                                 $cities[] = $cityTitle;
+                             }
                          }
                      }
+                     $film->citiesTitles = implode(",",$cities);
+                     $filteredFilms[] = $film;
                  }
-                 $film->citiesTitles = implode(",",$cities);
+
              }
 
              return $this->render('films/listHomePage.html.twig', [
-                 'films' => $films,
-                 'cities' => $cityRepository->findAll()
+                 'films' => $filteredFilms,
+                 'cities' => $cityRepository->findAll(),
+                 'totalPages' => $query->getTotalPages(),
+                 'currentPage' => $query->getCurrentPage()
              ]);
+        }
+    }
+
+    #[Route('/reservationlist', name: 'reservationlist')]
+    public function reservationlist(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository, Request $request): Response
+    {
+
+        if ($security->isGranted('ROLE_USER')) {
+            $page = $request->query->get('page',1);
+            $query = $filmRepository->findAllWithPagination($page);
+            $films = $query->getData();
+
+            foreach ($films as $film) {
+                $cities = [];
+                $seances = $film->getSeances();
+                $seancesDates = [];
+                if(isset($seances)) {
+                    foreach ($seances as $seance) {
+                        $dateSeance = $seance->getTimeStart();
+                        $room = $seance->getIdRoom();
+                        $city = $room->getIdCity();
+                        $cityTitle = $city->getTitle();
+                        if(!in_array($cityTitle, $cities)) {
+                            $cities[] = $cityTitle;
+                        }
+                        if(!in_array($dateSeance, $seancesDates)) {
+                            $seancesDates[] = $dateSeance->format('d.m.Y');
+                        }
+                    }
+                }
+                $film->citiesTitles = implode(",",$cities);
+                $film->seancesDates = implode(",",$seancesDates);
+            }
+
+            return $this->render('films/reservationlist.html.twig', [
+                'films' => $films,
+                'cities' => $cityRepository->findAll(),
+                'totalPages' => $query->getTotalPages(),
+                'currentPage' => $query->getCurrentPage()
+            ]);
+        } else {
+            return $this->redirectToRoute('app_login');
         }
     }
 
     #[Route('/show/{id}', name: 'show')]
     #[IsGranted('show', 'film')]
-    public function show(RouterInterface $router, Film $film = null)
+    public function show(RouterInterface $router, Film $film = null, CityRepository $cityRepository): Response
     {
 
         $comment = new Comment();
@@ -137,6 +219,7 @@ class FilmController extends AbstractController
             'seances' => $seances,
             'formats' => $formats,
             'averageNote' => (float)$averageNote,
+            'cities' => $cityRepository->findAll()
         ]);
     }
 

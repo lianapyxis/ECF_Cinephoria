@@ -46,88 +46,14 @@ class FilmController extends AbstractController
                  'films' => $films,
                  'user' => $security->getUser(),
              ]);
-        } elseif ($security->isGranted('ROLE_USER')) {
-
+        } else {
              $page = $request->query->get('page',1);
-             $query = $filmRepository->findAllWithPagination($page);
+             $city = $request->query->get('city');
+             $query = $filmRepository->findAllNewWithPagination($page, $city);
              $films = $query->getData();
 
-             $filteredFilms = [];
-             foreach ($films as $film) {
-                 $cities = [];
-                 $seances = $film->getSeances();
-                 $dateAdd = $film->getDateAdd()->format('d-m-Y');
-                 $yesterday = date("d-m-Y", strtotime("-1 days"));
-                 $daybeforeyesterday = date("d-m-Y", strtotime("-2 days"));
-                 $wednesday = date('d-m-Y', strtotime('Wednesday'));
-                 $lastWednesday = date('d-m-Y', strtotime('last Wednesday'));
-                 if($wednesday == $yesterday OR $wednesday == $daybeforeyesterday){
-                     $dateCheck = $wednesday;
-                 } else {
-                     $dateCheck = $lastWednesday;
-                 }
-                 if ($dateAdd == $dateCheck) {
-                     if(isset($seances)) {
-                         foreach ($seances as $seance) {
-                             $room = $seance->getIdRoom();
-                             $city = $room->getIdCity();
-                             $cityTitle = $city->getTitle();
-                             if(!in_array($cityTitle, $cities)) {
-                                 $cities[] = $cityTitle;
-                             }
-                         }
-                     }
-                     $film->citiesTitles = implode(",",$cities);
-                     $filteredFilms[] = $film;
-                 }
-
-             }
-
              return $this->render('films/listHomePage.html.twig', [
-                 'films' => $filteredFilms,
-                 'cities' => $cityRepository->findAll(),
-                 'totalPages' => $query->getTotalPages(),
-                 'currentPage' => $query->getCurrentPage()
-
-             ]);
-         } else {
-             $page = $request->query->get('page',1);
-             $query = $filmRepository->findAllWithPagination($page);
-             $films = $query->getData();
-
-             $filteredFilms = [];
-             foreach ($films as $film) {
-                 $cities = [];
-                 $seances = $film->getSeances();
-                 $dateAdd = $film->getDateAdd()->format('d-m-Y');
-                 $yesterday = date("d-m-Y", strtotime("-1 days"));
-                 $daybeforeyesterday = date("d-m-Y", strtotime("-2 days"));
-                 $wednesday = date('d-m-Y', strtotime('Wednesday'));
-                 $lastWednesday = date('d-m-Y', strtotime('last Wednesday'));
-                 if($wednesday == $yesterday OR $wednesday == $daybeforeyesterday){
-                     $dateCheck = $wednesday;
-                 } else {
-                     $dateCheck = $lastWednesday;
-                 }
-                 if ($dateAdd == $dateCheck) {
-                     if(isset($seances)) {
-                         foreach ($seances as $seance) {
-                             $room = $seance->getIdRoom();
-                             $city = $room->getIdCity();
-                             $cityTitle = $city->getTitle();
-                             if(!in_array($cityTitle, $cities)) {
-                                 $cities[] = $cityTitle;
-                             }
-                         }
-                     }
-                     $film->citiesTitles = implode(",",$cities);
-                     $filteredFilms[] = $film;
-                 }
-
-             }
-
-             return $this->render('films/listHomePage.html.twig', [
-                 'films' => $filteredFilms,
+                 'films' => $films,
                  'cities' => $cityRepository->findAll(),
                  'totalPages' => $query->getTotalPages(),
                  'currentPage' => $query->getCurrentPage()
@@ -141,7 +67,8 @@ class FilmController extends AbstractController
 
         if ($security->isGranted('ROLE_USER')) {
             $page = $request->query->get('page',1);
-            $query = $filmRepository->findAllWithPagination($page);
+            $city = $request->query->get('city');
+            $query = $filmRepository->findAllWithPagination($page, $city);
             $films = $query->getData();
 
             foreach ($films as $film) {

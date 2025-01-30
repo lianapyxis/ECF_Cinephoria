@@ -298,20 +298,11 @@ $(window).on('turbo:load', function(){
 
     $(".filter-city select#city_select option").each(function(){
         let selectedCity = localStorage.getItem("cinephoria_city");
-        if ($(this).val() == selectedCity && selectedCity !== '' && typeof selectedCity !== 'undefined') {
+        if ($(this).text() == selectedCity && selectedCity !== '' && typeof selectedCity !== 'undefined') {
             $(this).attr("selected", true)
         } else {
             $(this).attr("selected", false)
         }
-        $(".film-container-home").each(function(){
-            if(selectedCity == "all") {
-                $(this).removeClass("hidden-filter-city")
-            } else if($(this).find("input").val().indexOf(selectedCity) < 0){
-                $(this).addClass("hidden-filter-city")
-            } else {
-                $(this).removeClass("hidden-filter-city")
-            }
-        })
     })
 
     $(".filter-city-seances select#city_select_seances option").each(function(){
@@ -333,32 +324,22 @@ $(window).on('turbo:load', function(){
     })
 
     $(".filter-city select#city_select").on("change", function(){
-        let city = $(this).find("option:selected").val()
+        let city = $(this).find("option:selected").text()
         localStorage.setItem("cinephoria_city", city);
-        $(".film-container-home").each(function(){
-            if(city == "all") {
-                $(this).removeClass("hidden-filter-city")
-            } else if($(this).find("input#citiesList").val().indexOf(city) < 0){
-                $(this).addClass("hidden-filter-city")
-            } else {
-                $(this).removeClass("hidden-filter-city")
-            }
-        })
+        let date = $(".filter-city #date-seance").val()
+        if (date == null){
+            window.location.replace($(this).find("option:selected").val());
+        } else {
+            let url = $(this).find("option:selected").val() + '&date=' + date
+            window.location.replace(url);
+        }
     })
 
     $(".filter-city #date-seance").on("change", function(){
         let date = $(this).val()
-        let dateArr = $(this).val().split('-')
-        let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
-        $(".film-container-home").each(function(){
-            if (date == '') {
-                $(this).removeClass("hidden-filter-date")
-            } else if ($(this).find("input#seancesList").val().indexOf(newDate) < 0){
-                $(this).addClass("hidden-filter-date")
-            } else {
-                $(this).removeClass("hidden-filter-date")
-            }
-        })
+        let cityUrl = $(".filter-city select#city_select").find("option:selected").val()
+        let url = cityUrl + '&date='+date
+        window.location.replace(url);
     })
 
     $(".filter-city-seances select#city_select_seances").on("change", function(){

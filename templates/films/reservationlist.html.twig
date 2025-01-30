@@ -23,9 +23,9 @@
             <div class="form-group">
                 <label for="city_select">Séléctionner la ville :</label>
                 <select name="city_select" id="city_select">
-                    <option value="all">Toutes les villes</option>
+                    <option value="{{ path('films_reservationlist', {'city': 'all'}) }}">Toutes les villes</option>
                     {% for city in cities %}
-                        <option value="{{ city.title }}">{{ city.title }}</option>
+                        <option value="{{ path('films_reservationlist', {'city': city.id}) }}" >{{ city.title }}</option>
                     {% endfor %}
                 </select>
             </div>

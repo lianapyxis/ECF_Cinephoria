@@ -22,10 +22,8 @@
 
             </div>
 
-            {{ form_label(form.time_start) }}
             {{ form_row(form.time_start) }}
 
-            {{ form_label(form.time_end) }}
             {{ form_row(form.time_end) }}
 
             <div class="form-group">
@@ -48,17 +46,14 @@
                 {% endif %}
             </div>
 
-            {{ form_label(form.id_room) }}
             {{ form_row(form.id_room) }}
 
             <a href="{{ path('seances_list') }}" class="btn btn-primary">Retour</a>
         </div>
         <div class="form-custom-column-container">
             <div class="form-custom-column-seance">
-                {{ form_label(form.id_film) }}
                 {{ form_row(form.id_film) }}
 
-                {{ form_label(form.price_ttc) }}
                 {{ form_row(form.price_ttc) }}
             </div>
 

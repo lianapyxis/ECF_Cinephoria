@@ -11,7 +11,6 @@
         {{ form_start(form) }}
 
         <div>
-            {{ form_label(form.id) }}
             {{ form_row(form.id) }}
 
             {% if not is_create %}
@@ -19,17 +18,13 @@
             {% else %}
                 <input type="hidden" name="current_id" id="current_id" value="">
             {% endif %}
-            {{ form_label(form.firstname) }}
             {{ form_row(form.firstname) }}
 
-            {{ form_label(form.lastname) }}
             {{ form_row(form.lastname) }}
 
 
-            {{ form_label(form.username) }}
             {{ form_row(form.username) }}
 
-            {{ form_label(form.email) }}
             {{ form_row(form.email) }}
 
             <a href="{{ path('users_list') }}" class="btn btn-primary">Retour</a>

@@ -323,23 +323,338 @@ $(window).on('turbo:load', function(){
         })
     })
 
-    $(".filter-city select#city_select").on("change", function(){
+    $(".filter-city.filter-home select#city_select").on("change", function(){
         let city = $(this).find("option:selected").text()
         localStorage.setItem("cinephoria_city", city);
+        $(".selected-city").text(city)
+        let cityId = $(this).find("option:selected").val()
+            $.ajax({
+                type: "POST",
+                url: "/films/filter",
+                dataType: 'json',
+                data: {
+                    city: cityId,
+                },
+                success: function(responseData){
+                    let dataResponse = JSON.parse(responseData)
+                    let films = dataResponse.films
+                    $('.films-container-home').children().remove()
+                    for (let film of films) {
+                        let filmTemplate = `<div class="film-container-home">
+                    <a href="/films/show/${film.id}" class="film-hover-home">VOIR LES SÉANCES</a>
+                    <a href="/films/show/${film.id}"><img src="/uploads/${film.imgPath}" alt="${film.title}" class="img-film-home"></a>
+                    <a href="/films/show/${film.id}" class="film-title-home">${film.title} (${film.year})</a>
+                    <p class="film-date-home">Ajouté : ${film.dateAdd}</p>
+                    </div>`
+                        $('.films-container-home').append(filmTemplate)
+                    }
+                    $("nav.pagination-container").remove()
+
+                    if(dataResponse.totalPages > 1){
+                        let paginationTemplate = `<nav class="pagination-container">
+                        <ul class="pagination">`
+                        for (let page = 1; page <= dataResponse.totalPages; page++) {
+                            if(page == dataResponse.currentPage) {
+                                paginationTemplate = paginationTemplate + `<li class="pagination-item active">
+                                        <a href="/films/?page=${page}" class="pagination-link">${page}</a>
+                                    </li>`
+                            } else {
+                                paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/?page=${page}" class="pagination-link">${page}</a>
+                                    </li>`
+                            }
+                        }
+                        paginationTemplate = paginationTemplate + `</ul></nav>`
+                        $(".home-page-body").after(paginationTemplate)
+                    }
+                }
+            })
+    })
+
+    $(".filter-city.filter-reserver select#city_select").on("change", function(){
+        let city = $(this).find("option:selected").text()
+        localStorage.setItem("cinephoria_city", city);
+        $(".selected-city").text(city)
+        let cityId = $(this).find("option:selected").val()
         let date = $(".filter-city #date-seance").val()
         if (date == null){
-            window.location.replace($(this).find("option:selected").val());
+            let cityId = $(this).find("option:selected").val()
+            $.ajax({
+                type: "POST",
+                url: "/films/filterDate",
+                dataType: 'json',
+                data: {
+                    city: cityId,
+                    date: ''
+                },
+                success: function(responseData){
+                    let dataResponse = JSON.parse(responseData)
+                    let films = dataResponse.films
+
+
+                    $('.films-container-home').children().remove()
+                    for (let film of films) {
+                        let filmTemplate = `<div class="film-container-home">
+                    <a href="/films/show/${film.id}" class="film-hover-home">VOIR LES SÉANCES</a>
+                    <a href="/films/show/${film.id}"><img src="/uploads/${film.imgPath}" alt="${film.title}" class="img-film-home"></a>
+                    <a href="/films/show/${film.id}" class="film-title-home">${film.title} (${film.year})</a>
+                    <p class="film-date-home">Ajouté : ${film.dateAdd}</p>
+                    </div>`
+                        $('.films-container-home').append(filmTemplate)
+                    }
+                    $("nav.pagination-container").remove()
+
+                    if(dataResponse.totalPages > 1){
+                        let paginationTemplate = `<nav class="pagination-container">
+                        <ul class="pagination">`
+                        for (let page = 1; page <= dataResponse.totalPages; page++) {
+
+                                if(page == dataResponse.currentPage) {
+                                    paginationTemplate = paginationTemplate + `<li class="pagination-item active">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>`
+                                } else {
+                                    if(dataResponse.currentPage == 1){
+                                        if(page == dataResponse.totalPages) {
+                                            paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=2&city=${cityId}" class="pagination-link">&gt;</a>
+                                    </li>`
+                                        }
+                                    } else if (dataResponse.currentPage == dataResponse.totalPages) {
+                                        if(page == 1) {
+                                            paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=1&city=${cityId}" class="pagination-link">&lt;</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>`
+                                        }
+                                    } else {
+                                        paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>`
+                                    }
+                                }
+                        }
+                        paginationTemplate = paginationTemplate + `</ul></nav>`
+                        $(".home-page-body").after(paginationTemplate)
+                    }
+                }
+            })
         } else {
-            let url = $(this).find("option:selected").val() + '&date=' + date
-            window.location.replace(url);
+            let dateArr = date.split("-")
+            if(dateArr[0][0] != 0) {
+                let url = $(this).find("option:selected").val() + '&date=' + date
+                $.ajax({
+                    type: "POST",
+                    url: "/films/filterDate",
+                    dataType: 'json',
+                    data: {
+                        city: cityId,
+                        date: date,
+                    },
+                    success: function(responseData){
+                        let dataResponse = JSON.parse(responseData)
+                        let films = dataResponse.films
+                        $('.films-container-home').children().remove()
+                        for (let film of films) {
+                            let filmTemplate = `<div class="film-container-home">
+                    <a href="/films/show/${film.id}" class="film-hover-home">VOIR LES SÉANCES</a>
+                    <a href="/films/show/${film.id}"><img src="/uploads/${film.imgPath}" alt="${film.title}" class="img-film-home"></a>
+                    <a href="/films/show/${film.id}" class="film-title-home">${film.title} (${film.year})</a>
+                    <p class="film-date-home">Ajouté : ${film.dateAdd}</p>
+                    </div>`
+                            $('.films-container-home').append(filmTemplate)
+                        }
+
+                        $("nav.pagination-container").remove()
+
+                        if(dataResponse.totalPages > 1){
+                            let paginationTemplate = `<nav class="pagination-container">
+                            <ul class="pagination">`
+                            for (let page = 1; page <= dataResponse.totalPages; page++) {
+                                if(page == dataResponse.currentPage) {
+                                    paginationTemplate = paginationTemplate + `<li class="pagination-item active">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>`
+                                } else {
+                                    if(dataResponse.currentPage == 1){
+                                        if(page == dataResponse.totalPages) {
+                                            paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=2&city=${cityId}&date=${date}" class="pagination-link">&gt;</a>
+                                    </li>`
+                                        }
+                                    } else if (dataResponse.currentPage == dataResponse.totalPages) {
+                                        if(page == 1) {
+                                            paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=1&city=${cityId}&date=${date}" class="pagination-link">&lt;</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>`
+                                        }
+                                    } else {
+                                        paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>`
+                                    }
+                                }
+                            }
+                            paginationTemplate = paginationTemplate + `</ul></nav>`
+                            $(".home-page-body").after(paginationTemplate)
+                        }
+                    }
+                })
+            }
         }
     })
 
-    $(".filter-city #date-seance").on("change", function(){
+    $(".filter-city.filter-reserver #date-seance").on("change", function(){
+        let cityId = $(".filter-city.filter-reserver select#city_select").find("option:selected").val()
         let date = $(this).val()
-        let cityUrl = $(".filter-city select#city_select").find("option:selected").val()
-        let url = cityUrl + '&date='+date
-        window.location.replace(url);
+        let dateArr = date.split("-")
+
+        if(dateArr[0][0] != 0){
+            let url = $(this).find("option:selected").val() + '&date=' + date
+            $.ajax({
+                type: "POST",
+                url: "/films/filterDate",
+                dataType: 'json',
+                data: {
+                    city: cityId,
+                    date: date,
+                },
+                success: function(responseData){
+                    let dataResponse = JSON.parse(responseData)
+                    let films = dataResponse.films
+                    $('.films-container-home').children().remove()
+                    for (let film of films) {
+                        let filmTemplate = `<div class="film-container-home">
+                    <a href="/films/show/${film.id}" class="film-hover-home">VOIR LES SÉANCES</a>
+                    <a href="/films/show/${film.id}"><img src="/uploads/${film.imgPath}" alt="${film.title}" class="img-film-home"></a>
+                    <a href="/films/show/${film.id}" class="film-title-home">${film.title} (${film.year})</a>
+                    <p class="film-date-home">Ajouté : ${film.dateAdd}</p>
+                    </div>`
+                        $('.films-container-home').append(filmTemplate)
+                    }
+
+                    $("nav.pagination-container").remove()
+
+                    if(dataResponse.totalPages > 1){
+                        let paginationTemplate = `<nav class="pagination-container">
+                            <ul class="pagination">`
+                        for (let page = 1; page <= dataResponse.totalPages; page++) {
+                            if(page == dataResponse.currentPage) {
+                                paginationTemplate = paginationTemplate + `<li class="pagination-item active">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>`
+                            } else {
+                                if(dataResponse.currentPage == 1){
+                                    if(page == dataResponse.totalPages) {
+                                        paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=2&city=${cityId}&date=${date}" class="pagination-link">&gt;</a>
+                                    </li>`
+                                    }
+                                } else if (dataResponse.currentPage == dataResponse.totalPages) {
+                                    if(page == 1) {
+                                        paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=1&city=${cityId}&date=${date}" class="pagination-link">&lt;</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>`
+                                    }
+                                } else {
+                                    paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}&date=${date}" class="pagination-link">${page}</a>
+                                    </li>`
+                                }
+                            }
+                        }
+                        paginationTemplate = paginationTemplate + `</ul></nav>`
+                        $(".home-page-body").after(paginationTemplate)
+                    }
+                }
+            })
+        }
+
+        if( date == '') {
+            let cityId = $(".filter-city.filter-reserver select#city_select").find("option:selected").val()
+            $.ajax({
+                type: "POST",
+                url: "/films/filterDate",
+                dataType: 'json',
+                data: {
+                    city: cityId,
+                    date: ''
+                },
+                success: function(responseData){
+                    let dataResponse = JSON.parse(responseData)
+                    let films = dataResponse.films
+
+
+                    $('.films-container-home').children().remove()
+                    for (let film of films) {
+                        let filmTemplate = `<div class="film-container-home">
+                    <a href="/films/show/${film.id}" class="film-hover-home">VOIR LES SÉANCES</a>
+                    <a href="/films/show/${film.id}"><img src="/uploads/${film.imgPath}" alt="${film.title}" class="img-film-home"></a>
+                    <a href="/films/show/${film.id}" class="film-title-home">${film.title} (${film.year})</a>
+                    <p class="film-date-home">Ajouté : ${film.dateAdd}</p>
+                    </div>`
+                        $('.films-container-home').append(filmTemplate)
+                    }
+                    $("nav.pagination-container").remove()
+
+                    if(dataResponse.totalPages > 1){
+                        let paginationTemplate = `<nav class="pagination-container">
+                        <ul class="pagination">`
+                        for (let page = 1; page <= dataResponse.totalPages; page++) {
+
+                            if(page == dataResponse.currentPage) {
+                                paginationTemplate = paginationTemplate + `<li class="pagination-item active">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>`
+                            } else {
+                                if(dataResponse.currentPage == 1){
+                                    if(page == dataResponse.totalPages) {
+                                        paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=2&city=${cityId}" class="pagination-link">&gt;</a>
+                                    </li>`
+                                    }
+                                } else if (dataResponse.currentPage == dataResponse.totalPages) {
+                                    if(page == 1) {
+                                        paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=1&city=${cityId}" class="pagination-link">&lt;</a>
+                                    </li>
+                                    <li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>`
+                                    }
+                                } else {
+                                    paginationTemplate = paginationTemplate + `<li class="pagination-item">
+                                        <a href="/films/reservationlist?page=${page}&city=${cityId}" class="pagination-link">${page}</a>
+                                    </li>`
+                                }
+                            }
+                        }
+                        paginationTemplate = paginationTemplate + `</ul></nav>`
+                        $(".home-page-body").after(paginationTemplate)
+                    }
+                }
+            })
+        }
     })
 
     $(".filter-city-seances select#city_select_seances").on("change", function(){

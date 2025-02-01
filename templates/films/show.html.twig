@@ -116,7 +116,7 @@
                                     {{ comment.user.username }}
                                 </div>
                                 <div>
-                                    {{ comment.getdateAdd|date('d/m/Y H/i') }}
+                                    {{ comment.getdateAdd|date('d/m/Y H:i') }}
                                 </div>
                             </div>
                             <div class="card-body comment-front-content">
@@ -137,8 +137,9 @@
                 <a href="{{ path('comments_create', {'film': film.id}) }}" data-turbo-frame="comment" class="btn-add-comment mt-3">
                     Ajouter un commentaire...
                 </a>
+                <turbo-frame id="comment"></turbo-frame>
             {% endif %}
-            <turbo-frame id="seance"></turbo-frame>
+
         </div>
         <div class="filter-city-seances">
             <div class="form-group">

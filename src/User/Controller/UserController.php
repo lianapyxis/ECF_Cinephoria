@@ -8,12 +8,14 @@ use App\Entity\Reservation;
 use App\Film\Repository\FilmRepository;
 use App\User\Repository\UserRepository;
 use App\User\Form\UserType;
+use App\User\Form\ContactType;
 use App\Entity\Film;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -407,6 +409,20 @@ class UserController extends AbstractController
         }
 
         return new Response("Évaluation réussie");
+    }
+
+    #[Route('/contact', name: 'contact')]
+    public function contact(RouterInterface $router, Request $request, EntityManagerInterface $em, User $user = null): Response {
+
+        $form = $this->createForm(ContactType::class, $user, [
+            'action' => $router->generate('users_contact'),
+            'attr' => ['data-turbo-frame' => '_top']
+        ]);
+
+        return $this->render('user/contact.html.twig', [
+            'form' => $form,
+            'user' => $user,
+        ]);
     }
 
     #[Route('/delete/{id}', name: 'delete')]

@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -49,6 +50,7 @@ class FilmController extends AbstractController
         } else {
              $page = $request->query->get('page',1);
              $city = $request->query->get('city');
+
              $query = $filmRepository->findAllNewWithPagination($page, $city);
              $films = $query->getData();
 
@@ -61,6 +63,58 @@ class FilmController extends AbstractController
         }
     }
 
+    #[Route('/filter', name: 'filter', methods: ['POST'])]
+    public function filterAjax(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository, Request $request): Response
+    {
+            $page = $request->get('page',1);
+            $city = $request->get('city');
+
+            $query = $filmRepository->findAllNewWithPagination($page, $city);
+            $films = $query->getData();
+            $filmsObj =[];
+
+            foreach ($films as $key => $film) {
+                $filmsObj[$key]['id'] = $film->getId();
+                $filmsObj[$key]['title'] = $film->getTitle();
+                $filmsObj[$key]['year'] = $film->getYear();
+                $filmsObj[$key]['dateAdd'] = $film->getDateAdd()->format('Y-m-d');
+                $filmsObj[$key]['imgPath'] = $film->getImgPath();
+            }
+        $response = [
+            'films' => $filmsObj,
+            'totalPages' => $query->getTotalPages(),
+            'currentPage' => $query->getCurrentPage()
+        ];
+
+        return new JsonResponse(json_encode($response));
+    }
+
+    #[Route('/filterDate', name: 'filterDate', methods: ['POST'])]
+    public function filterDateAjax(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository, Request $request): Response
+    {
+        $page = $request->get('page',1);
+        $city = $request->get('city');
+        $date = $request->get('date');
+        $query = $filmRepository->findAllWithPagination($page, $city, $date);
+        $films = $query->getData();
+        $filmsObj =[];
+
+        foreach ($films as $key => $film) {
+            $filmsObj[$key]['id'] = $film->getId();
+            $filmsObj[$key]['title'] = $film->getTitle();
+            $filmsObj[$key]['year'] = $film->getYear();
+            $filmsObj[$key]['dateAdd'] = $film->getDateAdd()->format('Y-m-d');
+            $filmsObj[$key]['imgPath'] = $film->getImgPath();
+        }
+
+        $response = [
+            'films' => $filmsObj,
+            'totalPages' => $query->getTotalPages(),
+            'currentPage' => $query->getCurrentPage()
+        ];
+        return new JsonResponse(json_encode($response));
+    }
+
     #[Route('/reservationlist', name: 'reservationlist')]
     public function reservationlist(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository, Request $request): Response
     {
@@ -68,30 +122,9 @@ class FilmController extends AbstractController
         if ($security->isGranted('ROLE_USER')) {
             $page = $request->query->get('page',1);
             $city = $request->query->get('city');
-            $query = $filmRepository->findAllWithPagination($page, $city);
+            $date = $request->query->get('date');
+            $query = $filmRepository->findAllWithPagination($page, $city, $date);
             $films = $query->getData();
-
-            foreach ($films as $film) {
-                $cities = [];
-                $seances = $film->getSeances();
-                $seancesDates = [];
-                if(isset($seances)) {
-                    foreach ($seances as $seance) {
-                        $dateSeance = $seance->getTimeStart();
-                        $room = $seance->getIdRoom();
-                        $city = $room->getIdCity();
-                        $cityTitle = $city->getTitle();
-                        if(!in_array($cityTitle, $cities)) {
-                            $cities[] = $cityTitle;
-                        }
-                        if(!in_array($dateSeance, $seancesDates)) {
-                            $seancesDates[] = $dateSeance->format('d.m.Y');
-                        }
-                    }
-                }
-                $film->citiesTitles = implode(",",$cities);
-                $film->seancesDates = implode(",",$seancesDates);
-            }
 
             return $this->render('films/reservationlist.html.twig', [
                 'films' => $films,

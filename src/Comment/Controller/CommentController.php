@@ -50,10 +50,6 @@ class CommentController extends AbstractController
     public function edit(RouterInterface $router, Request $request, EntityManagerInterface $em, Film $film, ?Comment $comment = null): Response
     {
 
-/*        if (FilmStatus::PUBLISHED !== $film->getStatus()) {
-            throw new AccessDeniedHttpException('Film non publié');
-        }*/
-
         $comment= new Comment();
         $comment->setFilm($film);
         $form = $this->createForm(CommentType::class, $comment, [

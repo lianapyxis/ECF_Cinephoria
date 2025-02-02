@@ -6,9 +6,12 @@ namespace App\User\Controller;
 use App\Entity\FilmNote;
 use App\Entity\Reservation;
 use App\Film\Repository\FilmRepository;
+use App\Repository\ReservationRepository;
+use App\Seance\Repository\SeanceRepository;
 use App\User\Repository\UserRepository;
 use App\User\Form\UserType;
 use App\User\Form\ContactType;
+use App\Entity\Seance;
 use App\Entity\Film;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -424,6 +427,70 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    #[Route('/dashboard', name: 'dashboard')]
+    public function dashboard(RouterInterface $router, Request $request,Security $security, EntityManagerInterface $em, ReservationRepository $reservationRepository = null, SeanceRepository $seanceRepository = null ): Response {
+
+        if ($security->isGranted('ROLE_ADMIN')) {
+            $allReservations = $reservationRepository->findAll();
+            $allSeances = $seanceRepository->findAll();
+
+            $nmbReservationsToday = 0;
+            $nmbReservationsThisWeek = 0;
+            $nmbReservationsThisYear = 0;
+            $nmbSeancesThisYear = 0;
+
+            $today = date("Y-m-d");
+            $dayLastWeek = date("Y-m-d",strtotime("-7 days"));
+            $firstdaythisYear = date("Y-m-d", strtotime("first day of january this year"));
+            $lastdaythisYear  = date("Y-m-d",strtotime("last day of december this year"));
+
+            foreach ($allReservations as $reservation) {
+                if($reservation->getDateAdd()->format("Y-m-d") == $today) {
+                    $nmbReservationsToday++;
+                }
+                if($reservation->getDateAdd()->format("Y-m-d") > $dayLastWeek) {
+                    $nmbReservationsThisWeek++;
+                }
+
+                if($reservation->getDateAdd()->format("Y-m-d") >= $firstdaythisYear AND $reservation->getDateAdd()->format("Y-m-d") <= $lastdaythisYear) {
+                    $nmbReservationsThisYear++;
+                }
+            }
+
+            foreach ($allSeances as $seance) {
+                if($seance->getTimeStart()->format("Y-m-d") >= $firstdaythisYear AND $seance->getTimeStart()->format("Y-m-d") <= $lastdaythisYear) {
+                    $nmbSeancesThisYear++;
+                }
+            }
+
+            $nmbReservationPerDay = [];
+
+            for($i = 1; $i < 8; $i++) {
+                $dayPrecision = "-".$i." days";
+                $datePoint =  date("Y-m-d",strtotime($dayPrecision));
+                $nmbReservationPerDay[$i] = 0;
+                foreach ($allReservations as $reservation) {
+                    if($reservation->getDateAdd()->format("Y-m-d") == $datePoint) {
+                        $nmbReservationPerDay[$i]++;
+                    }
+                }
+            }
+
+            return $this->render('user/dashboard.html.twig', [
+                'nmbReservationsToday' => $nmbReservationsToday,
+                'nmbSeancesThisYear' => $nmbSeancesThisYear,
+                'nmbReservationsThisWeek' => $nmbReservationsThisWeek,
+                'nmbReservationsThisYear' => $nmbReservationsThisYear,
+                'allReservations' => $allReservations,
+                'nmbReservationPerDay' => $nmbReservationPerDay,
+            ]);
+        } else {
+            return $this->redirectToRoute('films_list');
+        }
+
+    }
+
 
     #[Route('/delete/{id}', name: 'delete')]
     #[IsGranted('delete', 'user')]

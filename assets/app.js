@@ -187,6 +187,32 @@ $(window).on('turbo:load', function(){
     } else {
         var table4 = undefined;
     }
+    if(typeof $("#collectionFilms") !== 'undefined') {
+        var table5 = new DataTable('#collectionFilms', {
+            language: {
+                paginate: {
+                    first: '&#8606;',
+                    last: '&#8608;',
+                    previous: '&#8592;',
+                    next: '&#8594;'
+                },
+                search: "",
+                searchPlaceholder: 'RECHERCHER PAR TITRE...',
+            },
+            "searching": true,
+            responsive: true,
+            pageLength: 5,
+            "dom": 'frtip',
+            "info": false,
+            columnDefs: [{
+                "defaultContent": "-",
+                "targets": "_all"
+            }]
+        })
+    } else {
+        var table5 = undefined;
+    }
+
 
     function changeTag(tag){
         if(tag.length > 0) {
@@ -657,7 +683,7 @@ $(window).on('turbo:load', function(){
         }
     })
 
-    $(".filter-city-seances select#city_select_seances").on("change", function(){
+    $(".film-page-container .filter-city-seances select#city_select_seances").on("change", function(){
         let city = $(this).find("option:selected").val()
         localStorage.setItem("cinephoria_city", city);
         table4.$(".city-seance").each(function(){
@@ -671,7 +697,7 @@ $(window).on('turbo:load', function(){
         })
     })
 
-    $(".form-group-date-seance #date-seance").on("change", function(){
+    $(".film-page-container .form-group-date-seance #date-seance").on("change", function(){
         let date = $(this).val()
         let dateArr = $(this).val().split('-')
         let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
@@ -684,7 +710,7 @@ $(window).on('turbo:load', function(){
         })
     })
 
-    $(".form-group-places-seance #places-seance").on("input", function(){
+    $(".film-page-container .form-group-places-seance #places-seance").on("input", function(){
         let places = parseInt($(this).val(), 10);
         table4.$(".restingPlaces").each(function(){
             if (parseInt($(this).text(), 10) < places){
@@ -958,6 +984,397 @@ $(window).on('turbo:load', function(){
                     }
                 })
         }
+    }
+
+    table5.$(".averageNoteCollection").each(function(){
+        let gradeFilm = $(this).val()
+        if (gradeFilm > 0) {
+            let intValue = Math.floor(gradeFilm)
+            let rest = gradeFilm - intValue
+            $(this).parent().append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "1"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+            $(this).parent().append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "2"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+            $(this).parent().append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "3"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+            $(this).parent().append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "4"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+            $(this).parent().append(`
+                    <svg
+                viewBox = "0 0 24 24"
+                fill = "currentColor"
+                width= "30px"
+                height="30px"
+                data-grade = "5"
+                aria-hidden = "false"><path
+                fill = "currentColor"
+                d = "m8.243 7.34l-6.38.925l-.113.023a1 1 0 0 0-.44 1.684l4.622 4.499l-1.09 6.355l-.013.11a1 1 0 0 0 1.464.944l5.706-3l5.693 3l.1.046a1 1 0 0 0 1.352-1.1l-1.091-6.355l4.624-4.5l.078-.085a1 1 0 0 0-.633-1.62l-6.38-.926l-2.852-5.78a1 1 0 0 0-1.794 0z"></path></svg>
+                `)
+            if(rest > 0){
+                $(this).parent().find("svg").each(function(){
+                    if($(this).attr("data-grade") == intValue) {
+                        $(this).prev().css('color', '#FFA704')
+                        $(this).prev().prev().css('color', '#FFA704')
+                        $(this).prev().prev().prev().css('color', '#FFA704')
+                        $(this).prev().prev().prev().prev().css('color', '#FFA704')
+                        $(this).css('color', '#FFA704')
+                        $(this).next().css('color', '#D9D9D9')
+                        $(this).next().next().css('color', '#D9D9D9')
+                        $(this).next().next().next().css('color', '#D9D9D9')
+                        $(this).next().next().next().next().css('color', '#D9D9D9')
+
+                        $(this).next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="currentColor" d="M12 1a1 1 0 0 1 .823.443l.067.116l2.852 5.781l6.38.925c.741.108 1.08.94.703 1.526l-.07.095l-.078.086l-4.624 4.499l1.09 6.355a1 1 0 0 1-1.249 1.135l-.101-.035l-.101-.046l-5.693-3l-5.706 3q-.158.082-.32.106l-.106.01a1.003 1.003 0 0 1-1.038-1.06l.013-.11l1.09-6.355l-4.623-4.5a1 1 0 0 1 .328-1.647l.113-.036l.114-.023l6.379-.925l2.853-5.78A.97.97 0 0 1 12 1m0 3.274V16.75a1 1 0 0 1 .239.029l.115.036l.112.05l4.363 2.299l-.836-4.873a1 1 0 0 1 .136-.696l.07-.099l.082-.09l3.546-3.453l-4.891-.708a1 1 0 0 1-.62-.344l-.073-.097l-.06-.106z"></path></svg>
+                    `)
+                        $(this).next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                    }
+                })
+
+            } else {
+                $(this).parent().find("svg").each(function(){
+                    if($(this).attr("data-grade") == intValue) {
+
+                        $(this).prev().css('color', '#FFA704')
+                        $(this).prev().prev().css('color', '#FFA704')
+                        $(this).prev().prev().prev().css('color', '#FFA704')
+                        $(this).prev().prev().prev().prev().css('color', '#FFA704')
+                        $(this).css('color', '#FFA704')
+                        $(this).next().css('color', '#FFA704')
+                        $(this).next().next().css('color', '#FFA704')
+                        $(this).next().next().next().css('color', '#FFA704')
+                        $(this).next().next().next().next().css('color', '#FFA704')
+
+                        $(this).next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                        $(this).next().next().next().next().replaceWith(`
+                    <svg viewBox="0 0 24 24" fill="currentColor" data-grade="1" aria-hidden="true" width="30px" height="30px" style="color: rgb(255, 167, 4);"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path></svg>
+                    `)
+                    }
+                })
+            }
+        }
+    })
+    $(".collection-body-container .filter-city-seances #city_select_seances option").each(function(){
+        let selectedCity = localStorage.getItem("cinephoria_city");
+
+        if ($(this).text() == selectedCity && selectedCity !== '' && typeof selectedCity !== 'undefined') {
+            $(this).attr("selected", true)
+            cityTitle = $(this).text()
+        } else {
+            $(this).attr("selected", false)
+        }
+
+        table5.search(function (d) {
+            return d.includes(cityTitle);
+        }).draw()
+    })
+    $(".collection-body-container .filter-city-seances select#city_select_seances").on("change", function(){
+
+        let city = $(this).find("option:selected").val()
+        localStorage.setItem("cinephoria_city", city);
+        let date = $(".collection-body-container .form-group-date-seance #date-seance").val("")
+        city = city.replace('è', 'e')
+
+        $(".collection-body-container #genres_select option").each(function(){
+            if ($(this).val() == 'all') {
+                $(this).parent().val($(this).val())
+                $(this).attr("selected", true)
+            } else {
+                $(this).attr("selected", false)
+            }
+        })
+
+        if(city !== 'all'){
+            table5.column(0)
+                .data().search(function (d) {
+                    return d.includes(city);
+            }).draw()
+        } else {
+            table5.column(0)
+                .data().search(function (d) {
+                    return d.includes('');
+            }).draw()
+        }
+    })
+
+    $(".collection-body-container .form-group-date-seance #date-seance").on("change", function(){
+        let date = $(this).val()
+        let dateArr = $(this).val().split('-')
+        let city = localStorage.getItem("cinephoria_city");
+        let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+
+        $(".collection-body-container #genres_select option").each(function(){
+            if ($(this).val() == 'all') {
+                $(this).parent().val($(this).val())
+                $(this).attr("selected", true)
+            } else {
+                $(this).attr("selected", false)
+            }
+        })
+
+        if(date !== '') {
+            if(city !== 'all'){
+                table5.column(0)
+                    .data().search(function (d) {
+                    if(d.includes(city)){
+                        return d.includes(newDate);
+                    }
+                }).draw()
+            } else {
+                table5.column(0)
+                    .data().search(function (d) {
+                    return d.includes(newDate);
+                }).draw()
+            }
+        }
+
+    })
+
+    $(".collection-body-container #genres_select").on("change", function(){
+
+        let city = localStorage.getItem("cinephoria_city");
+        let date = $(".collection-body-container .form-group-date-seance #date-seance").val()
+        let dateArr = date.split('-')
+        let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+        let genre = $(this).find("option:selected").val()
+
+        genre = genre.replace('é','e')
+
+        if(city == 'all'){
+            if(date !== '') {
+                table5.column(0)
+                    .data().search(function (d) {
+                    if(genre == 'all') {
+                        return d.includes(newDate);
+                    } else {
+                        if(d.includes(newDate)){
+                            return d.includes(genre);
+                        }
+                    }
+                }).draw()
+            } else {
+                table5.column(0)
+                    .data().search(function (d) {
+                    if(genre == 'all') {
+                        return d.includes('');
+                    } else {
+                        return d.includes(genre);
+                    }
+                }).draw()
+            }
+        } else {
+            if(date !== '') {
+                table5.column(0)
+                    .data().search(function (d) {
+                    if(d.includes(newDate) && d.includes(city)){
+                        if(genre == 'all') {
+                            return d;
+                        } else {
+                            return d.includes(genre);
+                        }
+                    }
+                }).draw()
+            } else {
+                table5.column(0)
+                    .data().search(function (d) {
+                    if(d.includes(city)){
+                        if(genre == 'all') {
+                            return d;
+                        } else {
+                            return d.includes(genre);
+                        }
+                    }
+                }).draw()
+            }
+        }
+    })
+
+    table5.$(".consult-seances-btn").click(function(){
+        let filmId = $(this).next().val()
+        let date = $(".collection-body-container .form-group-date-seance #date-seance").val()
+
+
+        $.ajax({
+            type: "POST",
+            url: "/films/getSeances",
+            dataType: 'json',
+            data: {
+                filmId: filmId,
+                date: date,
+            },
+            success: function(responseData){
+                    let dataResponse = JSON.parse(responseData)
+                let film = dataResponse.film
+                let seances = film.seances
+
+                if(date !== '') {
+                    let dateArr = date.split('-')
+                    let newDate = dateArr[2] + '.' + dateArr[1] + '.' + dateArr[0]
+                    $(".modal-seance-details .modal-seance-info").remove()
+                    $(".modal-seance-details .modal-seance-places").remove()
+                    $(".modal-seance-details").append(
+                        `
+        <div class="modal-seance-info">
+            <div class="modal-seance-info-column">
+                <div><span class="title-detail-reservation">FILM :</span> <span class="seance-info-date">${film.title} (${film.year})</span></div>
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-hour">${newDate}</span></div>
+            </div>
+        </div>
+        <div class="modal-seance-places">
+            <div>SÉANCES DISPONIBLES :</div>
+            <div class="modal-places">
+                <table class="table" id="collectionFilmSeances">
+                    <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>HEURE</th>
+                        <th>QUALITÉ</th>
+                        <th>PRIX</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                   </tbody>
+                    </table>
+                    </div>
+                    </div>
+                        `
+                    )
+
+
+                    for (let seance of seances){
+                        $(".modal-seance-details table tbody").append(
+                            `
+                                <tr>
+                                    <td>${seance.date}</td>
+                                    <td>${seance.heureDebut}-${seance.heureFin}</td>
+                                    <td>${seance.format}</td>
+                                    <td>${seance.prix}€</td>
+                                </tr>
+                            `
+                        )
+                    }
+
+                } else {
+                    $(".modal-seance-details .modal-seance-info").remove()
+                    $(".modal-seance-details .modal-seance-places").remove()
+                    $(".modal-seance-details").append(
+                        `
+        <div class="modal-seance-info">
+            <div class="modal-seance-info-column">
+                <div><span class="title-detail-reservation">FILM :</span> <span class="seance-info-date">${film.title} (${film.year})</span></div>
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-hour">Toutes les dates</span></div>
+            </div>
+        </div>
+        <div class="modal-seance-places">
+            <div>SÉANCES DISPONIBLES :</div>
+            <div class="modal-places">
+                <table class="table" id="collectionFilmSeances">
+                    <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>HEURE</th>
+                        <th>QUALITÉ</th>
+                        <th>PRIX</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                     </tbody>
+                    </table>
+                    </div>
+                    </div>
+                        `
+                    )
+
+                    for (let seance of seances){
+                        $(".modal-seance-details table tbody").append(
+                            `
+                                <tr>
+                                    <td>${seance.date}</td>
+                                    <td>${seance.heureDebut}-${seance.heureFin}</td>
+                                    <td>${seance.format}</td>
+                                    <td>${seance.prix}€</td>
+                                </tr>
+                            `
+                        )
+                    }
+                }
+
+                $(".collection-body-container .modal-seance-details").css('display', 'flex')
+            }
+        })
+    })
+
+    $(".button-seances-close").click(function(){
+        $(".collection-body-container .modal-seance-details").css('display', 'none')
+    })
+
+    $(".dt-search input").click(function(){
+        let date = $(".collection-body-container .form-group-date-seance #date-seance").val("")
+
+        $(".collection-body-container #genres_select option").each(function(){
+            if ($(this).val() == 'all') {
+                $(this).parent().val($(this).val())
+                $(this).attr("selected", true)
+            } else {
+                $(this).attr("selected", false)
+            }
+        })
+    })
+
+    if(typeof $(".js-dashboard").attr("data-dashboard") !== 'undefined'){
+        let dataDashboard = JSON.parse($(".js-dashboard").attr("data-dashboard"))
+        console.log(dataDashboard)
     }
 
 })

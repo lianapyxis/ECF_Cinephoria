@@ -825,7 +825,8 @@ form input.form-control:-internal-autofill-selected{
     margin-bottom: 20px;
 }
 .button-close,
-.button-seance-close{
+.button-seance-close,
+.button-seances-close{
     float: right;
     background-color: #1C061C;
     border-radius: 6px;
@@ -837,17 +838,20 @@ form input.form-control:-internal-autofill-selected{
     cursor: pointer;
 }
 .button-close:hover,
-.button-seance-close:hover{
+.button-seance-close:hover,
+.button-seances-close:hover{
     color: #FFF;
     border: 2px solid #FFF;
     transition: all 0.3s ease-out;
 }
-.button-seance-close a{
+.button-seance-close a,
+.button-seances-close a{
     text-decoration: none;
     color: #EC4186;
     transition: all 0.3s ease-out;
 }
-.button-seance-close a:hover{
+.button-seance-close a:hover,
+.button-seances-close a:hover{
     color: #FFF;
 }
 .modal-place-types{
@@ -1098,6 +1102,7 @@ textarea#comment_comment:focus{
 }
 .home-page-body .form-group select#city_select,
 .form-group select#city_select_seances,
+.form-group select#genres_select,
 .form-group #date-seance,
 .form-group #places-seance{
     border: 2px solid #EC4186;
@@ -1112,7 +1117,8 @@ textarea#comment_comment:focus{
     border: 2px solid #EC4186;
 }
 .home-page-body .form-group select#city_select option,
-.form-group select#city_select_seances option{
+.form-group select#city_select_seances option,
+.form-group select#genres_select option{
     background: #1C061C !important;
     font-weight: 500;
     border: 2px solid #EC4186 !important;
@@ -1388,6 +1394,138 @@ nav.pagination-container{
 }
 .contact-container > h2{
     margin-bottom: 15px;
+}
+.collection-body-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+.collection-body-container .filter-city-seances{
+    margin-top: 70px;
+    margin-left: 70px;
+}
+#collectionFilms{
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-style: hidden;
+    box-shadow: none;
+    width: 70%;
+}
+#collectionFilms thead{
+    display: none;
+}
+#collectionFilms th,
+#collectionFilms td{
+    border: none;
+}
+#collectionFilms tbody td{
+    padding-bottom: 40px;
+    padding-left: 0;
+}
+#collectionFilms tbody td img{
+    margin-right: 30px;
+}
+#collectionFilms tbody tr:nth-child(2n+1){
+    background-color: transparent !important;
+}
+.collection-main-content-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.collection-main-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.collection-main-content-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.collection-main-content-info div{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.collection-main-content-info .film-rating-front{
+    height: 30px;
+    line-height: 26px;
+    align-self: center;
+}
+.collection-description{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+}
+.collection-description p:first-child{
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+.collection-description p:nth-child(2){
+    text-transform: none;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 0;
+}
+.collection-main-content-title{
+    font-size: 26px;
+    line-height: 27px;
+    margin-bottom: 5px;
+    text-align: left;
+    max-width: 500px;
+}
+.collection-main-content-info .film-note{
+    margin-right: 10px;
+}
+.collection-main-content .btn.btn-primary{
+    min-height: 45px;
+    padding: 12px 30px;
+    min-width: 185px;
+}
+.collection-body-container .dt-search input{
+    position: absolute;
+    right: -40px;
+    top: 0;
+}
+.collection-body-container .modal-seance-details{
+    display: none;
+}
+.dashboard-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.dashboard-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    min-height: 300px;
+}
+.dashboard-item img{
+    width: 140px;
+    height: auto;
+}
+.dashboard-item-title{
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 70%;
+    max-width: 240px;
+    margin-bottom: 25px;
+}
+.dashboard-number{
+    color: #EC4186;
+    font-weight: 500;
+    font-size: 50px;
+    margin-top: 20px;
 }
 @media (max-width: 991px) {
     .navbar .dropdown{

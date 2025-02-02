@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="collection-body-container">
+    <div>
+        <h2>FILMS</h2>
+
+        <table class="table" id="collectionFilms">
+            <thead>
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for film in films %}
+                <tr>
+                    <td>
+                        <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film" width="250px" height="250px"/>
+                        <div style="display: none !important;" id="seancesDates">{{ film.seancesDates }}</div>
+                        <div style="display: none !important;" id="genreList">{{ film.genreList }}</div>
+                        <div style="display: none !important;" id="seancesCities">{{ film.seancesCities }}</div>
+                    </td>
+                    <td class="collection-main-content-container">
+                            <div class="collection-main-content">
+                                <div class="collection-main-content-info">
+                                    <div class="collection-main-content-title">{{ film.title }} ({{ film.year }})</div>
+                                    <div>
+                                        <div class="film-rating-front">{{ film.rating.getTitle }}</div>
+                                        <div class="film-note">
+                                            {% if film.averageNote is same as 0.0 %}
+                                                {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                                                {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                                                {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                                                {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                                                {{ ux_icon('tabler:star', {class: 'star-off'}) }}
+                                            {% else %}
+                                                <input type="hidden" value="{{ film.averageNote }}" id="averageNoteCollection" class="averageNoteCollection">
+                                            {% endif %}
+                                        </div>
+                                        {% if film.staffFavourite %}
+                                            <img src="{{ asset('images/staff_favourite.svg') }}" alt="coup de coeur" width="130px" height="40px">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="btn btn-primary consult-seances-btn">VOIR SÉANCES</div>
+                                <input type="hidden" value="{{ film.id }}" id="filmId">
+                            </div>
+                            <div class="collection-description">
+                                <p>DESCRIPTION :</p>
+                                <p>{{ film.description }}</p>
+                            </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">Aucun film trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+        <div class="filter-city-seances">
+            <div class="form-group">
+                <label for="city_select_seances">Séléctionner la ville :</label>
+                <select name="city_select_seances" id="city_select_seances">
+                    <option value="all">Toutes les villes</option>
+                    {% for city in cities %}
+                        <option value="{{ city.title }}">{{ city.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group form-group-date-seance">
+                <label for="date-seance">Séléctionner la date :</label>
+                <input type="date" id="date-seance" name="date-seance" min="2018-01-01" max="2030-12-31" />
+            </div>
+            <div class="form-group form-group-places-seance">
+                <label for="places-seance">Séléctionner le genre :</label>
+                <select name="genres_select" id="genres_select">
+                    <option value="all">Tous</option>
+                    {% for genre in genres %}
+                        <option value="{{ genre.name }}">{{ genre.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+    <div class="modal-seance-details">
+        <div>
+            <div class="button-seances-close">X</div>
+        </div>
+        <div class="modal-seance-info">
+            <div class="modal-seance-info-column">
+                <div><span class="title-detail-reservation">FILM :</span> <span class="seance-info-date"></span></div>
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-hour">date</span></div>
+            </div>
+        </div>
+        <div class="modal-seance-places">
+            <div>SÉANCES DISPONIBLES :</div>
+            <div class="modal-places">
+                <table class="table" id="collectionFilmSeances">
+                    <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>HEURE</th>
+                        <th>QUALITÉ</th>
+                        <th>PRIX</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

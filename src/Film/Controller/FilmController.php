@@ -7,6 +7,7 @@ use App\Film\Repository\FilmRepository;
 use App\Comment\Form\CommentType;
 use App\Entity\Film;
 use App\Entity\Comment;
+use App\Film\Repository\FilmGenreRepository;
 use App\City\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -135,6 +136,98 @@ class FilmController extends AbstractController
         } else {
             return $this->redirectToRoute('app_login');
         }
+    }
+
+    #[Route('/collection', name: 'collection')]
+    public function collection(Security $security,FilmRepository $filmRepository,FilmGenreRepository $filmGenreRepository, CityRepository $cityRepository, Request $request): Response
+    {
+        $films = $filmRepository->findAll();
+        $city = $request->query->get('city');
+
+        foreach ($films as $film) {
+            $filmNotes = $film->getNotes();
+            $notesQty = count($filmNotes);
+            $notesSum = 0;
+
+            $seances = $film->getSeances();
+            $seancesDates = [];
+            $seancesCities = [];
+            foreach ($seances as $seance) {
+                $seancesDates[] = $seance->getTimeStart()->format('d.m.Y');
+                $seancesCities[] = $seance->getIdRoom()->getIdCity()->getTitle();
+            }
+            $film->seancesDates = implode(",",$seancesDates);
+            $film->seancesCities = implode(",",$seancesCities);
+
+            $filmGenres = [];
+            foreach ($film->getGenres() as $genre) {
+                $filmGenres[] = $genre->getName();
+            }
+
+            $film->genreList = implode(",",$filmGenres);
+
+            if($notesQty > 0) {
+                foreach ($filmNotes as $note) {
+                    $notesSum += $note->getNote();
+                }
+                $averageNote = number_format(($notesSum / $notesQty),2);
+            } else {
+                $averageNote = 0;
+            }
+            $film->averageNote = (float)$averageNote;
+        }
+
+        return $this->render('films/filmscollection.html.twig', [
+            'films' => $films,
+            'cities' => $cityRepository->findAll(),
+            'genres' => $filmGenreRepository->findAll()
+        ]);
+    }
+
+    #[Route('/getSeances', name: 'getSeances', methods: ['POST'])]
+    public function getSeances(Security $security,FilmRepository $filmRepository, CityRepository $cityRepository,EntityManagerInterface $em, Request $request): Response
+    {
+        $filmId = $request->get('filmId');
+        $date = $request->get('date');
+        $film = $filmRepository->find($filmId);
+        $seances = $film->getSeances();
+        if(!empty($date)){
+            $selectedSeances = [];
+            foreach ($seances as $key => $seance) {
+                $dateSeance = $seance->getTimeStart()->format('Y-m-d');
+                if($date == $dateSeance){
+                    $selectedSeances[$key]['date'] = $seance->getTimeStart()->format('d.m.Y');
+                    $selectedSeances[$key]['heureDebut'] = $seance->getTimeStart()->format('H:i');
+                    $selectedSeances[$key]['heureFin'] = $seance->getTimeEnd()->format('H:i');
+                    $selectedSeances[$key]['format'] = $seance->getIdRoom()->getFormat()->getTitle();
+                    $selectedSeances[$key]['prix'] = $seance->getPriceTtc();
+                }
+            }
+            $film->selectedSeances = $selectedSeances;
+        } else {
+            $selectedSeances = [];
+            foreach ($seances as $key => $seance) {
+                    $selectedSeances[$key]['date'] = $seance->getTimeStart()->format('d.m.Y');
+                    $selectedSeances[$key]['heureDebut'] = $seance->getTimeStart()->format('H:i');
+                    $selectedSeances[$key]['heureFin'] = $seance->getTimeEnd()->format('H:i');
+                    $selectedSeances[$key]['format'] = $seance->getIdRoom()->getFormat()->getTitle();
+                    $selectedSeances[$key]['prix'] = $seance->getPriceTtc();
+            }
+            $film->selectedSeances = $selectedSeances;
+        }
+
+        $filmObj = [];
+
+        $filmObj['id'] = $film->getId();
+        $filmObj['title'] = $film->getTitle();
+        $filmObj['year'] = $film->getYear();
+        $filmObj['seances'] = $film->selectedSeances;
+
+        $response = [
+            'film' => $filmObj,
+        ];
+
+        return new JsonResponse(json_encode($response));
     }
 
     #[Route('/show/{id}', name: 'show')]

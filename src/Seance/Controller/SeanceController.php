@@ -331,7 +331,7 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/editreservation/{id}/reservation/{reservationId}', name: 'editreservation')]
-    public function editReservation(Request $request, Security $security, EntityManagerInterface $em, RouterInterface $router, Seance $selectedSeance = null, Film $film = null, Reservation $reservation): Response
+    public function editReservation(Request $request, Security $security, EntityManagerInterface $em, RouterInterface $router, Seance $selectedSeance = null, Film $film = null, Reservation $reservation = null): Response
     {
         if ($security->isGranted('ROLE_USER')) {
 

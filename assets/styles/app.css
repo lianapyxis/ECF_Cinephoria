@@ -1420,8 +1420,9 @@ nav.pagination-container{
     border: none;
 }
 #collectionFilms tbody td{
-    padding-bottom: 40px;
+    padding-bottom: 50px;
     padding-left: 0;
+    padding-top: 0;
 }
 #collectionFilms tbody td img{
     margin-right: 30px;
@@ -1487,6 +1488,9 @@ nav.pagination-container{
     padding: 12px 30px;
     min-width: 185px;
 }
+.collection-body-container .dt-search{
+    height: 0;
+}
 .collection-body-container .dt-search input{
     position: absolute;
     right: -40px;
@@ -1494,6 +1498,9 @@ nav.pagination-container{
 }
 .collection-body-container .modal-seance-details{
     display: none;
+}
+.collection-h2{
+    margin-bottom: 30px;
 }
 .dashboard-container{
     display: flex;
@@ -1527,66 +1534,19 @@ nav.pagination-container{
     font-size: 50px;
     margin-top: 20px;
 }
-@media (max-width: 991px) {
-    .navbar .dropdown{
-        display: block;
-    }
-    nav.navbar > div:first-child{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        max-width: 720px;
-        margin: 0 auto;
-        align-items: center;
-    }
-    nav.navbar{
-        max-width: 720px;
-        margin: 0 auto;
-    }
-    nav.navbar ul{
-        width: 35%;
-        float: right;
-    }
-    .dropdown-toggle::after{
-        content: none;
-    }
-    .dropdown-menu[data-bs-popper]{
-        right: 0 !important;
-        left: auto;
-        background: #651b41;
-        min-width: 200px;
-        padding: 20px;
-    }
-
-    .dropdown-menu[data-bs-popper] li a:hover{
-        background: none;
-    }
-    .dropdown-menu[data-bs-popper] li:first-child a,
-    .dropdown-menu[data-bs-popper] li:nth-child(2) a,
-    .dropdown-menu[data-bs-popper] li:nth-child(3) a,
-    .dropdown-menu[data-bs-popper] li:nth-child(4):not(.connexion-btn) a{
-        color: #fff;
-        padding: 0;
-        margin-bottom: 15px;
-    }
-    .dropdown-menu[data-bs-popper] li:first-child a:hover,
-    .dropdown-menu[data-bs-popper] li:nth-child(2) a:hover,
-    .dropdown-menu[data-bs-popper] li:nth-child(3) a:hover,
-    .dropdown-menu[data-bs-popper] li:nth-child(4):not(.connexion-btn) a:hover{
-        color: #EC4186;
-    }
-    .connexion-btn {
-        padding: 8px 10px;
-    }
-    .navbar button.dropdown-toggle{
-        background: #651b41;
-        border: none;
-    }
-    .navbar button.dropdown-toggle:hover{
-        background: #49142f;
-    }
-    .navbar button.dropdown-toggle span{
-        color: #fff;
-    }
+.dashboard-canvas-container{
+    margin-top: 100px;
+    border: 2px solid #EC4186;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+table.my-reservations-table tbody .btn.btn-primary{
+    height: 54px;
+    padding: 4px 15px;
+    align-content: center;
+    max-width: 250px;
+}
+.link-account-mobile{
+    display: none;
 }

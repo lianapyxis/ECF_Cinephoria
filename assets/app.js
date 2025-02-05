@@ -9,6 +9,7 @@ import './bootstrap.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
+import './styles/app-responsive.css';
 
 /*
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');*/
@@ -17,6 +18,10 @@ import jquery from './vendor/jquery/jquery.index.js';
 
 import DataTable from './vendor/datatables.net/datatables.net.index.js'
 
+import { Chart, registerables } from './vendor/chart.js/chart.js.index.js';
+
+Chart.register(...registerables);
+
 const $ = jquery;
 window.$ = window.jQuery = $;
 $(window).on('turbo:load', function(){
@@ -24,10 +29,10 @@ $(window).on('turbo:load', function(){
     let setCity = localStorage.getItem("cinephoria_city");
 
     if(setCity == null) {
-        localStorage.setItem("cinephoria_city", "all");
+        localStorage.setItem("cinephoria_city", "Toutes les villes");
         $(".selected-city").text("Toutes les villes")
     } else {
-        if(setCity == "all") {
+        if(setCity == "Toutes les villes") {
             $(".selected-city").text("Toutes les villes")
         } else {
             $(".selected-city").text(setCity)
@@ -339,7 +344,7 @@ $(window).on('turbo:load', function(){
             $(this).attr("selected", false)
         }
         table4.$(".city-seance").each(function(){
-            if(selectedCity == "all") {
+            if(selectedCity == "Toutes les villes") {
                 $(this).parent().parent().removeClass("hidden-filter-city")
             } else if($(this).val().indexOf(selectedCity) < 0){
                 $(this).parent().parent().addClass("hidden-filter-city")
@@ -687,7 +692,7 @@ $(window).on('turbo:load', function(){
         let city = $(this).find("option:selected").val()
         localStorage.setItem("cinephoria_city", city);
         table4.$(".city-seance").each(function(){
-            if(city == "all") {
+            if(city == "Toutes les villes") {
                 $(this).parent().parent().removeClass("hidden-filter-city")
             } else if($(this).val().indexOf(city) < 0){
                     $(this).parent().parent().addClass("hidden-filter-city")
@@ -759,7 +764,8 @@ $(window).on('turbo:load', function(){
         let places = $(".reservation-selected-places").text().split(",")
         let reservationId = $("#reservationId").val()
 
-        if(reservationId.length > 0) {
+
+        if(typeof reservationId !== 'undefined') {
             $.ajax({
                 type: "POST",
                 url: "/seances/editBook",
@@ -1115,9 +1121,11 @@ $(window).on('turbo:load', function(){
             $(this).attr("selected", false)
         }
 
-        table5.search(function (d) {
-            return d.includes(cityTitle);
-        }).draw()
+        if(cityTitle !== 'Toutes les villes'){
+            table5.search(function (d) {
+                return d.includes(cityTitle);
+            }).draw()
+        }
     })
     $(".collection-body-container .filter-city-seances select#city_select_seances").on("change", function(){
 
@@ -1374,7 +1382,47 @@ $(window).on('turbo:load', function(){
 
     if(typeof $(".js-dashboard").attr("data-dashboard") !== 'undefined'){
         let dataDashboard = JSON.parse($(".js-dashboard").attr("data-dashboard"))
-        console.log(dataDashboard)
+
+        var ctx = $("#dashboard-chart")
+        const data = Object.entries(dataDashboard).map(([name, obj]) => ({ name, ...obj }))
+
+        const chartAreaBorder = {
+            id: 'chartAreaBorder',
+            beforeDraw(chart, args, options) {
+                const {ctx, chartArea: {left, top, width, height}} = chart;
+                ctx.save();
+                ctx.strokeStyle = options.borderColor;
+                ctx.lineWidth = options.borderWidth;
+                ctx.setLineDash(options.borderDash || []);
+                ctx.lineDashOffset = options.borderDashOffset;
+                ctx.strokeRect(left, top, width, height);
+                ctx.restore();
+            }
+        };
+
+        let myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(row => row.date),
+                datasets: [
+                    {
+                        label: 'Nombre de réservations par jour',
+                        data: data.map(row => row.nmrReservations),
+                        borderColor: 'rgb(236, 65, 134)',
+                    }
+                ],
+            },
+            options: {
+                plugins: {
+/*                    chartAreaBorder: {
+                        borderColor: 'rgb(236, 65, 134)',
+                        borderWidth: 1,
+                        borderDashOffset: 0,
+                    },*/
+                }
+            },
+            plugins: [chartAreaBorder]
+        });
     }
 
 })

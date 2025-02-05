@@ -21,7 +21,7 @@
         'form/template.html.twig'
     ]%}
 
-    <div class="form-film" id="form-user">
+    <div class="form-film form-mon-compte" id="form-user">
         {{ form_start(form) }}
 
         <div>
@@ -38,7 +38,7 @@
 
             {{ form_row(form.email) }}
 
-            <a href="{{ path('films_list') }}" class="btn btn-primary">Retour</a>
+            <a href="{{ path('films_list') }}" class="btn btn-primary retour-mon-compte">Retour</a>
         </div>
         <div class="form-custom-column-container">
             <div class="form-custom-column">

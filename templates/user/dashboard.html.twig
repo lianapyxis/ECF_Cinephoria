@@ -48,9 +48,11 @@
         </div>
     </div>
 </div>
-
     <div class="js-dashboard"
          data-dashboard="{{ nmbReservationPerDay|serialize(format = 'json') }}">
     </div>
-
+    <div class="dashboard-canvas-container">
+        <h3>NOMBRE DE RÉSERVATIONS LES DERNIERS 7 JOURS</h3>
+        <canvas id="dashboard-chart" width="1280" height="600"></canvas>
+    </div>
 {% endblock %}

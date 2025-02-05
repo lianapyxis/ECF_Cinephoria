@@ -2,10 +2,10 @@
 
 
 {% block body %}
-<div class="collection-body-container">
-    <div>
-        <h2>FILMS</h2>
+    <h2 class="collection-h2">FILMS</h2>
 
+    <div class="collection-body-container">
+    <div>
         <table class="table" id="collectionFilms">
             <thead>
             <tr>
@@ -40,7 +40,7 @@
                                             {% endif %}
                                         </div>
                                         {% if film.staffFavourite %}
-                                            <img src="{{ asset('images/staff_favourite.svg') }}" alt="coup de coeur" width="130px" height="40px">
+                                            <img src="{{ asset('images/staff_favourite.svg') }}" alt="coup de coeur" width="130px" height="40px" class="staff-favourite-img">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="collection-description">
                                 <p>DESCRIPTION :</p>
-                                <p>{{ film.description }}</p>
+                                <p>{{ film.shortDescription }}</p>
                             </div>
                     </td>
                 </tr>

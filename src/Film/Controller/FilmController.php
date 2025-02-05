@@ -149,6 +149,9 @@ class FilmController extends AbstractController
             $notesQty = count($filmNotes);
             $notesSum = 0;
 
+            $description= substr($film->getDescription(), 0, 400);
+            $film->shortDescription =trim($description).'...';
+
             $seances = $film->getSeances();
             $seancesDates = [];
             $seancesCities = [];

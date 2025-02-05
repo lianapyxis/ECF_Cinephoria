@@ -59,4 +59,10 @@ return [
     'datatables.net' => [
         'version' => '2.2.0',
     ],
+    'chart.js' => [
+        'version' => '4.4.7',
+    ],
+    '@kurkle/color' => [
+        'version' => '0.3.4',
+    ],
 ];

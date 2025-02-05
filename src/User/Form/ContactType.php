@@ -50,16 +50,13 @@ class ContactType extends AbstractType
                     'mapped' => false,
                     'attr' => array('cols' => '5', 'rows' => '10'),
                 ]);
-/*                ->add('submit', SubmitType::class, [
-                    'label' => 'Envoyer',
-                ]);*/
 
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

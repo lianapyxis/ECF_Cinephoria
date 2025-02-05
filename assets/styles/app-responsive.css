@@ -1,0 +1,483 @@
+@media (max-width: 1399px) {
+    .my-reservations-table .btn.btn-primary{
+        height: 54px;
+        padding: 17px 20px;
+    }
+}
+@media (max-width: 1280px) {
+    header{
+        max-width: 1140px;
+        margin: 0 auto 1rem;
+    }
+}
+@media (max-width: 1199px) {
+    header{
+        max-width: 960px;
+    }
+    header .nav-link{
+        margin-left: 50px;
+    }
+    .collection-body-container{
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+        align-items: flex-start;
+    }
+    .collection-body-container .filter-city-seances {
+        margin-top: 65px;
+        margin-left: 0;
+        margin-bottom: 40px;
+    }
+    .collection-body-container .dt-search input {
+        left: 0px;
+        max-width: 200px;
+    }
+    .collection-main-content-title {
+        font-size: 22px;
+    }
+    .my-reservations-table .btn.btn-primary{
+        padding: 0 20px;
+        align-content: center;
+    }
+    .film-info-front > div {
+        margin-right: 30px;
+    }
+}
+@media (max-width: 1024px) {
+/*    header{
+
+    }*/
+}
+@media (max-width: 991px) {
+    .navbar .dropdown {
+        display: block;
+    }
+    nav.navbar > div:first-child {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        align-items: center;
+    }
+
+    nav.navbar {
+        max-width: 720px;
+        margin: 0 auto;
+    }
+
+    nav.navbar ul {
+        width: 35%;
+        float: right;
+    }
+
+    .dropdown-toggle::after {
+        content: none;
+    }
+
+    .dropdown-menu[data-bs-popper] {
+        right: 0 !important;
+        left: auto;
+        background: #651b41;
+        min-width: 200px;
+        padding: 20px;
+    }
+
+    .dropdown-menu[data-bs-popper] li a:hover {
+        background: none;
+    }
+
+    .dropdown-menu[data-bs-popper] li:first-child a,
+    .dropdown-menu[data-bs-popper] li:nth-child(2) a,
+    .dropdown-menu[data-bs-popper] li:nth-child(3) a,
+    .dropdown-menu[data-bs-popper] li:nth-child(4):not(.connexion-btn) a {
+        color: #fff;
+        padding: 0;
+        margin-bottom: 15px;
+    }
+
+    .dropdown-menu[data-bs-popper] li:first-child a:hover,
+    .dropdown-menu[data-bs-popper] li:nth-child(2) a:hover,
+    .dropdown-menu[data-bs-popper] li:nth-child(3) a:hover,
+    .dropdown-menu[data-bs-popper] li:nth-child(4):not(.connexion-btn) a:hover {
+        color: #EC4186;
+    }
+
+    .connexion-btn {
+        padding: 8px 10px;
+    }
+
+    .navbar button.dropdown-toggle {
+        background: #651b41;
+        border: none;
+    }
+
+    .navbar button.dropdown-toggle:hover {
+        background: #49142f;
+    }
+
+    .navbar button.dropdown-toggle span {
+        color: #fff;
+    }
+    .collection-main-content-title {
+        font-size: 18px;
+    }
+    .collection-main-content {
+        flex-direction: column;
+    }
+    .collection-main-content .btn.btn-primary {
+        max-width: 185px;
+    }
+    .collection-main-content-info {
+        margin-bottom: 15px;
+    }
+    .collection-description p:nth-child(2) {
+        font-size: 14px;
+    }
+    .modal-seance-details, .modal-reservation-details, .modal-reservation-confirmation {
+        top: 250px;
+    }
+    .place-type-reserved, .place-type-available, .place-type-handicapped, .place-type-handicapped-reserved {
+        justify-content: space-between;
+        margin-right: 0;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+    .modal-place-types {
+        justify-content: space-between;
+    }
+
+}
+@media (max-width: 767px) {
+    body header{
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+    #collectionFilms tbody td.sorting_1{
+        display: flex;
+        padding-bottom: 25px;
+    }
+    .form-film.form-mon-compte form {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .form-film.form-mon-compte{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .form-film.form-mon-compte form > div {
+        width: 100%;
+    }
+    .retour-mon-compte{
+        position: absolute;
+        top: 1225px;
+    }
+    .form-film.form-mon-compte .btn.btn-primary {
+        margin-top: 0;
+    }
+    .container:has( > .my-account-menu){
+        padding-left: 10px;
+    }
+    .film-page-container {
+        flex-direction: column-reverse;
+    }
+    .filter-city-seances {
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 100%;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+    .filter-city-seances .form-group{
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+    .filter-city-seances .form-group.form-group-places-seance{
+        margin-right: 0;
+    }
+    .film-title-front {
+        font-size: 24px;
+    }
+    .film-description-front > div {
+        font-size: 14px;
+    }
+    .modal-place-types {
+        flex-wrap: wrap;
+    }
+    .modal-seance-details, .modal-reservation-details, .modal-reservation-confirmation {
+        padding: 30px 54px;
+    }
+    .login-container, .register-container {
+        flex-direction: column;
+    }
+    .login-img-container {
+        width: 100%;
+    }
+    .login-container form, .register-form-container {
+        width: 100%;
+    }
+    .login-container form h2, .register-container .register-form-container h2 {
+        font-size: 30px;
+        text-align: center;
+    }
+    .register-img-container {
+        width: 100%;
+    }
+}
+@media (max-width: 599px) {
+    .home-page-body {
+        flex-direction: column-reverse;
+    }
+    .h1{
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .film-container-home{
+        margin-left: 30px;
+        margin-right: 15px;
+    }
+    .home-page-body .filter-city.filter-home,
+    .home-page-body .filter-city.filter-reserver{
+        width: 50%;
+        margin: 0 auto 40px;
+    }
+    footer{
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    footer .timetable div div{
+        white-space: nowrap;
+    }
+    body > div.container {
+        margin-top: 60px;
+    }
+    .contact-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .contact-form-container {
+        flex-direction: column;
+    }
+    .contact-container textarea {
+        margin-bottom: 50px !important;
+    }
+    .my-account-menu .nav-link {
+        font-size: 20px;
+    }
+    .film-page-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .film-info-front-container {
+        flex-direction: column;
+    }
+    .film-info-front-container .film-img{
+        margin-bottom: 25px;
+    }
+    .checkbox-wrapper {
+        margin: 8px 8px;
+    }
+    .modal-seance-details, .modal-reservation-details, .modal-reservation-confirmation {
+        padding: 30px 30px;
+    }
+    .screen-modal span {
+        width: 80%;
+    }
+    .checkbox-wrapper input[type=checkbox] {
+        width: 1.2em;
+    }
+    .modal-reservation-info {
+        flex-direction: column;
+    }
+    .modal-reservation-details .modal-reservation-actions .btn.btn-primary {
+        padding: 5px 30px;
+        align-content: center;
+        font-size: 15px;
+    }
+    .modal-reservation-confirmation .modal-reservation-actions .btn.btn-primary {
+        font-size: 15px;
+    }
+    .login-img-container,
+    .register-img-container{
+        display: none;
+    }
+    .link-account-mobile{
+        display: block;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 20px;
+        transition: all 0.3s ease-out;
+    }
+    .link-account-mobile:hover{
+        color: #EC4186;
+        transition: all 0.3s ease-out;
+    }
+    .login-container form h2, .register-container .register-form-container h2 {
+        margin-bottom: 15px !important;
+        font-size: 26px;
+    }
+    .login-container form, .register-form-container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .login-container form p, .register-container .register-form-container p {
+        font-size: 18px;
+        text-align: center;
+    }
+    .modal-cancellation-confirmation {
+        padding: 60px 10px;
+    }
+}
+
+@media (max-width: 546px) {
+    .films-container-home{
+        justify-content: center;
+    }
+    .film-container-home {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+    footer .timetable {
+        flex-direction: column;
+    }
+    footer .timetable div:first-child{
+        margin-bottom: 25px;
+    }
+    .my-account-menu .nav-link {
+        font-size: 18px;
+        white-space: nowrap;
+    }
+    .checkbox-wrapper input[type=checkbox] {
+        width: 1.1em;
+    }
+    .modal-seance-details, .modal-reservation-details, .modal-reservation-confirmation {
+        top: 220px;
+    }
+    .modal-seance-details .modal-places {
+        overflow-x: scroll;
+    }
+    .modal-reservation-confirmation .modal-reservation-actions{
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .modal-reservation-confirmation .modal-reservation-actions .btn.btn-primary {
+        max-width: 240px;
+        padding: 10px 10px;
+    }
+    .modal-reservation-confirmation .modal-reservation-actions a:first-child{
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .reservation-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .reservation-actions {
+        margin-top: 25px;
+    }
+    .reservation-actions-0 {
+        margin-bottom: 20px;
+    }
+    .reservation-actions .btn.btn-primary {
+        max-width: 250px;
+    }
+    .reservation-info-container {
+        width: 90%;
+        margin-right: 0;
+    }
+    .h4-my-reservation{
+        text-align: center;
+    }
+    #collectionFilmSeances{
+        overflow: scroll;
+    }
+}
+@media (max-width: 400px) {
+    .navbar-brand img{
+        width: 100%;
+        height: auto;
+    }
+    .my-account-menu .nav-link {
+        font-size: 16px;
+        padding: 4px;
+    }
+    .form-mon-compte .film-form-actions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+    .retour-mon-compte {
+        top: 1300px;
+    }
+    .form-film.form-mon-compte{
+        margin-bottom: 150px;
+    }
+    .form-film.form-mon-compte .film-form-actions .btn.btn-primary{
+        padding: 15px 27px;
+    }
+    .modal-seance-details, .modal-reservation-details, .modal-reservation-confirmation {
+        top: 170px;
+    }
+    .modal-reservation-details .modal-reservation-actions {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .modal-reservation-details .modal-reservation-actions .btn.btn-primary {
+        margin-bottom: 20px;
+    }
+    .modal-reservation-details .modal-reservation-actions div.reservation-action-return{
+        margin-right: 0;
+    }
+    .reservation-title {
+        font-size: 22px;
+    }
+    .modal-reservation-info-column > div {
+        margin-bottom: 10px;
+    }
+    .modal-reservation-confirmation .reservation-title {
+        font-size: 18px;
+        text-align: left;
+    }
+    .cancellation-actions {
+        padding: 0;
+    }
+    .staff-favourite-img{
+        margin-top: 5px;
+    }
+    .collection-main-content-info div:nth-child(2){
+        flex-wrap: wrap;
+    }
+    nav[aria-label=pagination] {
+        float: none;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 320px) {
+    #collectionFilms tbody td.sorting_1 {
+        max-width: 95%;
+        padding-left: 10px;
+    }
+    #collectionFilms tbody td.collection-main-content-container{
+        max-width: 90%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .collection-description p:nth-child(2){
+        max-width: 90%;
+    }
+    #collectionFilms tbody td img{
+        max-width: 280px;
+        margin-left: 6px;
+    }
+    .my-account-menu .nav-link {
+        font-size: 14px;
+        padding: 3px;
+    }
+    .form-film.form-mon-compte .form-group:has(#current_password),
+    .form-film.form-mon-compte .form-group:has(#user_password_first),
+    .form-film.form-mon-compte .form-group:has(#user_password_second){
+        min-width: 200px;
+    }
+}

@@ -14,6 +14,7 @@ use App\User\Form\ContactType;
 use App\Entity\Seance;
 use App\Entity\Film;
 use App\Entity\User;
+use App\Controller\MailerController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -22,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -415,12 +417,26 @@ class UserController extends AbstractController
     }
 
     #[Route('/contact', name: 'contact')]
-    public function contact(RouterInterface $router, Request $request, EntityManagerInterface $em, User $user = null): Response {
+    public function contact(RouterInterface $router, Request $request, EntityManagerInterface $em, User $user = null, MailerController $mailer, MailerInterface $mailerInt): Response {
 
         $form = $this->createForm(ContactType::class, $user, [
             'action' => $router->generate('users_contact'),
             'attr' => ['data-turbo-frame' => '_top']
         ]);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $email = $request->request->all();
+            dump($email);
+            $firstname = $email['contact']['firstname'];
+            $lastname = $email['contact']['lastname'];
+            $senderEmail = $email['contact']['email'];
+            $subject = $email['contact']['object'];
+            $message = $email['contact']['message'];
+
+            if(!empty($firstname) AND !empty($lastname) AND !empty($senderEmail) AND !empty($subject) AND !empty($message)) {
+                $mailer->sendEmail($mailerInt, $firstname, $lastname, $senderEmail, $subject, $message);
+            }
+        }
 
         return $this->render('user/contact.html.twig', [
             'form' => $form,
@@ -466,15 +482,18 @@ class UserController extends AbstractController
 
             $nmbReservationPerDay = [];
 
-            for($i = 1; $i < 8; $i++) {
+            $keyObj = 0;
+            for($i = 7; $i > 0; $i--) {
                 $dayPrecision = "-".$i." days";
                 $datePoint =  date("Y-m-d",strtotime($dayPrecision));
-                $nmbReservationPerDay[$i] = 0;
+                $nmbReservationPerDay[$keyObj]['date'] = date("d.m.Y",strtotime($dayPrecision));
+                $nmbReservationPerDay[$keyObj]['nmrReservations'] = 0;
                 foreach ($allReservations as $reservation) {
                     if($reservation->getDateAdd()->format("Y-m-d") == $datePoint) {
-                        $nmbReservationPerDay[$i]++;
+                        $nmbReservationPerDay[$keyObj]['nmrReservations']++;
                     }
                 }
+                $keyObj++;
             }
 
             return $this->render('user/dashboard.html.twig', [

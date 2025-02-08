@@ -210,7 +210,10 @@
     .login-container, .register-container {
         flex-direction: column;
     }
-    .login-img-container {
+    .login-img-container,
+    .register-img-container,
+    .passwordrestauration-img-container
+    {
         width: 100%;
     }
     .login-container form, .register-form-container {
@@ -219,9 +222,6 @@
     .login-container form h2, .register-container .register-form-container h2 {
         font-size: 30px;
         text-align: center;
-    }
-    .register-img-container {
-        width: 100%;
     }
 }
 @media (max-width: 599px) {
@@ -298,7 +298,8 @@
         font-size: 15px;
     }
     .login-img-container,
-    .register-img-container{
+    .register-img-container,
+    .passwordrestauration-img-container{
         display: none;
     }
     .link-account-mobile{

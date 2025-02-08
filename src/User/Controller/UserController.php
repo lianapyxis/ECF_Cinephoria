@@ -11,6 +11,8 @@ use App\Seance\Repository\SeanceRepository;
 use App\User\Repository\UserRepository;
 use App\User\Form\UserType;
 use App\User\Form\ContactType;
+use App\User\Form\PasswordRestaurationType;
+use App\User\Form\NewPasswordType;
 use App\Entity\Seance;
 use App\Entity\Film;
 use App\Entity\User;
@@ -27,6 +29,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -352,7 +355,6 @@ class UserController extends AbstractController
     #[Route('/register/{user}', name: 'register')]
     public function create(RouterInterface $router, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ?User $user = null): Response
     {
-
         $user= new User();
         $role = ["ROLE_USER"];
         $user->setRoles($role);
@@ -425,8 +427,8 @@ class UserController extends AbstractController
         ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+
             $email = $request->request->all();
-            dump($email);
             $firstname = $email['contact']['firstname'];
             $lastname = $email['contact']['lastname'];
             $senderEmail = $email['contact']['email'];
@@ -439,6 +441,94 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/contact.html.twig', [
+            'form' => $form,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/passwordrestauration', name: 'passwordrestauration')]
+    public function passwordrestauration(RouterInterface $router, Request $request, EntityManagerInterface $em,UserRepository $userRepository, User $user = null, MailerController $mailer, MailerInterface $mailerInt): Response {
+
+        $form = $this->createForm(PasswordRestaurationType::class, $user, [
+            'action' => $router->generate('users_passwordrestauration'),
+            'attr' => ['data-turbo-frame' => '_top']
+        ]);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $request->request->all();
+            $putEmail = $data['password_restauration']['email'];
+            $userSearch = $userRepository->findOneByEmail($putEmail);
+
+            if($userSearch !== null){
+                $receiverEmail = $userSearch->getEmail();
+                $subject = 'Réinitialisation de votre mot de passe';
+
+                $emailToken = base64_encode(serialize($receiverEmail));
+                $link = $this->generateUrl(
+                    'users_newpassword', [
+                    'token'=>$emailToken
+                ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+
+                $message = 'Bonjour,<br><br>
+                Vous pouvez créer votre nouveau mot de passe en cliquant sur le lien suivant:
+                '.$link;
+
+
+                if(!empty($receiverEmail ) AND !empty($subject) AND !empty($message)) {
+                    $mailer->sendPasswordRestore($mailerInt, $receiverEmail, $subject, $message);
+                }
+            }
+
+        }
+
+        return $this->render('user/passwordrestauration.html.twig', [
+            'form' => $form,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/newpassword', name: 'newpassword')]
+    public function newpassword(RouterInterface $router, Request $request, EntityManagerInterface $em,UserRepository $userRepository, User $user = null, UserPasswordHasherInterface $passwordHasher, MailerController $mailer, MailerInterface $mailerInt): Response {
+
+        $receivedToken = $request->get("token");
+        if(!empty($receivedToken)) {
+            $receivedEmail = unserialize(base64_decode($receivedToken));
+            $userSearch = $userRepository->findOneByEmail($receivedEmail);
+        } else {
+            $receivedEmail = $_POST['new_password']['email'];
+            $userSearch = $userRepository->findOneByEmail($receivedEmail);
+        }
+
+        $user = $userSearch;
+
+        $form = $this->createForm(NewPasswordType::class, $user, [
+            'action' => $router->generate('users_newpassword'),
+            'attr' => ['data-turbo-frame' => '_top']
+        ]);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $data = $request->request->all();
+            $putPassword = $data['new_password']['password'];
+
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $putPassword
+            );
+            $user->setPassword($hashedPassword);
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'Le mot de passe a été modifié' );
+
+            return $this->redirectToRoute('app_login');
+
+        }
+
+        return $this->render('user/newpassword.html.twig', [
             'form' => $form,
             'user' => $user,
         ]);

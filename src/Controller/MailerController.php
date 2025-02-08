@@ -37,4 +37,25 @@ class MailerController extends AbstractController
         }
 
     }
+
+    #[Route('/email')]
+    public function sendPasswordRestore(MailerInterface $mailer, $receiverEmail, $subject, $message): string
+    {
+        $email = (new Email())
+            ->from(Address::create('Cinephoria <cinephoriaNotReal@gmail.com>'))
+            ->to($receiverEmail)
+            ->subject($subject)
+            ->html($message);
+
+        try {
+            $mailer->send($email);
+            echo "L'envoi est réussi";
+            return true;
+
+        } catch (TransportExceptionInterface $e){
+
+            return $e->getMessage();
+        }
+
+    }
 }

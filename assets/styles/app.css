@@ -603,8 +603,19 @@ table.table{
     height: auto;
     padding: 375px 70px;
 }
+.passwordrestauration-img-container{
+    background: url("../images/forgotten-password-img.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    width: 50%;
+    height: auto;
+    padding: 200px 70px;
+}
 .login-img-container h1,
-.register-img-container h1{
+.register-img-container h1,
+.passwordrestauration-img-container h1
+{
     font-weight: 600;
     margin-bottom: 40px;
 }
@@ -703,6 +714,18 @@ form input.form-control:-internal-autofill-selected{
 }
 .register-container form .show-password{
     bottom: 0;
+}
+#passwordrestauration_submit{
+    max-width: 250px;
+}
+.forgotten-password-btn-container,
+.new-password-btn-container{
+    text-align: center;
+    margin-top: 50px;
+}
+.register-container form .new-password-btn-container .btn.btn-primary{
+    max-width: 300px;
+    padding: 10px;
 }
 .modal-comment-details{
     position: fixed;

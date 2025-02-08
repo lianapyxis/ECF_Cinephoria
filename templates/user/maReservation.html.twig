@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+
+        <h1 class="h1-espace">MON ESPACE</h1>
+        <div class="my-account-menu">
+            <ul class="nav nav-my-account">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('users_myaccount', {'id': app.user.id}) }}">Mes informations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('users_reservations', {'id': app.user.id}) }}">Mes réservations</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <h4 class="h4-my-reservation">INFORMATIONS SUR LA RÉSERVATION :</h4>
+
+    <div class="reservation-container">
+        <div class="reservation-info-container">
+            <div>CINÉMA :   {{ reservation.city.getTitle }}</div>
+            <div>TITRE :   {{ reservation.film.getTitle }} ({{ reservation.film.getYear }})</div>
+            <div>DATE :   {{ reservation.heure|date('d.m.Y') }}</div>
+            <div>HEURE :   {{ reservation.heure|date('H:i') }}</div>
+            <div>FORMAT :   {{ reservation.format }}</div>
+            <div>SIÈGE(s) :
+                {% if reservation.places|length > 1 %}
+                    {% for place in reservation.places|slice(0, (reservation.places|length - 1)) %}
+                        {{ place }},
+                    {% endfor %}
+                    {% for place in reservation.places|slice((reservation.places|length - 1), (reservation.places|length)) %}
+                        {{ place }}
+                    {% endfor %}
+                {% else %}
+                    {% for place in reservation.places %}
+                        {{ place }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div>TOTAL COST TTC : {{ reservation.costTotal }}€</div>
+        </div>
+        <div class="reservation-actions">
+            <div class="reservation-actions-0">
+                <a href="{{ path('seances_editreservation', {'id': reservation.getIdSeance.id, 'reservationId' : reservation.id}) }}" class="btn btn-primary">MODIFIER<br>LA RÉSERVATION</a>
+                <div class="btn btn-primary cancel-reservation">ANNULER<br>LA RÉSERVATION</div>
+            </div>
+            <a href="{{ path('users_reservations', {'id': app.user.id}) }}" class="btn btn-primary">VOIR TOUTES MES RÉSERVATIONS</a>
+        </div>
+    </div>
+    <div class="modal-cancellation-confirmation">
+        <div><strong>Vous êtes sûr(e)<br>que vous vous voulez annuler cette réservation?</strong></div>
+        <div class="cancellation-actions">
+            <div class="btn btn-primary cancel-cancellation">NON</div>
+            <a href="{{ path('users_cancelreservation', {'id': reservation.id}) }}" class="btn btn-primary">OUI</a>
+        </div>
+    </div>
+
+
+{% endblock %}

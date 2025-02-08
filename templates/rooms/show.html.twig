@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <film class="card">
+        <div class="card-header">
+            <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-rounded" width="364px" height="437px"/>
+            <h2>{{ film.title }}</h2>
+            {% for filmGenre in film.genres %}
+                <h5>{{ filmGenre.name }}</h5>
+            {% endfor %}
+{#            {% if is_granted('ROLE_ADMIN') and film.status == film_draft %}
+                <a href="{{ path('admin_films_validate', {'id': film.id}) }}">Valider</a>
+            {% endif %}#}
+        </div>
+
+        <div class="card-body">
+            {{ film.description }}
+        </div>
+
+{#        <div class="card-footer text-muted">
+            {% if film.publishedAt %}
+                <p>film publié le {{ film.publishedAt }}</p>
+            {% else %}
+                <p>{{ film.status | trans }}</p>
+            {% endif %}
+        </div>#}
+        <div class="card-footer text-muted">
+            <p>Film publié le {{ film.dateAdd|date('d/m/Y H/i') }}</p>
+        </div>
+    </film>
+{#    {% if film_published == film.status and app.user%}#}
+    <a href="{{ path('comments_create', {'film': film.id}) }}" data-turbo-frame="comment">
+        Ajouter un commentaire
+    </a>
+    <turbo-frame id="comment"></turbo-frame>
+{#    {% endif %}#}
+
+    <div class="mt-3">
+
+        {% for comment in film.comments %}
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p>{{ comment.comment }}</p>
+                </div>
+                <div class="card-footer">
+                    Publié par {{ comment.user.username }} à {{ comment.publishedAt|date('d/m/Y H/i') }}
+                    {% if is_granted('delete', comment) %}
+                        <a href="{{ path('comments_delete', {'id': comment.id}) }}">Supprimer</a>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% else %}
+            <div class="card">
+                <div class="card-body">
+                    <p>Aucun commentaire</p>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+
+    <h1 class="h1-espace">MON ESPACE</h1>
+    <div class="my-account-menu">
+        <ul class="nav nav-my-account">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('users_myaccount', {'id': app.user.id}) }}">Mes informations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('users_reservations', {'id': app.user.id}) }}">Mes réservations</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+    {% form_theme form with[
+        'form/template.html.twig'
+    ]%}
+
+    <div class="form-film form-mon-compte" id="form-user">
+        {{ form_start(form) }}
+
+        <div>
+            {% if not is_create %}
+                <input type="hidden" name="current_id" id="current_id" value="{{ user.id }}">
+            {% else %}
+                <input type="hidden" name="current_id" id="current_id" value="">
+            {% endif %}
+            {{ form_row(form.firstname) }}
+
+            {{ form_row(form.lastname) }}
+
+            {{ form_row(form.username) }}
+
+            {{ form_row(form.email) }}
+
+            <a href="{{ path('films_list') }}" class="btn btn-primary retour-mon-compte">Retour</a>
+        </div>
+        <div class="form-custom-column-container">
+            <div class="form-custom-column">
+                {% if not is_create %}
+                    <div class="form-group">
+                        <label for="current_password">Mot de passe actuel :</label>
+                        <input type="password" name="current_password" id="current_password">
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="user_password_first">Nouveau mot de passe :</label>
+                    <input type="password" id="user_password_first" name="user_password_first" {{ is_create ? 'required' }}>
+                </div>
+                <div class="form-group">
+                    <label for="user_password_second">Répétez le nouveau mot de passe :</label>
+                    <input type="password" id="user_password_second" name="user_password_second" {{ is_create ? 'required' }}>
+                </div>
+
+            </div>
+
+
+            <div class="film-form-actions">
+                    <div></div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

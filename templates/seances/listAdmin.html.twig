@@ -1,0 +1,44 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <div class="btn-create">
+        {% if is_granted('create') %}
+            <a href="{{ path('seances_create') }}" class="btn btn-primary">Créer une séance</a>
+        {% endif %}
+    </div>
+
+    <table class="table" id="adminSeances">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>TITRE(ANNÉe)</th>
+            <th>SALLE</th>
+            <th>DATE</th>
+            <th>HEURE</th>
+            <th>FORMAT</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for seance in seances %}
+            <tr>
+                <td>{{ seance.id }}</td>
+                <td>{{ seance.getIdFilm.title }}</td>
+                <td>{{ seance.getIdRoom.title }}</td>
+                <td>{{ seance.getTimeStart|date('d.m.Y') }}</td>
+                <td>{{ seance.getTimeStart|date('H:i') }} - {{ seance.getTimeEnd|date('H:i') }}</td>
+                <td>{{ seance.getIdRoom.getFormat.title }}</td>
+                <td>
+                    {% if is_granted('edit', seance) %}
+                        <a href="{{ path('seances_edit', {'id': seance.id}) }}" class="btn btn-primary">Modifier</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">Aucune séance trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

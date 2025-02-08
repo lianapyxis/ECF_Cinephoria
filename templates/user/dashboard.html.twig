@@ -1,0 +1,58 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+<div class="dashboard-container">
+    <div class="dashboard-item">
+        <div class="dashboard-item-title">
+            NOMBRE DE RÉSERVATIONS AUJOURD’HUI :
+        </div>
+        <div>
+            <img src="{{ asset('images/star_dashboard.svg') }}" alt="star dashboard">
+        </div>
+        <div class="dashboard-number">
+            {{ nmbReservationsToday }}
+        </div>
+    </div>
+    <div class="dashboard-item">
+        <div class="dashboard-item-title">
+            NOMBRE DE RÉSERVATIONS LES DERNIERS 7 JOURS :
+        </div>
+        <div>
+            <img src="{{ asset('images/star_dashboard.svg') }}" alt="star dashboard">
+        </div>
+        <div class="dashboard-number">
+            {{ nmbReservationsThisWeek }}
+        </div>
+    </div>
+    <div class="dashboard-item">
+        <div class="dashboard-item-title">
+            NOMBRE DE RÉSERVATIONS CETTE ANNÉE :
+        </div>
+        <div>
+            <img src="{{ asset('images/star_dashboard.svg') }}" alt="star dashboard">
+        </div>
+        <div class="dashboard-number">
+            {{ nmbReservationsThisYear }}
+        </div>
+    </div>
+    <div class="dashboard-item">
+        <div class="dashboard-item-title">
+            NOMBRE DE SÉANCES CETTE ANNÉE :
+        </div>
+        <div>
+            <img src="{{ asset('images/star_dashboard.svg') }}" alt="star dashboard">
+        </div>
+        <div class="dashboard-number">
+            {{ nmbSeancesThisYear }}
+        </div>
+    </div>
+</div>
+    <div class="js-dashboard"
+         data-dashboard="{{ nmbReservationPerDay|serialize(format = 'json') }}">
+    </div>
+    <div class="dashboard-canvas-container">
+        <h3>NOMBRE DE RÉSERVATIONS LES DERNIERS 7 JOURS</h3>
+        <canvas id="dashboard-chart" width="1280" height="600"></canvas>
+    </div>
+{% endblock %}

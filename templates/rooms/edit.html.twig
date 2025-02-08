@@ -1,0 +1,65 @@
+{% extends app.user.getRoles[0] == 'ROLE_ADMIN' ? 'baseAdmin.html.twig' : 'baseStaff.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <h2 class="form-film-h2">{{ is_create ? 'Ajouter une salle' : 'ID ' ~ room.id }}</h2>
+
+    <div class="form-film">
+        {{ form_start(form) }}
+
+        <div>
+            {{ form_row(form.title) }}
+
+            {{ form_row(form.id_city) }}
+
+            {{ form_row(form.format) }}
+
+            {{ form_row(form.number_seats) }}
+
+            {{ form_row(form.number_rows) }}
+
+
+            <a href="{{ path('rooms_list') }}" class="btn btn-primary">Retour</a>
+        </div>
+        <div class="form-custom-column-container">
+            <div class="form-custom-column">
+                {{ form_row(form.typeSeats) }}
+
+                <label for="room-input-special-place">Les numéros des sièges mobilité réduite : (divisez par “,” afin de mettre un autre numéro)</label>
+                <div class='room-input-special-place form-control mb-3'>
+                    <div class="custom-tags">
+                        {% if room.specialPlaces %}
+                            {% for specialPlace in room.specialPlaces %}
+                                <span>{{ specialPlace.place }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <input type="text" class="form-control input-tag-custom" id="input-tag-custom">
+                </div>
+                <div class="roomSpecialPlaces">
+                    {% for specialPlace in form.specialPlaces %}
+                        {{ form_row(specialPlace.place) }}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="film-form-actions">
+                {% if not is_create %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('rooms_delete', {'id': room.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                    {% endif %}
+                {% else %}
+                    <div class="btn-delete-film"></div>
+                {% endif %}
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

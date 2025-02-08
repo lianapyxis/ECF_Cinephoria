@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <h2 class="form-film-h2">{{ is_create ? 'Ajouter un employé' : 'ID ' ~ user.id }}</h2>
+
+    <div class="form-film" id="form-user">
+        {{ form_start(form) }}
+
+        <div>
+            {{ form_row(form.id) }}
+
+            {% if not is_create %}
+                <input type="hidden" name="current_id" id="current_id" value="{{ user.id }}">
+            {% else %}
+                <input type="hidden" name="current_id" id="current_id" value="">
+            {% endif %}
+            {{ form_row(form.firstname) }}
+
+            {{ form_row(form.lastname) }}
+
+
+            {{ form_row(form.username) }}
+
+            {{ form_row(form.email) }}
+
+            <a href="{{ path('users_list') }}" class="btn btn-primary">Retour</a>
+        </div>
+        <div class="form-custom-column-container">
+            <div class="form-custom-column">
+                {% if not is_create %}
+                <div class="form-group">
+                    <label for="current_password">Mot de passe actuel :</label>
+                    <input type="password" name="current_password" id="current_password">
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="user_password_first">Nouveau mot de passe :</label>
+                    <input type="password" id="user_password_first" name="user_password_first" {{ is_create ? 'required' }}>
+                </div>
+                <div class="form-group">
+                    <label for="user_password_second">Répétez le nouveau mot de passe :</label>
+                    <input type="password" id="user_password_second" name="user_password_second" {{ is_create ? 'required' }}>
+                </div>
+
+            </div>
+
+
+            <div class="film-form-actions">
+                {% if not is_create %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('users_delete', {'id': user.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                    {% endif %}
+                {% else %}
+                    <div class="btn-delete-film"></div>
+                {% endif %}
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

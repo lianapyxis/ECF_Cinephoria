@@ -1,0 +1,285 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <film class="card">
+        <div class="card-header">
+
+            <h2 class="film-title-front">{{ film.title }} ({{ film.year }})</h2>
+            <div class="film-note"></div>
+            <div class="film-info-front-container">
+                <div class="film-img">
+                    <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film-front" width="250px" height="250px"/>
+                </div>
+                <div class="film-info-front">
+                    <div><span>GENRE :</span>
+                        {% if film.genres|length > 1 %}
+                            {% for genre in film.genres|slice(0, (film.genres|length - 1)) %}
+                                {{ genre.name }},
+                            {% endfor %}
+                            {% for genre in film.genres|slice((film.genres|length - 1), (film.genres|length)) %}
+                                {{ genre.name }}
+                            {% endfor %}
+                        {% else %}
+                            {% for genre in film.genres %}
+                                {{ genre.name }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <span>FORMATS :</span>
+                        {% if formats|length > 1 %}
+                            {% for format in formats|slice(0, (formats|length - 1)) %}
+                                {{ format }},
+                            {% endfor %}
+                            {% for format in formats|slice((formats|length - 1), (formats|length)) %}
+                                {{ format }}
+                            {% endfor %}
+                        {% else %}
+                            {% for format in formats %}
+                                {{ format }}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="film-description-front">
+                        <span>DESCRIPTION :</span>
+                        <div>{{ film.description }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-4">SÉANCES :</h4>
+            <table class="table" id="frontSeances">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Heure</th>
+                    <th>Format</th>
+                    <th>Places restants</th>
+                    <th>Prix</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for seance in seances %}
+                    <tr>
+                        <td>{{ seance.getTimeStart|date('d.m.Y') }}</td>
+                        <td>{{ seance.getTimeStart|date('H:i') }}-{{ seance.getTimeEnd|date('H:i') }}</td>
+                        <td>{{ seance.getIdRoom.getFormat.title }}</td>
+                        <td>{{ seance.restingPlaces }}</td>
+                        <td>{{ seance.getPriceTtc }}€</td>
+                        <td>
+                            <div class="btn btn-primary show-seance-details">SÉLÉCTIONNER LES SIÈGES</div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="12">Aucune séance trouvée</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </film>
+
+    <h5 class="comment-title-front">COMMENTAIRES :</h5>
+
+
+
+    <div class="mt-3 mb-5">
+
+        {% for comment in film.comments %}
+
+            {% if comment.getStatus == 'PUBLISHED' %}
+                <div class="card mt-3">
+                    <div class="card-header comment-front">
+                        <div>
+                            {{ comment.user.username }}
+                        </div>
+                        <div>
+                            {{ comment.getdateAdd|date('d/m/Y H/i') }}
+                        </div>
+                    </div>
+                    <div class="card-body comment-front-content">
+                        <p>{{ comment.comment }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="card">
+                <div>
+                    <p>Aucun commentaire</p>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    {% if app.user%}
+        <a href="{{ path('comments_create', {'film': film.id}) }}" data-turbo-frame="comment" class="btn-add-comment mt-3">
+            Ajouter un commentaire...
+        </a>
+    {% endif %}
+    <div class="modal-seance-details">
+        <div>
+            <a href="{{ path('films_show', {'id': selectedSeance.getIdFilm.id}) }}"><div class="button-seance-close">X</div></a>
+        </div>
+        <div class="modal-seance-info">
+            <div class="modal-seance-info-column">
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-date">{{ selectedSeance.getTimeStart|date('d.m.Y') }}</span></div>
+                <div><span class="title-detail-reservation">HEURE :</span> <span class="seance-info-hour">{{ selectedSeance.getTimeStart|date('H:i') }}</span></div>
+                <div><span class="title-detail-reservation">FORMAT :</span> <span class="seance-info-format">
+                            {% if formatsSelected|length > 1 %}
+                                {% for format in formatsSelected|slice(0, (formatsSelected|length - 1)) %}
+                                    {{ format }},
+                                {% endfor %}
+                                {% for format in formatsSelected|slice((formatsSelected|length - 1), (formatsSelected|length)) %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% else %}
+                                {% for format in formatsSelected %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% endif %}
+                    </span></div>
+                <input type="hidden" class="selected-seance-price" value="{{ selectedSeance.getPriceTtc }}">
+            </div>
+        </div>
+        <div class="modal-seance-places">
+            <div>SÉLÉCTIONNEZ DES SIÈGES :</div>
+            <div class="modal-place-types">
+                <div class="place-type-reserved"><span></span>SIÈGE RÉSERVÉ</div>
+                <div class="place-type-available"><span></span>SIÈGE DISPONIBLE</div>
+                <div class="place-type-handicapped"><span></span>SIÈGE MOBILITÉ RÉDUITE DISPONIBLE</div>
+                <div class="place-type-handicapped-reserved"><span></span>SIÈGE MOBILITÉ RÉDUITE RÉSERVÉ</div>
+            </div>
+            <div class="screen-modal"><span></span></div>
+            <div class="modal-places">
+                {% for row in selectedSeance.allPlaces %}
+                    <div class="room-row">
+                        {% for place in row %}
+                            {% if place.reserved == 1 and place.toedit == 0 %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                        <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="{{ place.reserved }}" data-special="{{ place.special }}" disabled>
+                                        <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
+                            {% elseif place.toedit == 1 %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                        <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="0" data-special="{{ place.special }}" checked>
+                                        <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
+                            {% else %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                        <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="{{ place.reserved }}" data-special="{{ place.special }}">
+                                        <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if isEdit %}
+            <input type="hidden" value="{{ reservationId }}" id="reservationId">
+        {% endif %}
+        <div class="modal-seance-actions">
+            <div class="btn btn-primary seance-action-select">PROCÉDER À LA RÉSERVATION</div>
+        </div>
+    </div>
+
+    <div class="modal-reservation-details">
+        <div>
+            <div>
+                <input type="hidden" value="{{ selectedSeance.id }}" class="seance-id">
+                <input type="hidden" value="{{ user.id }}" class="user-id">
+            </div>
+            <div class="reservation-title">RÉSERVATION :</div>
+            <a href="{{ path('films_show', {'id': selectedSeance.getIdFilm.id}) }}"><div class="button-seance-close">X</div></a>
+        </div>
+    <div class="modal-reservation-info">
+        <div class="modal-reservation-info-column">
+            <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-date">{{ selectedSeance.getTimeStart|date('d.m.Y') }}</span></div>
+            <div><span class="title-detail-reservation">HEURE :</span> <span class="seance-info-hour">{{ selectedSeance.getTimeStart|date('H:i') }}</span></div>
+            <div><span class="title-detail-reservation">FORMAT :</span> <span class="seance-info-format">
+                            {% if formatsSelected|length > 1 %}
+                                {% for format in formatsSelected|slice(0, (formatsSelected|length - 1)) %}
+                                    {{ format }},
+                                {% endfor %}
+                                {% for format in formatsSelected|slice((formatsSelected|length - 1), (formatsSelected|length)) %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% else %}
+                                {% for format in formatsSelected %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% endif %}
+                            </span>
+            </div>
+            <div><span class="title-detail-reservation">SIÈGES SÉLÉCTIONNÉS :</span> <span class="reservation-selected-places"></span></div>
+            <div><span class="title-detail-reservation">PRIX TTC :</span> <span class="reservation-price"></span></div>
+            <div><span class="title-detail-reservation">COUT TOTAL TTC :</span> <span class="reservation-total-cost"></span></div>
+        </div>
+        <div class="modal-reservation-info-column">
+            <div class="important-info-title">INFORMATIONS IMPORTANTES :</div>
+            <div class="important-info-text">Les informations sur votre réservation seront envoyées sur votre adresse email. La réservation sera <span>annulée 10 minutes avant le début</span> de la séance si les sièges réservés ne sont pas achetés sur place.</div>
+        </div>
+    </div>
+        <div class="modal-reservation-actions">
+            <div class="btn btn-primary reservation-action-return">SÉLÉCTIONNER DES AUTRES SIÈGES</div>
+            <div class="btn btn-primary reservation-action-confirm">CONFIRMER LA RÉSERVATION</div>
+        </div>
+    </div>
+    <div class="modal-reservation-confirmation">
+        <div>
+            <div></div>
+            <div class="reservation-title">CONFIRMATION DE RÉSERVATION :</div>
+            <a href="{{ path('films_show', {'id': selectedSeance.getIdFilm.id}) }}"><div class="button-seance-close">X</div></a>
+        </div>
+        <div class="reservation-message">
+            <p>Votre réservation a été bien confirmée !</p>
+            <p>Ci-dessous les informations sur votre réservation :</p>
+        </div>
+        <div class="modal-reservation-info">
+            <div class="modal-reservation-info-column">
+                <div><span class="title-detail-reservation">FILM :</span> <span style="text-transform: uppercase">{{ selectedSeance.getIdFilm.title }}</span></div>
+                <div><span class="title-detail-reservation">DATE :</span> <span class="seance-info-date">{{ selectedSeance.getTimeStart|date('d.m.Y') }}</span></div>
+                <div><span class="title-detail-reservation">HEURE :</span> <span class="seance-info-hour">{{ selectedSeance.getTimeStart|date('H:i') }}</span></div>
+                <div><span class="title-detail-reservation">FORMAT :</span> <span class="seance-info-format">
+                            {% if formatsSelected|length > 1 %}
+                                {% for format in formatsSelected|slice(0, (formatsSelected|length - 1)) %}
+                                    {{ format }},
+                                {% endfor %}
+                                {% for format in formatsSelected|slice((formatsSelected|length - 1), (formatsSelected|length)) %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% else %}
+                                {% for format in formatsSelected %}
+                                    {{ format }}
+                                {% endfor %}
+                            {% endif %}
+                            </span>
+                </div>
+                <div><span class="title-detail-reservation">SIÈGES SÉLÉCTIONNÉS :</span> <span class="reservation-selected-places-confirmation"></span></div>
+                <div><span class="title-detail-reservation">PRIX TTC :</span> <span class="reservation-price-confirmation"></span></div>
+                <div><span class="title-detail-reservation">COUT TOTAL TTC :</span> <span class="reservation-total-cost-confirmation"></span></div>
+            </div>
+            <div class="modal-reservation-info-column">
+                <div class="important-info-title">INFORMATIONS IMPORTANTES :</div>
+                <div class="important-info-text">Les informations sur votre réservation seront envoyées sur votre adresse email. La réservation sera <span>annulée 10 minutes avant le début</span> de la séance si les sièges réservés ne sont pas achetés sur place.</div>
+            </div>
+        </div>
+        <div class="modal-reservation-actions">
+            <a class="btn btn-primary" href="{{ path('users_reservations', {'id': app.user.id}) }}">VISUALISER MES RÉSERVATIONS</a>
+            <a class="btn btn-primary" href="{{ path('films_list') }}">RÉSERVER DES SIÈGES SUR UNE AUTRE SÉANCE</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="h1">RÉSERVER UNE SÉANCE</h1>
+    <div class="home-page-body">
+        <div class="films-container-home">
+            {% for film in films %}
+                <div class="film-container-home">
+                    <a href="{{ path('films_show', {'id': film.id}) }}" class="film-hover-home">VOIR LES SÉANCES</a>
+                    <a href="{{ path('films_show', {'id': film.id}) }}"><img src="{{ asset('uploads/' ~ film.getImgPath()) }}" alt="{{ film.title }}" class="img-film-home"></a>
+                    <a href="{{ path('films_show', {'id': film.id}) }}" class="film-title-home">{{ film.title }} ({{ film.year }})</a>
+                    <p class="film-date-home">Ajouté : {{ film.dateAdd|date('d.m.Y') }}</p>
+                </div>
+            {% else %}
+                <div>
+                    <h3 colspan="3">Aucun film trouvé</h3>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="filter-city filter-reserver">
+            <div class="form-group">
+                <label for="city_select">Séléctionner la ville :</label>
+                <select name="city_select" id="city_select">
+                    <option value="all">Toutes les villes</option>
+                    {% for city in cities %}
+                        <option value="{{ city.id }}" >{{ city.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group form-group-date-seance">
+                <label for="date-seance">Séléctionner la date :</label>
+                <input type="date" id="date-seance" name="date-seance" min="2018-01-01" max="2030-12-31" />
+            </div>
+        </div>
+    </div>
+    {% if totalPages > 1 %}
+        {{ include('_partials/_pagination.html.twig', {
+            currentPage: currentPage,
+            maxPage: totalPages,
+            path: 'films_reservationlist'
+        }) }}
+    {% endif %}
+{% endblock %}

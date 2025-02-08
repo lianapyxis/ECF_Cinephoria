@@ -1,0 +1,68 @@
+{% extends app.user.getRoles[0] == 'ROLE_ADMIN' ? 'baseAdmin.html.twig' : 'baseStaff.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <h2 class="form-film-h2">{{ is_create ? 'Ajouter un film' : 'ID ' ~ film.id }}</h2>
+
+    <div class="form-film">
+        {{ form_start(form) }}
+
+        <div>
+            {{ form_row(form.title) }}
+
+            {{ form_row(form.year) }}
+
+            <label for="film-input-genre" class="film_imgPath">Genre(s) :</label>
+            <div class='film-input-genre'>
+                <div>
+                    {% for genre in film.genres %}
+                        <span>{{ genre.name }}</span>
+                    {% endfor %}
+                </div>
+                {{ ux_icon('tabler:chevron-down', {class: 'chevron-down-icon'}) }}
+            </div>
+            <div class='film-select-genres'>
+                {{ form_row(form.genres) }}
+            </div>
+
+            {{ form_row(form.description) }}
+
+            <a href="{{ path('films_list') }}" class="btn btn-primary">Retour</a>
+        </div>
+        <div>
+            <label for="film_imgPath" class="film_imgPath">Image :</label>
+            {% if film.imgPath %}
+                <img src="{{ asset('uploads/' ~ film.getImgPath()) }}" class="img-film" width="364px" height="437px"/>
+            {% else %}
+                <div class="img-film empty-img"></div>
+            {% endif %}
+
+            <div class="form-file-type">
+                {{ form_row(form.imgPath) }}
+                <div class="input-file-type"><span>Télécharger</span></div>
+            </div>
+
+            {{ form_row(form.rating) }}
+
+            {{ form_row(form.staff_favourite) }}
+
+            <div class="film-form-actions">
+                {% if not is_create %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('films_delete', {'id': film.id}) }}" class="btn btn-primary btn-delete-film">Supprimer</a>
+                    {% endif %}
+                {% else %}
+                    <div class="btn-delete-film"></div>
+                {% endif %}
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

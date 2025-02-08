@@ -1,0 +1,42 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+    <div class="btn-create">
+        {% if is_granted('create') %}
+            <a href="{{ path('rooms_create') }}" class="btn btn-primary">Créer une salle</a>
+        {% endif %}
+    </div>
+
+    <table class="table" id="adminFilms">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>TITRE DE LA SALLE</th>
+                <th>VILLE</th>
+                <th>SIÈGES</th>
+                <th>FORMAT</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for room in rooms %}
+            <tr>
+                <td>{{ room.id }}</td>
+                <td>{{ room.title }}</td>
+                <td>{{ room.getIdCity.title }}</td>
+                <td>{{ room.getNumberSeats }}</td>
+                <td>{{ room.getFormat.title }}</td>
+                <td>
+                {% if is_granted('edit', room) %}
+                    <a href="{{ path('rooms_edit', {'id': room.id}) }}" class="btn btn-primary">Modifier</a>
+                {% endif %}
+                </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">Aucune salle trouvée</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with[
+    'form/template.html.twig'
+]%}
+
+{% block body %}
+    <div class="register-container">
+        <div class="register-img-container">
+            <h1>VOUS AVEZ DÉJÀ UN COMPTE ?</h1>
+            <a class="btn btn-primary" href="{{ path('app_login') }}">CONNECTEZ-VOUS</a>
+        </div>
+        <div class="register-form-container">
+            <h2 class="h3 font-weight-normal">CRÉATION DE COMPTE</h2>
+            <a class="link-account-mobile" href="{{ path('app_login') }}">Connexion</a>
+            <p>Pas encore de compte? Créez-un !</p>
+            {{ form_start(form) }}
+
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.lastname) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.email) }}
+
+                <div class="password-container">
+                    {{ form_row(form.password) }}
+                    <div class="show-password">Afficher</div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

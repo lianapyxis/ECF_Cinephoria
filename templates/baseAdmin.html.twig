@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+{#        <link rel="stylesheet" href="https://cdn.datatables.net/2.2.0/css/dataTables.dataTables.min.css">#}
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+{#        <script src="https://cdn.datatables.net/2.2.0/js/dataTables.min.js"></script>#}
+    {% endblock %}
+</head>
+<body>
+
+<header class="mb-3">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div>
+            <a href="{{ path('films_list') }}" class="navbar-brand"><img src="{{ asset('images/logo.svg') }}" width="225px" height="83px"/></a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="{{ path('films_list') }}">Films</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Réserver</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Contactez-nous</a>
+                    </li>
+                    <li>
+                        {% if not app.user %}
+                            <a class="dropdown-item connexion-btn" href="{{ path('app_login') }}">Se connecter</a>
+                        {% else %}
+                            <a class="dropdown-item connexion-btn" href="{{ path('app_logout') }}">Se déconnecter</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('films_list') }}">Films</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Réserver</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contactez-nous</a>
+                </li>
+                <li class="nav-item">
+                    {% if not app.user %}
+                        <a class="nav-link connexion-btn" href="{{ path('app_login') }}">Se connecter</a>
+                    {% else %}
+                        <a class="nav-link connexion-btn" href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+</header>
+<div class="container">
+
+    <h1 class="h1-espace">ESPACE ADMINISTRATEUR</h1>
+    <div class="admin-menu">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('films_list') }}">Films</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('seances_list') }}">Séances</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('rooms_list') }}">Salles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('users_list') }}">Équipe</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('users_dashboard') }}">Dashboard</a>
+            </li>
+        </ul>
+    </div>
+
+    {% block body %}{% endblock %}
+</div>
+
+<turbo-frame id="main-modal" class="modal" tabindex="-1" aria-hidden="true"></turbo-frame>
+<script>
+    $(window).on('turbo:load', function() {
+        $('.admin-menu .nav .nav-link.active').removeClass('active').removeAttr('aria-current');
+        $('a[href="' + location.pathname + '"]').closest('.admin-menu .nav .nav-link').addClass('active').attr('aria-current', 'page');
+    })
+</script>
+
+</body>
+</html>

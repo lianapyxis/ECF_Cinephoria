@@ -1,0 +1,1575 @@
+body{
+    background-color: #100316;
+    color: #fff;
+    font-family: "Montserrat", sans-serif;
+    background: url("../images/background-img.png");
+}
+body .container{
+    margin-bottom: 120px;
+}
+header{
+    padding-top: 70px;
+}
+.navbar-nav .nav-link.active{
+    color: #EC4186;
+    font-weight: bold;
+}
+.admin-menu .nav .nav-link.active,
+.staff-menu .nav .nav-link.active,
+.my-account-menu .nav .nav-link.active{
+    color: #EC4186;
+    font-weight: bold;
+    background: #fff;
+}
+.admin-menu .nav .nav-item:first-child .nav-link.active,
+.staff-menu .nav .nav-item:first-child .nav-link.active,
+.my-account-menu .nav .nav-item:first-child .nav-link.active{
+    border-radius: 12px 0 0 12px;
+}
+.admin-menu .nav .nav-item:last-child .nav-link.active,
+.staff-menu .nav .nav-item:last-child .nav-link.active,
+.my-account-menu .nav .nav-item:last-child .nav-link.active{
+    border-radius: 0 12px 12px 0;
+}
+.admin-menu,
+.staff-menu{
+    width: 100%;
+    border: 3px solid #EC4186;
+    border-radius: 15px;
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.my-account-menu{
+    width: 100%;
+    max-width: 600px;
+    border: 3px solid #EC4186;
+    border-radius: 15px;
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.container:has(.my-account-menu){
+    margin-bottom: 50px;
+    padding-left: 0;
+}
+.admin-menu .nav,
+.staff-menu .nav{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+}
+.my-account-menu .nav{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+}
+.admin-menu .nav-item{
+    width: 20%;
+    height: 100%;
+}
+.staff-menu .nav-item{
+    width: 25%;
+    height: 100%;
+}
+.my-account-menu .nav-item{
+    width: 50%;
+    height: 100%;
+}
+.admin-menu .nav-item:not(:first-child),
+.staff-menu .nav-item:not(:first-child),
+.my-account-menu .nav-item:not(:first-child){
+    border-left: 3px solid #EC4186;
+}
+.admin-menu .nav-link,
+.staff-menu .nav-link{
+    text-transform: uppercase;
+    color: #fff;
+    height: 100%;
+    align-content: center;
+    font-size: 24px;
+    font-weight: 600;
+}
+.my-account-menu .nav-link{
+    color: #fff;
+    height: 100%;
+    align-content: center;
+    font-size: 22px;
+    font-weight: 600;
+}
+.nav-link.disabled, .nav-link:disabled{
+    color: #7b1c52;
+    font-weight: 600;
+}
+.hidden{
+    display: none;
+}
+body > div.container{
+    margin-top: 120px;
+    padding: 0;
+}
+.btn.btn-primary{
+    background-color: #EC4186;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 15px 30px;
+    border-radius: 10px;
+}
+.btn.btn-primary:hover{
+    background-color: #2C0B24;
+}
+.form-film form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.form-film form > div{
+    width: 40%;
+}
+.form-film form > div:nth-child(2){
+
+}
+.film_imgPath{
+    text-align: left;
+    width: 300px;
+}
+.form-film form > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+.img-film{
+    max-height: 437px;
+    max-width: 364px;
+    width: 300px;
+    height: 285px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.form-film .film-input-genre{
+    background: #7F224F;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    height: 45px;
+    border-radius: 6px;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.form-film .film-select-genres{
+    display: none;
+/*    width: 30%;*/
+    max-width: 528px;
+}
+.form-film .chevron-down-icon{
+    height: 25px;
+}
+tbody tr:nth-child(2n+1){
+    background-color: rgba(217,217,217,0.2) !important;
+}
+tbody .btn.btn-primary{
+    height:32px;
+    padding: 4px 35px;
+    text-transform: uppercase;
+}
+tbody tr{
+    line-height: 40px;
+}
+tbody td{
+    font-weight: 500;
+}
+tbody td,
+thead th{
+    text-align: center !important;
+    text-transform: uppercase;
+    align-content: center;
+}
+.btn-create{
+    position: relative;
+}
+.btn-create .btn.btn-primary{
+    position: absolute;
+    right: 0;
+    padding: 12px 35px;
+    text-transform: uppercase;
+}
+nav[aria-label=pagination]{
+    float: right;
+    margin-top: 20px;
+}
+nav[aria-label=pagination] button{
+    color: #EC4186;
+    background: none;
+    border: none;
+    font-weight: 600;
+    font-size: 18px;
+    font-family: "Montserrat", sans-serif;
+}
+.roomSpecialPlaces{
+    display: none;
+}
+.form-film .film-input-genre span,
+.custom-tags span{
+    background: #EC4186;
+    border-radius: 6px;
+    padding: 8px 5px;
+}
+.custom-tags{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.film-form-actions .form-group{
+    display: none;
+}
+.custom-tags span{
+    margin-right: 5px;
+}
+.form-film form label {
+    margin-bottom: 10px;
+}
+.form-film form label[for=film_description]{
+    margin-top: 30px;
+}
+.form-film form .form-control,
+form #seance_time_start,
+form #seance_time_end,
+form #user_password_second{
+    background: #7F224F;
+    border: none;
+    margin-bottom: 30px !important;
+    color: #fff;
+    font-weight: 600;
+}
+form #seance_time_start,
+form #seance_time_end{
+    border-radius: 6px;
+}
+.form-film form .form-control:focus,
+.form-film .form-group select:focus{
+    border: none !important;
+    box-shadow: none !important;
+}
+.form-film .form-group select:focus-visible{
+    border: none !important;
+    background: #7F224F !important;
+    box-shadow: none !important;
+}
+.form-film .empty-img{
+    background-color: #D9D9D9;
+    border-radius: 10px;
+}
+.form-film form input.form-control,
+form #current_password,
+form #user_password_first,
+form #user_password_second{
+    height: 45px;
+}
+
+.form-film .form-group:has(#film_rating),
+.form-film .form-group:has(#film_staff_favourite)
+{
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.form-film .form-group:has(#film_rating){
+    margin-bottom: 30px;
+}
+.form-film .form-group:has(#film_staff_favourite){
+    margin-bottom: 20px;
+}
+.form-film .form-group:has(#room_typeSeats),
+.form-film .form-group:has(#room_id_city),
+.form-film .form-group:has(#room_format),
+.form-film .form-group:has(#city_select),
+.form-film .form-group:has(#seance_id_room),
+.form-film .form-group:has(#seance_id_film),
+.form-film .form-group:has(#current_password),
+.form-film .form-group:has(#user_password_first),
+.form-film .form-group:has(#user_password_second){
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+    width: 100%;
+}
+.form-custom-column-seance{
+    width: 100%;
+}
+.form-custom-column-container .form-custom-column{
+    width: 100%;
+}
+.room-input-special-place{
+    width: 100%;
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0;
+    align-items: baseline;
+}
+.form-film form .form-control.input-tag-custom{
+    margin-bottom: 0 !important;
+}
+form label[for=room-input-special-place]{
+    margin-bottom: 10px;
+}
+form .form-custom-column-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.form-film .form-group:has(label[for=film_genres]){
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+}
+.form-film .form-group select,
+form #current_password,
+form #user_password_first,
+form #user_password_second{
+    background: #7F224F;
+    height: 45px;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.form-film .form-group select#film_genres{
+    height: 200px;
+}
+.form-film .btn-delete-film{
+    margin-right: 50px;
+}
+.form-film .btn-delete-film{
+    margin-right: 50px;
+}
+.form-film .btn.btn-primary{
+    padding: 15px 50px;
+    text-transform: uppercase;
+    margin-top: 50px;
+}
+.form-film-h2{
+    margin-bottom: 35px;
+}
+.form-file-type{
+    position: relative;
+    background: #7F224F;
+    border: none;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: right;
+    margin-top: 30px;
+    width: 300px;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+.form-file-type .form-group{
+/*    position: absolute;
+    bottom: 0;
+    right: 0;
+    top: 0;*/
+    width: 100%;
+    height: 45px;
+    z-index: 9999;
+}
+.form-file-type:has(ul){
+    margin-bottom: 65px;
+}
+.form-file-type .form-group .form-control{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    top: 0;
+}
+.form-file-type ul li{
+    margin-top: 20px;
+}
+.input-file-type{
+    position: absolute;
+    color: #fff;
+    top: 0;
+    right: 0;
+    background: #EC4186;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 14px;
+    text-align: left;
+    white-space: nowrap;
+}
+.input-file-name{
+    position: absolute;
+    color: #fff;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 14px;
+}
+.film-form-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+header .nav-link{
+    text-transform: uppercase;
+    color: #fff;
+    margin-left: 82px;
+}
+.nav-link:hover{
+    color: #EC4186;
+}
+header .connexion-btn{
+    color: #EC4186 !important;
+    border: 3px solid #EC4186;
+    border-radius: 18px;
+    padding: 8px 15px;
+    min-width: 160px;
+    text-align: center;
+    font-weight: 600;
+}
+header .connexion-btn:hover{
+    color: #fff !important;
+    border: 3px solid #fff;
+}
+nav.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: transparent !important;
+    max-width: 1320px;
+    margin: 0 auto;
+}
+.navbar-expand-lg #navbarNav{
+    justify-content: end;
+}
+.navbar .dropdown{
+    display: none;
+}
+.h1-espace{
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 50px;
+}
+table, table tr, table td, table th{
+    background-color: transparent !important;
+    color: #fff !important;
+}
+table th, table td{
+    border: 2px solid #EC4186;
+}
+table.table{
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-style: hidden;
+    box-shadow: 0 0 0 2px #EC4186;
+}
+.dt-input{
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    background-color: #7F224F;
+    border-radius: 6px;
+    height: 45px;
+    border: none;
+    padding: 6px;
+    padding-left: 10px;
+    min-width: 200px;
+    font-size: 14px;
+    color: #1C061C !important;
+}
+.dt-input:focus{
+    border: none;
+    outline: none;
+}
+.dt-input::placeholder{
+    color: #1C061C !important;
+    font-size: 13px;
+}
+.h1{
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 60px;
+}
+.films-container-home{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1320px;
+    justify-content: flex-start;
+    align-items: baseline;
+}
+.film-container-home{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 40px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 35px;
+}
+.film-hover-home{
+    opacity: 0;
+    position:absolute;
+    top: 0;
+    right:0;
+    bottom:0;
+    color: #EC4186;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    align-content: center;
+    width: 100%;
+    text-decoration: none;
+    background: #2C0B24;
+    border-radius: 10px;
+    box-shadow: 0 0 12px #fff;
+    transition: opacity 0.3s ease-out;
+}
+.film-hover-home:hover{
+    opacity: 0.8;
+    transition: opacity 0.3s ease-out;
+}
+.film-title-home{
+    text-decoration: none;
+    color: #fff;
+    margin-top: 20px;
+    font-size: 20px;
+    max-width: 220px;
+    line-height: 1.2;
+}
+.film-date-home{
+    font-size: 14px;
+    margin-top: 10px;
+}
+.img-film-home{
+    max-width: 220px;
+    max-height: 280px;
+    width: 220px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.login-container,
+.register-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 60px;
+}
+.register-container{
+    margin-bottom: 200px;
+}
+.login-img-container {
+    background: url("../images/login-img.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    width: 50%;
+    height: auto;
+    padding: 200px 70px;
+}
+.register-img-container{
+    background: url("../images/register-img.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    width: 50%;
+    height: auto;
+    padding: 375px 70px;
+}
+.passwordrestauration-img-container{
+    background: url("../images/forgotten-password-img.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 5px;
+    width: 50%;
+    height: auto;
+    padding: 200px 70px;
+}
+.login-img-container h1,
+.register-img-container h1,
+.passwordrestauration-img-container h1
+{
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+.login-container form,
+.register-form-container{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+.login-container form .btn.btn-primary,
+.register-container form .btn.btn-primary{
+    max-width: 200px;
+    text-align: center;
+    align-self: center;
+}
+.register-container form button#user_submit{
+    max-width: 230px;
+}
+.register-container form div:nth-child(6){
+    text-align: center;
+    margin-top: 80px;
+}
+.login-container form h2,
+.register-container .register-form-container h2{
+    margin-top: 35px;
+    font-weight: 600;
+    margin-bottom: 35px !important;
+    font-size: 34px;
+    letter-spacing: 0.5px;
+}
+.login-container form p,
+.register-container .register-form-container p{
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+.login-container form label,
+.register-container form label{
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+.login-container form input.form-control:nth-child(4){
+    margin-bottom: 30px;
+}
+.register-container form .password-container{
+    margin-bottom: 50px;
+}
+.login-container form input.form-control,
+.register-container form .form-control,
+.contact-container form .form-control{
+    background: #7b1c52;
+    border: none;
+    height: 53px;
+    margin-bottom: 15px;
+    color: #fff;
+}
+.contact-container textarea{
+    background: #7b1c52;
+    border: none;
+    margin-bottom: 120px !important;
+    color: #fff;
+}
+.login-container form input.form-control:focus,
+.register-container form .form-control:focus,
+.contact-container form .form-control:focus{
+    border: none !important;
+    background: #7b1c52 !important;
+    box-shadow: none !important;
+}
+form input.form-control:-internal-autofill-selected{
+    border: none !important;
+    background: #7b1c52 !important;
+    box-shadow: none !important;
+}
+.login-container form a.login-forgot-password{
+    margin-bottom: 30px;
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+}
+.login-container form .password-container,
+.register-container form .password-container{
+    position: relative;
+}
+.login-container form .show-password,
+.register-container form .show-password{
+    position: absolute;
+    right: 0;
+    height: 53px;
+    background-color: #EC4186;
+    border-radius: 5px;
+    padding: 14px 20px;
+    cursor: pointer;
+}
+.login-container form .show-password{
+    top: 0;
+}
+.register-container form .show-password{
+    bottom: 0;
+}
+#passwordrestauration_submit{
+    max-width: 250px;
+}
+.forgotten-password-btn-container,
+.new-password-btn-container{
+    text-align: center;
+    margin-top: 50px;
+}
+.register-container form .new-password-btn-container .btn.btn-primary{
+    max-width: 300px;
+    padding: 10px;
+}
+.modal-comment-details{
+    position: fixed;
+    top: 682px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 550px;
+    max-width: 1320px;
+    width: 100%;
+    background-color: rgba(44, 11, 36, 85%);
+    border-radius: 6px;
+    padding: 30px 100px;
+/*    display: flex;*/
+    flex-direction: column;
+    justify-content: space-between;
+    display: none;
+}
+.modal-seance-details,
+.modal-reservation-details,
+.modal-reservation-confirmation{
+    position: fixed;
+    top: 300px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: auto;
+    max-width: 1320px;
+    width: 100%;
+    background-color: rgba(44, 11, 36, 85%);
+    border-radius: 6px;
+    padding: 30px 100px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.modal-seance-details{
+    display: flex;
+}
+.modal-reservation-details,
+.modal-reservation-confirmation{
+    display: none;
+}
+.modal-comment-info,
+.modal-seance-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.modal-reservation-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 18px;
+}
+.modal-comment-info-column{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.modal-comment-info-column:first-child{
+    margin-right: 40%;
+}
+.modal-comment-info-column > div{
+    margin-bottom: 20px;
+}
+.modal-comment-text{
+    border: 3px solid #EC4186;
+    border-radius: 5px;
+    min-height: 230px;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+.modal-comment-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+}
+.modal-seance-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.modal-reservation-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.modal-reservation-info-column > div{
+    margin-bottom: 20px;
+}
+.modal-reservation-info-column:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.important-info-text{
+    max-width: 400px;
+    font-weight: 600;
+}
+.important-info-title,
+.title-detail-reservation{
+    font-weight: 600;
+}
+.important-info-text span{
+    color: #EC4186;
+}
+.reservation-title{
+    text-align: center;
+    font-weight: 600;
+    font-size: 25px;
+}
+.modal-reservation-details > div:first-child{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.button-close,
+.button-seance-close,
+.button-seances-close{
+    float: right;
+    background-color: #1C061C;
+    border-radius: 6px;
+    border: 2px solid #EC4186;
+    color: #EC4186;
+    padding: 5px 15px;
+    font-weight: 600;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+}
+.button-close:hover,
+.button-seance-close:hover,
+.button-seances-close:hover{
+    color: #FFF;
+    border: 2px solid #FFF;
+    transition: all 0.3s ease-out;
+}
+.button-seance-close a,
+.button-seances-close a{
+    text-decoration: none;
+    color: #EC4186;
+    transition: all 0.3s ease-out;
+}
+.button-seance-close a:hover,
+.button-seances-close a:hover{
+    color: #FFF;
+}
+.modal-place-types{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.modal-seance-places > div:first-child{
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.place-type-reserved,
+.place-type-available,
+.place-type-handicapped,
+.place-type-handicapped-reserved{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-right: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    align-items: center;
+}
+.place-type-reserved span,
+.place-type-available span,
+.place-type-handicapped span,
+.place-type-handicapped-reserved span{
+    width: 30px;
+    height: 25px;
+    border-radius: 5px;
+    display: block;
+    margin-right: 5px;
+}
+.place-type-reserved span{
+    background-color: #D9D9D9;
+}
+.place-type-available span{
+    background-color: #91B06B;
+}
+.place-type-handicapped span{
+    background-color: #FF9C9C;
+}
+.place-type-handicapped-reserved span{
+    background-color: #FF3E3E;
+}
+.modal-seance-details .modal-places{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+}
+.modal-seance-details .modal-places .room-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.screen-modal{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.screen-modal span{
+    height: 15px;
+    border-radius: 5px;
+    width: 50%;
+    background-color: #969696;
+}
+.checkbox-wrapper {
+    --borderColor: #1C061C;
+    --borderWidth: .2em;
+    margin: 10px 10px;
+}
+.checkbox-wrapper label {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.checkbox-wrapper input[data-reserved="0"][data-special="0"]{
+    background: #91B06B;
+}
+.checkbox-wrapper input[data-reserved='1'][data-special='0']{
+    background: #D9D9D9;
+}
+.checkbox-wrapper input[data-reserved="0"][data-special="1"]{
+    background: #FF9C9C;
+}
+.checkbox-wrapper input[data-reserved="1"][data-special="1"]{
+    background: #FF3E3E;
+}
+.checkbox-wrapper input[type=checkbox] {
+    -webkit-appearance: none;
+    appearance: none;
+    vertical-align: middle;
+    font-size: 1.8em;
+    border-radius: 0.125em;
+    display: inline-block;
+    border: none;
+    width: 1.3em;
+    height: 1em;
+    position: relative;
+}
+.checkbox-wrapper input[type=checkbox]:not([disabled]):before,
+.checkbox-wrapper input[type=checkbox]:not([disabled]):after {
+    content: "";
+    position: absolute;
+    background: var(--borderColor);
+    width: calc(var(--borderWidth) * 3);
+    height: var(--borderWidth);
+    top: 50%;
+    left: 10%;
+    transform-origin: left center;
+}
+.checkbox-wrapper input[type=checkbox]:not([disabled]):before {
+    transform: rotate(45deg) translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2)) scaleX(0);
+    transition: transform 100ms ease-in 100ms;
+}
+.checkbox-wrapper input[type=checkbox]:not([disabled]):after {
+    width: calc(var(--borderWidth) * 5);
+    transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(0);
+    transform-origin: left center;
+    transition: transform 100ms ease-in;
+}
+.checkbox-wrapper input[type=checkbox]:not([disabled]):checked:before {
+    transform: rotate(45deg) translate(calc(var(--borderWidth) / -2), calc(var(--borderWidth) / -2)) scaleX(1);
+    transition: transform 100ms ease-in;
+}
+.checkbox-wrapper input[type=checkbox]:not([disabled]):checked:after {
+    width: calc(var(--borderWidth) * 5);
+    transform: rotate(-45deg) translateY(calc(var(--borderWidth) * 2)) scaleX(1);
+    transition: transform 100ms ease-out 100ms;
+}
+.checkbox-wrapper input[type=checkbox]:focus {
+    outline: calc(var(--borderWidth) / 2) dotted rgba(0, 0, 0, 0.25);
+}
+.checkbox-wrapper span.checkbox{
+    margin: 0 !important;
+    min-height: 0 !important;
+}
+
+.card{
+    background-color: transparent;
+    color: #fff !important;
+    border: none;
+}
+.film-title-front{
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.img-film-front{
+    max-height: 250px;
+    max-width: 250px;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 30px;
+}
+.film-info-front-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 50px;
+}
+.film-info-front > div{
+    margin-bottom: 10px;
+}
+.film-info-front span{
+    font-weight: 600;
+}
+.film-description-front > div{
+    max-width: 600px;
+    margin-top: 10px;
+}
+table#frontSeances{
+    max-width: 75%;
+    margin-bottom: 50px;
+}
+.comment-front{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 75%;
+    margin-bottom: 15px;
+}
+.card-header{
+    padding: 0;
+}
+.comment-title-front{
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+.comment-front-content{
+    border: 1px solid rgba(236,65,134,50%);
+    border-radius: 5px;
+    max-width: 75%;
+    line-height: normal;
+}
+.btn-add-comment{
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    border: 3px solid #EC4186;
+    border-radius: 5px;
+    margin-top: 40px;
+    display: block;
+    width: 75%;
+}
+form #comment{
+    width: 75%;
+}
+button#comment_submit{
+    float: right;
+}
+textarea#comment_comment{
+    background-color: transparent;
+    border: 3px solid #EC4186;
+    border-radius: 5px;
+    color: #fff;
+}
+textarea#comment_comment:focus{
+    box-shadow: none !important;
+}
+.show-seance-details{
+    max-width: 180px;
+    padding: 5px 15px !important;
+    height: auto !important;
+    line-height: 1.2;
+}
+.home-page-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.home-page-body .form-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.home-page-body .form-group label[for=city_select],
+.form-group label[for=city_select_seances],
+.form-group label[for=date-seance],
+.form-group label[for=places-seance]
+{
+    margin-bottom: 10px;
+}
+.home-page-body .form-group select#city_select,
+.form-group select#city_select_seances,
+.form-group select#genres_select,
+.form-group #date-seance,
+.form-group #places-seance{
+    border: 2px solid #EC4186;
+    background-color: transparent;
+    color: #EC4186;
+    border-radius: 5px;
+    padding: 5px;
+}
+.home-page-body .form-group select#city_select:focus,
+.form-group select#city_select_seances:focus,
+.form-group select#date-seance:focus{
+    border: 2px solid #EC4186;
+}
+.home-page-body .form-group select#city_select option,
+.form-group select#city_select_seances option,
+.form-group select#genres_select option{
+    background: #1C061C !important;
+    font-weight: 500;
+    border: 2px solid #EC4186 !important;
+}
+.home-page-body .form-group label[for=city_select],
+.home-page-body .form-group label[for=date-seance]{
+    white-space: nowrap;
+}
+.reservation-container{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 600px;
+}
+.reservation-info-container{
+    border: 2px solid #EC4186;
+    padding: 25px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 450px;
+    border-radius: 5px;
+    margin-right: 50px;
+}
+.reservation-info-container > div{
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.reservation-info-container > div:last-child{
+    margin-bottom: 0;
+}
+.reservation-actions{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.reservation-actions a.btn.btn-primary{
+    padding: 5px 20px;
+}
+.reservation-actions-0{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.reservation-actions-0 a{
+    margin-bottom: 20px;
+}
+.modal-reservation-confirmation > div:first-child{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    margin-bottom: 15px;
+}
+.modal-reservation-confirmation .modal-reservation-actions,
+.modal-reservation-details .modal-reservation-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.modal-reservation-confirmation .modal-reservation-actions a:first-child,
+.modal-reservation-details .modal-reservation-actions div:first-child{
+    margin-right: 20%;
+}
+.modal-reservation-details .modal-reservation-actions .btn.btn-primary{
+    max-width: 250px;
+    padding: 5px 30px;
+}
+.modal-reservation-confirmation .modal-reservation-actions .btn.btn-primary{
+    max-width: 270px;
+    padding: 5px 5px;
+}
+.modal-reservation-confirmation .reservation-message p{
+    font-weight: 600;
+}
+.modal-reservation-confirmation .reservation-message p:first-child{
+    margin-bottom: 0;
+}
+.modal-cancellation-confirmation{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 115px;
+    height: auto;
+    position: fixed;
+    top: 450px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-width: 645px;
+    text-align: center;
+    width: 100%;
+    background-color: rgba(44, 11, 36, 85%);
+    border-radius: 6px;
+}
+.cancellation-actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding: 0 50px;
+}
+.cancellation-actions .btn.btn-primary{
+    padding: 5px 35px;
+    height: 39px;
+    align-content: center;
+}
+#frontSeances_wrapper nav[aria-label=pagination] {
+    float: left;
+}
+.star-off,
+.star-on{
+    width: 38px;
+    height: 35px;
+    cursor: pointer;
+    color: #D9D9D9;
+}
+.star-half{
+    width: 38px;
+    height: 35px;
+    color: #FFA704;
+}
+.note-stars-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.note-stars-container svg{
+    width: 38px;
+    height: 35px;
+    cursor: pointer;
+}
+.rating-note-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.film-rating-front{
+    background-color: #EC4186;
+    font-weight: 600;
+    border-radius: 5px;
+    padding: 2px 5px;
+    margin-right: 10px;
+}
+.film-note .star-off{
+    width: 30px;
+    height: 30px;
+    cursor: auto;
+}
+.film-page-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.film-detail-container{
+    width: 100%;
+}
+.filter-city-seances{
+    max-width: 160px;
+}
+.filter-city-seances .form-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.filter-city-seances .form-group:not(:last-child) label{
+    margin-bottom: 15px;
+    white-space: nowrap;
+}
+.filter-city-seances{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.form-group-date-seance,
+.form-group-places-seance
+{
+    margin-top: 25px;
+}
+.form-group-places-seance input{
+    max-width: 70px;
+    padding-left: 25px !important;
+}
+.hidden-filter-city,
+.hidden-filter-date,
+.hidden-filter-places{
+    display: none !important;
+}
+footer{
+    margin: 100px auto 10px;
+    max-width: 1320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+footer .timetable{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+footer > div{
+    margin-bottom: 25px;
+}
+footer .timetable div{
+    margin-right: 20px;
+}
+footer .timetable div div{
+    margin-bottom: 20px;
+}
+.modal-seance-details .modal-seance-info .modal-seance-info-column > div{
+    margin-bottom: 10px;
+}
+
+
+nav.pagination-container{
+    width: 80%;
+    .pagination{
+        display: flex;
+        list-style: none;
+        padding: 0;
+        gap: 5px;
+        float: right;
+        .pagination-item{
+            border: none;
+            padding: 5px;
+            .pagination-link{
+                text-decoration: none;
+                color: #EC4186;
+                font-weight: 500;
+            }
+            &.active{
+                background: none;
+                .pagination-link{
+                    color: white;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+.contact-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.contact-form-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.contact-form-container > div{
+    width: 100%;
+}
+.contact-form-container > div:first-child{
+    margin-right: 80px;
+}
+.contact-form-container label{
+    margin-bottom: 15px;
+}
+.contact-form-container input.form-control{
+    margin-bottom: 30px !important;
+}
+.contact-form-container button{
+    float: right;
+    text-transform: uppercase;
+}
+.contact-container > p{
+    margin-bottom: 40px;
+}
+.contact-container > h2{
+    margin-bottom: 15px;
+}
+.collection-body-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+.collection-body-container .filter-city-seances{
+    margin-top: 70px;
+    margin-left: 70px;
+}
+#collectionFilms{
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-style: hidden;
+    box-shadow: none;
+    width: 70%;
+}
+#collectionFilms thead{
+    display: none;
+}
+#collectionFilms th,
+#collectionFilms td{
+    border: none;
+}
+#collectionFilms tbody td{
+    padding-bottom: 50px;
+    padding-left: 0;
+    padding-top: 0;
+}
+#collectionFilms tbody td img{
+    margin-right: 30px;
+}
+#collectionFilms tbody tr:nth-child(2n+1){
+    background-color: transparent !important;
+}
+.collection-main-content-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.collection-main-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.collection-main-content-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.collection-main-content-info div{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.collection-main-content-info .film-rating-front{
+    height: 30px;
+    line-height: 26px;
+    align-self: center;
+}
+.collection-description{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+}
+.collection-description p:first-child{
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+.collection-description p:nth-child(2){
+    text-transform: none;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 0;
+}
+.collection-main-content-title{
+    font-size: 26px;
+    line-height: 27px;
+    margin-bottom: 5px;
+    text-align: left;
+    max-width: 500px;
+}
+.collection-main-content-info .film-note{
+    margin-right: 10px;
+}
+.collection-main-content .btn.btn-primary{
+    min-height: 45px;
+    padding: 12px 30px;
+    min-width: 185px;
+}
+.collection-body-container .dt-search{
+    height: 0;
+}
+.collection-body-container .dt-search input{
+    position: absolute;
+    right: -40px;
+    top: 0;
+}
+.collection-body-container .modal-seance-details{
+    display: none;
+}
+.collection-h2{
+    margin-bottom: 30px;
+}
+.dashboard-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.dashboard-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    min-height: 300px;
+}
+.dashboard-item img{
+    width: 140px;
+    height: auto;
+}
+.dashboard-item-title{
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 70%;
+    max-width: 240px;
+    margin-bottom: 25px;
+}
+.dashboard-number{
+    color: #EC4186;
+    font-weight: 500;
+    font-size: 50px;
+    margin-top: 20px;
+}
+.dashboard-canvas-container{
+    margin-top: 100px;
+    border: 2px solid #EC4186;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+table.my-reservations-table tbody .btn.btn-primary{
+    height: 54px;
+    padding: 4px 15px;
+    align-content: center;
+    max-width: 250px;
+}
+.link-account-mobile{
+    display: none;
+}

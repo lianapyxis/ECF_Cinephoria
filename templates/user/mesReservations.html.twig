@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+
+        <h1 class="h1-espace">MON ESPACE</h1>
+        <div class="my-account-menu">
+            <ul class="nav nav-my-account">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('users_myaccount', {'id': app.user.id}) }}">Mes informations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('users_reservations', {'id': app.user.id}) }}">Mes réservations</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <table class="table my-reservations-table" id="adminSeances">
+        <thead>
+        <tr>
+            <th>TITRE</th>
+            <th>DATE</th>
+            <th>HEURE</th>
+            <th>FORMAT</th>
+            <th>SIÈGE(S)</th>
+            <th>ACTION/VOTRE NOTE</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.film.getTitle }}</td>
+                <td>{{ reservation.heure|date('d.m.Y') }}</td>
+                <td>{{ reservation.heure|date('H:i') }}</td>
+                <td>{{ reservation.format }}</td>
+                <td>
+                    {% if reservation.places|length > 1 %}
+                        {% for place in reservation.places|slice(0, (reservation.places|length - 1)) %}
+                            {{ place }},
+                        {% endfor %}
+                        {% for place in reservation.places|slice((reservation.places|length - 1), (reservation.places|length)) %}
+                            {{ place }}
+                        {% endfor %}
+                    {% else %}
+                        {% for place in reservation.places %}
+                            {{ place }}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if reservation.passed == 0 and reservation.status == 0 %}
+                        <a href="{{ path('users_reservation', {'id': reservation.id}) }}" class="btn btn-primary">Voir la réservation</a>
+                    {% elseif reservation.passed == 0 and reservation.status == 0 %}
+                        <a href="{{ path('users_reservation', {'id': reservation.id}) }}" class="btn btn-primary">Voir la réservation</a>
+                    {% elseif reservation.passed == 1 and reservation.status == 0 %}
+                        <div>ANNULÉE</div>
+                        <a href="{{ path('films_show', {'id': reservation.film.getId}) }}" class="btn btn-primary">Faire une autre réservation</a>
+                    {% elseif reservation.passed == 1 and reservation.status == 1 %}
+                        {% if null is not same as reservation.note %}
+                            <div class="note-stars-container">
+                                <input type="hidden" value="{{ reservation.film.id }}" id="filmId">
+                                <input type="hidden" value="{{ reservation.note.id }}" id="gradeId">
+                                <input type="hidden" value="{{ reservation.note.note }}" id="grade">
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 1}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 2}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 3}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 4}) }}
+                                {{ ux_icon('tabler:star-filled', {'data-grade': 5}) }}
+                            </div>
+                        {% else %}
+                            <a href="#" class="btn btn-primary add-note">Noter le film</a>
+                            <div class="note-stars-container">
+                                <input type="hidden" value="{{ reservation.film.id }}" id="filmId">
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 1}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 2}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 3}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 4}) }}
+                                {{ ux_icon('tabler:star-filled', {class: 'star-off', 'data-grade': 5}) }}
+                            </div>
+                        {% endif %}
+                    {% elseif reservation.passed == 1 and reservation.status == 1 and null is not same as(reservation.note) %}
+                        <div>{{ reservation.note.getNote }}</div>
+                    {% elseif reservation.status == 3 %}
+                        <div>ANNULÉE</div>
+                        <a href="{{ path('films_show', {'id': reservation.film.getId}) }}" class="btn btn-primary">Faire une autre réservation</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">Aucune réservation trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

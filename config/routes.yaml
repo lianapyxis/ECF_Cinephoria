@@ -6,31 +6,31 @@ controllers:
 
 film_controllers:
   resource:
-    path: ../src/Film\Controller/
+    path: ../src/Film/Controller/
     namespace: App\Film\Controller
   type: attribute
 
 comment_controllers:
   resource:
-    path: ../src/Comment\Controller/
+    path: ../src/Comment/Controller/
     namespace: App\Comment\Controller
   type: attribute
 
 user_controllers:
   resource:
-    path: ../src/User\Controller/
+    path: ../src/User/Controller/
     namespace: App\User\Controller
   type: attribute
 
 seance_controllers:
   resource:
-    path: ../src/Seance\Controller/
+    path: ../src/Seance/Controller/
     namespace: App\Seance\Controller
   type: attribute
 
 room_controllers:
   resource:
-    path: ../src/Room\Controller/
+    path: ../src/Room/Controller/
     namespace: App\Room\Controller
   type: attribute
 

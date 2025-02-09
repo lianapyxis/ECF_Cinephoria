@@ -1143,7 +1143,7 @@ $(window).on('turbo:load', function(){
             }
         })
 
-        if(city !== 'all'){
+        if(city !== 'Toutes les villes'){
             table5.column(0)
                 .data().search(function (d) {
                     return d.includes(city);
@@ -1172,7 +1172,7 @@ $(window).on('turbo:load', function(){
         })
 
         if(date !== '') {
-            if(city !== 'all'){
+            if(city !== 'Toutes les villes'){
                 table5.column(0)
                     .data().search(function (d) {
                     if(d.includes(city)){
@@ -1199,7 +1199,7 @@ $(window).on('turbo:load', function(){
 
         genre = genre.replace('é','e')
 
-        if(city == 'all'){
+        if(city == 'Toutes les villes'){
             if(date !== '') {
                 table5.column(0)
                     .data().search(function (d) {
@@ -1251,7 +1251,7 @@ $(window).on('turbo:load', function(){
     table5.$(".consult-seances-btn").click(function(){
         let filmId = $(this).next().val()
         let date = $(".collection-body-container .form-group-date-seance #date-seance").val()
-
+        let city = localStorage.getItem("cinephoria_city");
 
         $.ajax({
             type: "POST",
@@ -1260,6 +1260,7 @@ $(window).on('turbo:load', function(){
             data: {
                 filmId: filmId,
                 date: date,
+                city: city,
             },
             success: function(responseData){
                     let dataResponse = JSON.parse(responseData)

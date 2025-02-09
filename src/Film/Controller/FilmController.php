@@ -192,31 +192,71 @@ class FilmController extends AbstractController
     {
         $filmId = $request->get('filmId');
         $date = $request->get('date');
+        $city = $request->get('city');
         $film = $filmRepository->find($filmId);
         $seances = $film->getSeances();
-        if(!empty($date)){
-            $selectedSeances = [];
-            foreach ($seances as $key => $seance) {
-                $dateSeance = $seance->getTimeStart()->format('Y-m-d');
-                if($date == $dateSeance){
+        $selectedSeances = [];
+        if($city == 'Toutes les villes') {
+            if(!empty($date)){
+                foreach ($seances as $key => $seance) {
+                    $dateSeance = $seance->getTimeStart()->format('Y-m-d');
+                    if($date == $dateSeance){
+                        $selectedSeances[$key]['date'] = $seance->getTimeStart()->format('d.m.Y');
+                        $selectedSeances[$key]['heureDebut'] = $seance->getTimeStart()->format('H:i');
+                        $selectedSeances[$key]['heureFin'] = $seance->getTimeEnd()->format('H:i');
+                        $selectedSeances[$key]['format'] = $seance->getIdRoom()->getFormat()->getTitle();
+                        $selectedSeances[$key]['prix'] = $seance->getPriceTtc();
+                    }
+                }
+                $film->selectedSeances = $selectedSeances;
+            } else {
+                foreach ($seances as $key => $seance) {
                     $selectedSeances[$key]['date'] = $seance->getTimeStart()->format('d.m.Y');
                     $selectedSeances[$key]['heureDebut'] = $seance->getTimeStart()->format('H:i');
                     $selectedSeances[$key]['heureFin'] = $seance->getTimeEnd()->format('H:i');
                     $selectedSeances[$key]['format'] = $seance->getIdRoom()->getFormat()->getTitle();
                     $selectedSeances[$key]['prix'] = $seance->getPriceTtc();
                 }
+                $film->selectedSeances = $selectedSeances;
             }
-            $film->selectedSeances = $selectedSeances;
         } else {
-            $selectedSeances = [];
-            foreach ($seances as $key => $seance) {
+            if(!empty($date)){
+                $seancesInCity = [];
+                foreach ($seances as $seance) {
+                    $seanceCity = $seance->getIdRoom()->getIdCity()->getTitle();
+                    if($city == $seanceCity){
+                        $seancesInCity[] = $seance;
+                    }
+                }
+                foreach ($seancesInCity as $key => $seance) {
+                    $dateSeance = $seance->getTimeStart()->format('Y-m-d');
+                    if($date == $dateSeance){
+                        $selectedSeances[$key]['date'] = $seance->getTimeStart()->format('d.m.Y');
+                        $selectedSeances[$key]['heureDebut'] = $seance->getTimeStart()->format('H:i');
+                        $selectedSeances[$key]['heureFin'] = $seance->getTimeEnd()->format('H:i');
+                        $selectedSeances[$key]['format'] = $seance->getIdRoom()->getFormat()->getTitle();
+                        $selectedSeances[$key]['prix'] = $seance->getPriceTtc();
+                    }
+                }
+                $film->selectedSeances = $selectedSeances;
+            } else {
+                $seancesInCity = [];
+                foreach ($seances as $seance) {
+                    $seanceCity = $seance->getIdRoom()->getIdCity()->getTitle();
+                    if($city == $seanceCity) {
+                        $seancesInCity[] = $seance;
+
+                    }
+                }
+                foreach ($seancesInCity as $key => $seance) {
                     $selectedSeances[$key]['date'] = $seance->getTimeStart()->format('d.m.Y');
                     $selectedSeances[$key]['heureDebut'] = $seance->getTimeStart()->format('H:i');
                     $selectedSeances[$key]['heureFin'] = $seance->getTimeEnd()->format('H:i');
                     $selectedSeances[$key]['format'] = $seance->getIdRoom()->getFormat()->getTitle();
                     $selectedSeances[$key]['prix'] = $seance->getPriceTtc();
+                }
+                $film->selectedSeances = $selectedSeances;
             }
-            $film->selectedSeances = $selectedSeances;
         }
 
         $filmObj = [];

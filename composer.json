@@ -90,7 +90,7 @@
             "@auto-scripts"
         ],
         "compile": [
-            "bin/console asset-map:compile"
+            "php bin/console asset-map:compile"
         ]
     },
     "conflict": {

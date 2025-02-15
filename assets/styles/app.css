@@ -485,7 +485,7 @@ table th, table td{
     border: 2px solid #EC4186;
 }
 table.table{
-    border-collapse: collapse;
+    border-collapse: collapse !important;
     border-radius: 5px;
     border-style: hidden;
     box-shadow: 0 0 0 2px #EC4186;
@@ -729,7 +729,7 @@ form input.form-control:-internal-autofill-selected{
 }
 .modal-comment-details{
     position: fixed;
-    top: 682px;
+    top: 450px;
     left: 50%;
     transform: translate(-50%, 0);
     height: 550px;
@@ -738,7 +738,6 @@ form input.form-control:-internal-autofill-selected{
     background-color: rgba(44, 11, 36, 85%);
     border-radius: 6px;
     padding: 30px 100px;
-/*    display: flex;*/
     flex-direction: column;
     justify-content: space-between;
     display: none;

@@ -307,7 +307,7 @@ $(window).on('turbo:load', function(){
         $(".comment-info-date").text(date)
         $(".comment-info-film").text(film)
 
-        if(status = "DRAFT") {
+        if(status !== "PUBLISHED") {
             $(".comment-info-status").text("EN ATTENTE DE VALIDATION")
         } else {
             $(".comment-info-status").text("PUBLIÉ")

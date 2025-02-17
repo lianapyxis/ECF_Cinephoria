@@ -437,8 +437,11 @@ class UserController extends AbstractController
 
             if(!empty($firstname) AND !empty($lastname) AND !empty($senderEmail) AND !empty($subject) AND !empty($message)) {
                 $mailer->sendEmail($mailerInt, $firstname, $lastname, $senderEmail, $subject, $message);
+                $this->addFlash('success', 'Votre message a été envoyé.');
+                return $this->redirectToRoute('users_contact');
             }
         }
+
 
         return $this->render('user/contact.html.twig', [
             'form' => $form,
@@ -478,6 +481,8 @@ class UserController extends AbstractController
 
                 if(!empty($receiverEmail ) AND !empty($subject) AND !empty($message)) {
                     $mailer->sendPasswordRestore($mailerInt, $receiverEmail, $subject, $message);
+                    $this->addFlash('success', 'Un lien de réinitialisation vous a été envoyé.');
+                    return $this->redirectToRoute('users_passwordrestauration');
                 }
             }
 

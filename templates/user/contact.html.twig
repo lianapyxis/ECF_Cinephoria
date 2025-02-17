@@ -18,11 +18,15 @@
             </div>
             <div>
                 {{ form_row(form.message) }}
-                <div><button type="submit" id="contact_submit" name="contact[submit]" class="btn btn-primary">
-                        Envoyer
-                    </button></div>
+                <div><button type="submit" id="contact_submit" name="contact[submit]" class="btn btn-primary">Envoyer</button></div>
             </div>
             {{ form_end(form) }}
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

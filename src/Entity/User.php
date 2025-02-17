@@ -216,8 +216,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function addComment(Comment $comment): static
     {
-        if (!$this->filmNotes->contains($comment)) {
-            $this->filmNotes->add($comment);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
             $comment->setUser($this);
         }
 
@@ -226,7 +226,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeComment(Comment $comment): static
     {
-        if ($this->filmNotes->removeElement($comment)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);

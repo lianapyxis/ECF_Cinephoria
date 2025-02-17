@@ -1390,15 +1390,15 @@ nav.pagination-container{
     flex-direction: column;
     justify-content: flex-start;
 }
-.contact-form-container{
+.contact-form-container form{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.contact-form-container > div{
+.contact-form-container form > div{
     width: 100%;
 }
-.contact-form-container > div:first-child{
+.contact-form-container form > div:first-child{
     margin-right: 80px;
 }
 .contact-form-container label{
@@ -1410,6 +1410,9 @@ nav.pagination-container{
 .contact-form-container button{
     float: right;
     text-transform: uppercase;
+}
+.contact-form-container form textarea{
+    min-height: 252px;
 }
 .contact-container > p{
     margin-bottom: 40px;

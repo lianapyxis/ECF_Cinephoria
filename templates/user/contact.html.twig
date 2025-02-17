@@ -9,8 +9,8 @@
         <h2 class="h3 font-weight-normal">CONTACTEZ-NOUS</h2>
         <p>Si vous avez besoin de notre aide, n’hésitez pas à nous contacter.</p>
         <div class="contact-form-container">
+            {{ form_start(form) }}
             <div>
-                {{ form_start(form) }}
                 {{ form_row(form.firstname) }}
                 {{ form_row(form.lastname) }}
                 {{ form_row(form.object) }}
@@ -21,8 +21,8 @@
                 <div><button type="submit" id="contact_submit" name="contact[submit]" class="btn btn-primary">
                         Envoyer
                     </button></div>
-                {{ form_end(form) }}
             </div>
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

@@ -255,7 +255,7 @@
         padding-left: 10px;
         padding-right: 10px;
     }
-    .contact-form-container {
+    .contact-form-container form{
         flex-direction: column;
     }
     .contact-container textarea {

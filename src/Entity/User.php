@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -16,14 +17,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private int $id;
+
+    #[Assert\NotBlank]
     #[ORM\Column]
     private string $firstname;
+
+    #[Assert\NotBlank]
     #[ORM\Column]
     private string $lastname;
+
+    #[Assert\NotBlank]
     #[ORM\Column,]
     private string $username;
+
+    #[Assert\NotBlank]
     #[ORM\Column,]
     private string $email;
+
+    #[Assert\NotBlank]
     #[ORM\Column]
     private string $password;
     #[ORM\Column(type: 'json')]
@@ -38,6 +49,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $filmNotes;
 
     /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'User', orphanRemoval: true)]
+    private Collection $comments;
+
+    /**
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'id_user')]
@@ -46,6 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->filmNotes = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->reservations = new ArrayCollection();
     }
 
@@ -182,6 +200,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($filmNote->getUser() === $this) {
                 $filmNote->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 

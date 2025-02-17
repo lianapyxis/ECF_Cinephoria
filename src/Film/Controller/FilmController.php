@@ -379,6 +379,9 @@ class FilmController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Film $film, EntityManagerInterface $em): RedirectResponse
     {
+        $em->remove($film);
+        $em->flush();
+
         $this->addFlash('success', 'Le film a été supprimé');
 
         return $this->redirectToRoute('films_list');

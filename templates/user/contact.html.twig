@@ -18,9 +18,7 @@
             </div>
             <div>
                 {{ form_row(form.message) }}
-                <div><button type="submit" id="contact_submit" name="contact[submit]" class="btn btn-primary">
-                        Envoyer
-                    </button></div>
+                <div><input type="submit" id="contact_submit" name="contact[submit]" class="btn btn-primary" form="contact" value="Envoyer"></div>
                 {{ form_end(form) }}
             </div>
         </div>

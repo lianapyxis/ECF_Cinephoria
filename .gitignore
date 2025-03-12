@@ -7,10 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
-/Makefile
 /ecf_cinephoria_donnees.sql
 /ecf_cinephoria.damaged_places.json
-/config/packages/doctrine_mongodb.yaml
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###

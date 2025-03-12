@@ -8,7 +8,6 @@
 /var/
 /vendor/
 /Makefile
-src/Document/
 /ecf_cinephoria_donnees.sql
 /ecf_cinephoria.damaged_places.json
 /config/packages/doctrine_mongodb.yaml

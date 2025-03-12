@@ -25,6 +25,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use App\Document\DamagedPlace;
 
 /*use PhpParser\Node\Stmt\Expression;*/
 
@@ -65,12 +67,18 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'show')]
-    public function show(Security $security, RouterInterface $router,EntityManagerInterface $em, Seance $selectedSeance = null, Film $film = null): Response
+    public function show(Security $security, RouterInterface $router,EntityManagerInterface $em,DocumentManager $dm, Seance $selectedSeance = null, Film $film = null): Response
     {
         if ($security->isGranted('ROLE_USER')) {
 
             $comment = new Comment();
             $film = $em->find('App\Entity\Film',$selectedSeance->getIdFilm()->getId());
+
+            $damagedPlacesQuery = $dm->getRepository(DamagedPlace::class)->createQueryBuilder()
+                ->field('id_room')->equals((int)$selectedSeance->getIdRoom()->getId())->getQuery()->getSingleResult();
+            if(isset($damagedPlacesQuery)) {
+                $damagedPlaces = explode(",",strtolower($damagedPlacesQuery->getDamagedPlaces()));
+            }
             $comment->setFilm($film);
             $form = $this->createForm(CommentType::class, $comment, [
                 'action' => $router->generate('comments_create', ['film' => $film->getId()])
@@ -146,17 +154,22 @@ class SeanceController extends AbstractController
                 foreach ($namedPlaces as $key => $row) {
                     foreach ($row as $key2 => $place) {
                         $checkedPlaces[$key][$key2]['name'] = $place;
+
                         if (in_array(strtolower($place), $reservedPlaces)) {
                             $checkedPlaces[$key][$key2]['reserved'] = 1;
                         } else {
                             $checkedPlaces[$key][$key2]['reserved'] = 0;
                         }
+
+
                     }
                 }
 
             } else {
                 foreach ($namedPlaces as $key => $row) {
                     foreach ($row as $key2 => $place) {
+
+
                         $checkedPlaces[$key][$key2]['name'] = $place;
                         $checkedPlaces[$key][$key2]['reserved'] = 0;
                     }
@@ -180,6 +193,16 @@ class SeanceController extends AbstractController
                             $allPlaces[$key][$key2]['special'] = 1;
                         } else {
                             $allPlaces[$key][$key2]['special'] = 0;
+                        }
+
+                        if(isset($damagedPlaces)) {
+                            if (in_array(strtolower($place['name']), $damagedPlaces)) {
+                                $allPlaces[$key][$key2]['damaged'] = 1;
+                            } else {
+                                $allPlaces[$key][$key2]['damaged'] = 0;
+                            }
+                        } else {
+                            $allPlaces[$key][$key2]['damaged'] = 0;
                         }
 
                     }

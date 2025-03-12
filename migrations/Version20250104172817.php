@@ -20,8 +20,7 @@ final class Version20250104172817 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE city (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, phone VARCHAR(255) NOT NULL, date_add DATE NOT NULL COMMENT \'(DC2Type:date_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE city_film (city_id INT NOT NULL, film_id INT NOT NULL, INDEX IDX_610A834A8BAC62AF (city_id), INDEX IDX_610A834A567F5183 (film_id), PRIMARY KEY(city_id, film_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+/*        $this->addSql('CREATE TABLE city_film (city_id INT NOT NULL, film_id INT NOT NULL, INDEX IDX_610A834A8BAC62AF (city_id), INDEX IDX_610A834A567F5183 (film_id), PRIMARY KEY(city_id, film_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE damaged_place (id INT AUTO_INCREMENT NOT NULL, id_room_id INT NOT NULL, place VARCHAR(255) NOT NULL, status INT NOT NULL, date_add DATE NOT NULL COMMENT \'(DC2Type:date_immutable)\', INDEX IDX_47BB56EA8A8AD9E3 (id_room_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE format (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, date_add DATE NOT NULL COMMENT \'(DC2Type:date_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE rating (id INT AUTO_INCREMENT NOT NULL, title VARCHAR(255) NOT NULL, date_add DATE NOT NULL COMMENT \'(DC2Type:date_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -45,7 +44,7 @@ final class Version20250104172817 extends AbstractMigration
         $this->addSql('ALTER TABLE special_place ADD CONSTRAINT FK_D823FD8C8A8AD9E3 FOREIGN KEY (id_room_id) REFERENCES room (id)');
         $this->addSql('ALTER TABLE film ADD rating_id INT NOT NULL');
         $this->addSql('ALTER TABLE film ADD CONSTRAINT FK_8244BE22A32EFC6 FOREIGN KEY (rating_id) REFERENCES rating (id)');
-        $this->addSql('CREATE INDEX IDX_8244BE22A32EFC6 ON film (rating_id)');
+        $this->addSql('CREATE INDEX IDX_8244BE22A32EFC6 ON film (rating_id)');*/
     }
 
     public function down(Schema $schema): void

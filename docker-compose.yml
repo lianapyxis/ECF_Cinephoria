@@ -1,0 +1,72 @@
+version: "2"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    image: mysql:8.3
+    container_name: db_ecf_cinephoria
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      - dev
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_ecf_cinephoria
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - 5040:80
+    environment:
+      PMA_HOST: mysql
+    networks:
+      - dev
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    volumes:
+      - dbdata6:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    networks:
+      - dev
+    ports:
+      - 27017:27017
+
+  www:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: www_ecf_cinephoria
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ./docker/vhosts:/etc/apache2/sites-enabled
+      - ./:/var/www
+    networks:
+      - dev
+
+networks:
+  dev:
+  mongo-compose-network:
+    driver: bridge
+
+volumes:
+  db-data:
+  dbdata6:

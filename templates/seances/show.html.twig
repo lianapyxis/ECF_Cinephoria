@@ -168,6 +168,13 @@
                                         <span class="custom-checkbox"></span>
                                     </label>
                                 </div>
+                            {% elseif place.damaged == 1 %}
+                                <div class="checkbox-wrapper">
+                                    <label>
+                                        <input type="checkbox" id="{{ place.name }}" name="{{ place.name }}" value="{{ place.name }}" data-reserved="{{ place.damaged }}" data-special="{{ place.special }}" disabled>
+                                        <span class="custom-checkbox"></span>
+                                    </label>
+                                </div>
                             {% elseif place.toedit == 1 %}
                                 <div class="checkbox-wrapper">
                                     <label>

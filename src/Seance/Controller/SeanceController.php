@@ -291,7 +291,7 @@ class SeanceController extends AbstractController
 
             $em->persist($reservation);
             $em->flush();
-            return new Response("Réservation est modifié");
+            return new Response("Réservation est modifiée");
         }
 
         return new Response("Réservation échouée, essayez de nouveau");
@@ -354,13 +354,18 @@ class SeanceController extends AbstractController
     }
 
     #[Route('/editreservation/{id}/reservation/{reservationId}', name: 'editreservation')]
-    public function editReservation(Request $request, Security $security, EntityManagerInterface $em, RouterInterface $router, Seance $selectedSeance = null, Film $film = null, Reservation $reservation = null): Response
+    public function editReservation(Request $request, Security $security, EntityManagerInterface $em, DocumentManager $dm, RouterInterface $router, Seance $selectedSeance = null, Film $film = null, Reservation $reservation = null): Response
     {
         if ($security->isGranted('ROLE_USER')) {
 
             $user = $this->getUser();
             $userReservations = $user->getReservations();
             $reservation = $em->find('App\Entity\Reservation', $request->get('reservationId'));
+            $damagedPlacesQuery = $dm->getRepository(DamagedPlace::class)->createQueryBuilder()
+                ->field('id_room')->equals((int)$selectedSeance->getIdRoom()->getId())->getQuery()->getSingleResult();
+            if(isset($damagedPlacesQuery)) {
+                $damagedPlaces = explode(",",strtolower($damagedPlacesQuery->getDamagedPlaces()));
+            }
 
             foreach ($userReservations as $userReservation) {
                 if ($userReservation->getId() == $reservation->getId()) {
@@ -489,6 +494,16 @@ class SeanceController extends AbstractController
                             $allPlaces[$key][$key2]['toedit'] = 1;
                         } else {
                             $allPlaces[$key][$key2]['toedit'] = 0;
+                        }
+
+                        if(isset($damagedPlaces)) {
+                            if (in_array(strtolower($place['name']), $damagedPlaces)) {
+                                $allPlaces[$key][$key2]['damaged'] = 1;
+                            } else {
+                                $allPlaces[$key][$key2]['damaged'] = 0;
+                            }
+                        } else {
+                            $allPlaces[$key][$key2]['damaged'] = 0;
                         }
 
                     }

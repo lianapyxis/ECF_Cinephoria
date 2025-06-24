@@ -776,8 +776,11 @@ $(window).on('turbo:load', function(){
                 },
                 success: function(responseData){
                     console.log(responseData)
-                    $(".modal-reservation-confirmation").css("display", "flex")
-                    $(".modal-reservation-details").css("display", "none")
+                    if (responseData == "Réservation est modifiée") {
+                        $(".modal-reservation-confirmation").css("display", "flex")
+                        $(".modal-reservation-details").css("display", "none")
+                    }
+
                 }
             })
         } else {
@@ -792,8 +795,10 @@ $(window).on('turbo:load', function(){
                 },
                 success: function(responseData){
                     console.log(responseData)
-                    $(".modal-reservation-confirmation").css("display", "flex")
-                    $(".modal-reservation-details").css("display", "none")
+                    if (responseData == "Réservation réussie"){
+                        $(".modal-reservation-confirmation").css("display", "flex")
+                        $(".modal-reservation-details").css("display", "none")
+                    }
                 }
             })
         }

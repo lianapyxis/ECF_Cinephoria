@@ -728,8 +728,8 @@ form input.form-control:-internal-autofill-selected{
     padding: 10px;
 }
 .modal-comment-details{
-    position: fixed;
-    top: 450px;
+    position: absolute;
+    top: 350px;
     left: 50%;
     transform: translate(-50%, 0);
     height: 550px;
@@ -745,7 +745,7 @@ form input.form-control:-internal-autofill-selected{
 .modal-seance-details,
 .modal-reservation-details,
 .modal-reservation-confirmation{
-    position: fixed;
+    position: absolute;
     top: 300px;
     left: 50%;
     transform: translate(-50%, 0);

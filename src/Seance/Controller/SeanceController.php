@@ -377,7 +377,7 @@ class SeanceController extends AbstractController
             foreach ($userReservationDetails as $userReservationDetail) {
                 $userReservationPlaces[] = strtolower($userReservationDetail->getPlace());
             }
-
+            $film = $em->find('App\Entity\Film',$selectedSeance->getIdFilm()->getId());
             $comment = new Comment();
             $comment->setFilm($film);
             $form = $this->createForm(CommentType::class, $comment, [
